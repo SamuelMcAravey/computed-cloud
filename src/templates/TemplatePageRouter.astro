@@ -1,0 +1,80 @@
+---
+import { site } from "../data/site";
+import TemplatePageRenderer from "./TemplatePageRenderer.astro";
+import {
+  agencyLayouts,
+  saasLayouts,
+  consultingLayouts,
+  tradesLayouts,
+  retailLayouts,
+  fintechLayouts,
+  type RouteId,
+} from "./layouts";
+
+export interface Props {
+  route: RouteId;
+}
+
+const { route } = Astro.props;
+
+const agencySite = site.template === "agency" ? site : null;
+const saasSite = site.template === "saas" ? site : null;
+const consultingSite = site.template === "consulting" ? site : null;
+const tradesSite = site.template === "trades" ? site : null;
+const retailSite = site.template === "retail" ? site : null;
+const fintechSite = site.template === "fintech" ? site : null;
+---
+
+{agencySite && (
+  <TemplatePageRenderer
+    site={agencySite}
+    page={agencySite.pages[route]}
+    layout={agencyLayouts[route]}
+    route={route}
+  />
+)}
+
+{saasSite && (
+  <TemplatePageRenderer
+    site={saasSite}
+    page={saasSite.pages[route]}
+    layout={saasLayouts[route]}
+    route={route}
+  />
+)}
+
+{consultingSite && (
+  <TemplatePageRenderer
+    site={consultingSite}
+    page={consultingSite.pages[route]}
+    layout={consultingLayouts[route]}
+    route={route}
+  />
+)}
+
+{tradesSite && (
+  <TemplatePageRenderer
+    site={tradesSite}
+    page={tradesSite.pages[route]}
+    layout={tradesLayouts[route]}
+    route={route}
+  />
+)}
+
+{retailSite && (
+  <TemplatePageRenderer
+    site={retailSite}
+    page={retailSite.pages[route]}
+    layout={retailLayouts[route]}
+    route={route}
+  />
+)}
+
+{fintechSite && (
+  <TemplatePageRenderer
+    site={fintechSite}
+    page={fintechSite.pages[route]}
+    layout={fintechLayouts[route]}
+    route={route}
+  />
+)}

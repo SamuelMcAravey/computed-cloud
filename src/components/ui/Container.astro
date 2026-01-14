@@ -1,0 +1,27 @@
+---
+// Usage: <Container size="narrow">...</Container>
+export interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  size?: "default" | "narrow" | "wide" | "full";
+  class?: string;
+  id?: string;
+}
+
+const {
+  as: Tag = "div",
+  size = "default",
+  class: className,
+  id,
+} = Astro.props;
+
+const sizeClasses = {
+  default: "container mx-auto px-4 sm:px-6 lg:px-8",
+  narrow: "mx-auto max-w-3xl px-4 sm:px-6 lg:px-8",
+  wide: "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8",
+  full: "w-full px-4 sm:px-6 lg:px-8",
+} as const;
+---
+
+<Tag id={id} class:list={[sizeClasses[size], className]}>
+  <slot />
+</Tag>

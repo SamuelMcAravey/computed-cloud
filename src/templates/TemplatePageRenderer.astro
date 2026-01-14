@@ -1,0 +1,376 @@
+---
+import type { LayoutItem } from "./layouts/types";
+import type { SiteConfig } from "./types";
+import PageHeader from "@components/layout/PageHeader.astro";
+import HeroSection from "@components/sections/HeroSection.astro";
+import SplitSection from "@components/sections/SplitSection.astro";
+import FeatureGrid from "@components/sections/FeatureGrid.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import StatsBand from "@components/sections/StatsBand.astro";
+import ProcessSteps from "@components/sections/ProcessSteps.astro";
+import PricingPlans from "@components/sections/PricingPlans.astro";
+import PricingEstimator from "@components/marketing/PricingEstimator.astro";
+import ComparisonTable from "@components/sections/ComparisonTable.astro";
+import FAQAccordion from "@components/sections/FAQAccordion.astro";
+import QuoteSection from "@components/sections/QuoteSection.astro";
+import CaseStudyGrid from "@components/sections/CaseStudyGrid.astro";
+import GalleryGrid from "@components/sections/GalleryGrid.astro";
+import VideoEmbed from "@components/sections/VideoEmbed.astro";
+import LogoCloud from "@components/sections/LogoCloud.astro";
+import CtaBanner from "@components/sections/CtaBanner.astro";
+import TextSection from "@components/sections/TextSection.astro";
+import ServiceHighlights from "@components/sections/ServiceHighlights.astro";
+import ServiceAreaList from "@components/sections/ServiceAreaList.astro";
+import Testimonials from "@components/sections/Testimonials.astro";
+import TeamGrid from "@components/sections/TeamGrid.astro";
+import Timeline from "@components/sections/Timeline.astro";
+import ValuesGrid from "@components/sections/ValuesGrid.astro";
+import RFQForm from "@components/react/RFQForm";
+import ProductTruthHero from "@components/marketing/ProductTruthHero.astro";
+import SampleOutputSection from "@components/marketing/SampleOutputSection.astro";
+
+export interface Props {
+  layout: LayoutItem<Record<string, unknown>>[];
+  page: Record<string, unknown>;
+  site: SiteConfig;
+  route: "home" | "services" | "about" | "pricing" | "contact";
+}
+
+const { layout, page, site, route } = Astro.props;
+const spacingClass = route === "home" ? "space-y-12" : "space-y-10";
+
+const getData = (key?: string) => (key ? page[key] : undefined);
+const isEmpty = (value: unknown) =>
+  value == null || (Array.isArray(value) && value.length === 0);
+const shouldRender = (value: unknown, optional?: boolean) =>
+  !(optional && isEmpty(value));
+---
+
+<div class={spacingClass}>
+  {layout.map((block) => {
+    switch (block.kind) {
+      case "HeroProductTruth": {
+        const hero = getData(block.key) as any;
+        if (!hero) return null;
+        return (
+          <ProductTruthHero
+            headline={hero.headline}
+            subheadline={hero.subheadline}
+            highlights={hero.highlights}
+            primaryCta={hero.primaryCta}
+            secondaryCta={hero.secondaryCta}
+            sampleOutput={site.marketing?.sampleOutput}
+            showSampleOutput={route === "home"}
+          />
+        );
+      }
+      case "Hero": {
+        const hero = getData(block.key) as any;
+        return hero ? <HeroSection {...hero} /> : null;
+      }
+      case "PageHeader": {
+        const hero = getData(block.key) as any;
+        if (!hero) return null;
+        return (
+          <PageHeader
+            headline={hero.headline}
+            subheadline={hero.subheadline}
+            primaryCta={hero.primaryCta}
+            secondaryCta={hero.secondaryCta}
+            showBreadcrumbs
+          />
+        );
+      }
+      case "SplitSections": {
+        const sections = getData(block.key) as any[] | undefined;
+        if (!shouldRender(sections, block.optional)) return null;
+        return sections?.map((section) => (
+          <SplitSection
+            eyebrow={section.eyebrow}
+            headline={section.headline}
+            body={section.body}
+            bullets={section.bullets}
+            image={section.image}
+            imageSide={section.imageSide}
+          />
+        ));
+      }
+      case "FeatureGrid": {
+        const grid = getData(block.key) as any;
+        if (!shouldRender(grid, block.optional)) return null;
+        return <FeatureGrid headline={grid.headline} items={grid.items} />;
+      }
+      case "ServicesGrid": {
+        const grid = getData(block.key) as any;
+        if (!shouldRender(grid, block.optional)) return null;
+        return <ServicesGrid {...grid} />;
+      }
+      case "ServicesOrFeatureGrid": {
+        const servicesGrid = getData(block.key) as any;
+        if (servicesGrid) {
+          return <ServicesGrid {...servicesGrid} />;
+        }
+        const featureGrid = getData(block.fallbackKey) as any;
+        if (!shouldRender(featureGrid, block.optional)) return null;
+        return <FeatureGrid headline={featureGrid.headline} items={featureGrid.items} />;
+      }
+      case "StatsBand": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <StatsBand {...data} />;
+      }
+      case "ProcessSteps": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <ProcessSteps {...data} />;
+      }
+      case "PricingPlans": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <PricingPlans {...data} />;
+      }
+      case "PricingEstimator": {
+        const pricing = site.pricing;
+        if (!pricing) return null;
+        return (
+          <PricingEstimator
+            documentPrice={pricing.documentPrice}
+            includedPages={pricing.includedPages}
+            additionalPagePrice={pricing.additionalPagePrice}
+          />
+        );
+      }
+      case "ComparisonTable": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <ComparisonTable {...data} />;
+      }
+      case "FAQ": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <FAQAccordion {...data} />;
+      }
+      case "Quote": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <QuoteSection {...data} />;
+      }
+      case "CaseStudies": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <CaseStudyGrid {...data} />;
+      }
+      case "Gallery": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <GalleryGrid {...data} />;
+      }
+      case "Video": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <VideoEmbed {...data} />;
+      }
+      case "LogoCloud": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <LogoCloud {...data} />;
+      }
+      case "CtaBanner": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <CtaBanner headline={data.headline} body={data.body} cta={data.cta} />;
+      }
+      case "TextSection": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <TextSection headline={data.headline} body={data.body} />;
+      }
+      case "ServiceHighlights": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <ServiceHighlights {...data} />;
+      }
+      case "ServiceAreaList": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <ServiceAreaList {...data} />;
+      }
+      case "Testimonials": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <Testimonials items={data.items} />;
+      }
+      case "TeamGrid": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <TeamGrid {...data} />;
+      }
+      case "Timeline": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <Timeline {...data} />;
+      }
+      case "ValuesGrid": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return <ValuesGrid {...data} />;
+      }
+      case "SampleOutput": {
+        const data = getData(block.key) as any;
+        if (!shouldRender(data, block.optional)) return null;
+        return (
+          <SampleOutputSection
+            headline={data.headline}
+            body={data.body}
+            sampleOutput={site.marketing?.sampleOutput}
+          />
+        );
+      }
+      case "ContactSection": {
+        const form = page.form as any;
+        const contactCards = page.contactCards as any;
+        const decisionCards = page.decisionCards as any;
+        const helperPanel = page.helperPanel as any;
+        const business = site.business;
+        const showContactCard = Boolean(contactCards);
+        const showHelperPanel =
+          Boolean(helperPanel?.nextSteps?.length) ||
+          Boolean(helperPanel?.includeList?.length) ||
+          showContactCard;
+        if (!form) return null;
+        return (
+          <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-5xl">
+              {decisionCards ? (
+                <div class="mb-10">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    {decisionCards.eyebrow ?? "Most teams should start here"}
+                  </p>
+                  <h2 class="mt-2 text-2xl font-bold text-slate-900">
+                    {decisionCards.headline}
+                  </h2>
+                  <div class="mt-6 grid gap-4 md:grid-cols-2">
+                    {decisionCards.cards?.map((card) => (
+                      <div
+                        class:list={[
+                          "rounded-2xl border p-6",
+                          card.tone === "primary"
+                            ? "border-blue-200 bg-blue-50"
+                            : "border-slate-200 bg-white",
+                        ]}
+                      >
+                        <p class="text-sm font-semibold text-slate-900">{card.title}</p>
+                        <p class="mt-2 text-sm text-slate-600">{card.body}</p>
+                        {card.cta ? (
+                          <a
+                            href={card.cta.href}
+                            class:list={[
+                              "mt-4 inline-flex items-center rounded-lg px-4 py-2 text-xs font-semibold transition-colors",
+                              card.tone === "primary"
+                                ? "bg-blue-600 text-white shadow hover:bg-blue-700"
+                                : "border border-blue-200 text-blue-600 hover:bg-blue-50",
+                            ]}
+                          >
+                            {card.cta.label}
+                          </a>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)]">
+                <div id="form" class="rounded-2xl border border-slate-200 bg-white p-6">
+                  <div class="mb-6 space-y-2">
+                    <h2 class="text-xl font-semibold text-slate-900">{form.headline}</h2>
+                    {form.body && <p class="text-sm text-slate-600">{form.body}</p>}
+                    {business.email && (
+                      <p class="text-xs text-slate-500">
+                        Email:{" "}
+                        <a
+                          class="font-semibold text-slate-700 hover:text-slate-900"
+                          href={`mailto:${business.email}`}
+                        >
+                          {business.email}
+                        </a>
+                      </p>
+                    )}
+                    {form.notice && <p class="text-xs text-slate-500">{form.notice}</p>}
+                  </div>
+                  <RFQForm />
+                </div>
+                {showHelperPanel && (
+                  <aside class="space-y-4">
+                    {helperPanel?.nextSteps?.length ? (
+                      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                        <p class="text-sm font-semibold text-slate-900">
+                          {helperPanel.nextHeadline ?? "What happens next"}
+                        </p>
+                        <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                          {helperPanel.nextSteps.map((step) => (
+                            <li class="flex gap-2">
+                              <span class="mt-1 h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                              <span>{step}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    {helperPanel?.includeList?.length ? (
+                      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                        <p class="text-sm font-semibold text-slate-900">
+                          {helperPanel.includeHeadline ?? "What to include"}
+                        </p>
+                        <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                          {helperPanel.includeList.map((item) => (
+                            <li class="flex gap-2">
+                              <span class="mt-1 h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    {showContactCard && (
+                      <div class="rounded-2xl border border-slate-200 bg-white p-5 text-xs text-slate-500">
+                        <p class="font-semibold text-slate-700">{contactCards.headline}</p>
+                        <div class="mt-2 space-y-1">
+                          {business.phone && (
+                            <p>
+                              {contactCards.phoneLabel ?? "Phone"}: {business.phone}
+                            </p>
+                          )}
+                          {business.email && (
+                            <p>
+                              {contactCards.emailLabel ?? "Email"}: {business.email}
+                            </p>
+                          )}
+                          {business.addressLine && (
+                            <p>
+                              {contactCards.addressLabel ?? "Address"}: {business.addressLine}
+                            </p>
+                          )}
+                          {business.cityStateZip && <p>{business.cityStateZip}</p>}
+                          {business.serviceArea && (
+                            <p>
+                              {contactCards.serviceAreaLabel
+                                ? `${contactCards.serviceAreaLabel}: `
+                                : ""}
+                              {business.serviceArea}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </aside>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      }
+      default:
+        return null;
+    }
+  })}
+</div>

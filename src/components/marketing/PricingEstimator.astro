@@ -1,0 +1,177 @@
+---
+interface Props {
+  documentPrice: number;
+  includedPages: number;
+  additionalPagePrice: number;
+}
+
+const {
+  documentPrice,
+  includedPages,
+  additionalPagePrice,
+} = Astro.props;
+
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2,
+  }).format(value);
+
+const estimateTotal = (documents: number, pages: number) => {
+  const extraPages = Math.max(0, pages - includedPages);
+  return documents * documentPrice + documents * extraPages * additionalPagePrice;
+};
+
+const examples = [
+  { documents: 100, pages: 2 },
+  { documents: 500, pages: 4 },
+  { documents: 1500, pages: 6 },
+].map((example) => ({
+  ...example,
+  total: formatCurrency(estimateTotal(example.documents, example.pages)),
+}));
+---
+<section class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+  <div class="max-w-2xl space-y-2">
+    <h2 class="text-2xl font-bold text-slate-900">Estimate your monthly cost</h2>
+    <p class="text-sm text-slate-600">
+      Use your expected invoice volume to get a quick monthly estimate.
+    </p>
+  </div>
+
+  <div
+    class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+    data-pricing-estimator
+    data-document-price={documentPrice}
+    data-included-pages={includedPages}
+    data-additional-page-price={additionalPagePrice}
+  >
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <div class="space-y-5">
+        <div>
+          <label class="text-sm font-semibold text-slate-900" for="docs-input">
+            Documents per month
+          </label>
+          <div class="mt-2 space-y-3">
+            <input
+              id="docs-input"
+              data-docs-input
+              type="number"
+              min="0"
+              step="10"
+              value="500"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            />
+            <input
+              data-docs-range
+              type="range"
+              min="0"
+              max="5000"
+              step="50"
+              value="500"
+              class="w-full"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-slate-900" for="pages-input">
+            Avg pages per document
+          </label>
+          <div class="mt-2">
+            <input
+              id="pages-input"
+              data-pages-input
+              type="number"
+              min="1"
+              max="50"
+              step="0.5"
+              value="3"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        Estimated monthly total
+      </p>
+      <p class="mt-3 text-4xl font-semibold text-slate-900" data-output>
+        {formatCurrency(estimateTotal(500, 3))}
+      </p>
+      <p class="mt-3 text-xs text-slate-500">
+        Estimate only. Actual billed usage is based on processed documents and pages.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-4 md:grid-cols-3">
+    {examples.map((example) => (
+      <div class="rounded-xl border border-slate-200 bg-white p-4 text-sm">
+        <p class="text-slate-600">
+          {example.documents.toLocaleString()} invoices/month, {example.pages} pages avg
+        </p>
+        <p class="mt-2 text-lg font-semibold text-slate-900">{example.total}</p>
+      </div>
+    ))}
+  </div>
+  <p class="mt-3 text-xs text-slate-500">
+    Additional pages apply when invoices exceed {includedPages} pages.
+  </p>
+
+  <script>
+    const estimatorBlocks = document.querySelectorAll("[data-pricing-estimator]");
+
+    const formatCurrency = (value) =>
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(value);
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const parseNumber = (value, fallback) => {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    estimatorBlocks.forEach((block) => {
+      const documentPrice = Number.parseFloat(block.dataset.documentPrice || "0");
+      const includedPages = Number.parseFloat(block.dataset.includedPages || "0");
+      const additionalPagePrice = Number.parseFloat(block.dataset.additionalPagePrice || "0");
+
+      const docsInput = block.querySelector("[data-docs-input]");
+      const docsRange = block.querySelector("[data-docs-range]");
+      const pagesInput = block.querySelector("[data-pages-input]");
+      const output = block.querySelector("[data-output]");
+
+      if (!docsInput || !docsRange || !pagesInput || !output) return;
+
+      const update = () => {
+        const documents = clamp(parseNumber(docsInput.value, 0), 0, 100000);
+        const pages = clamp(parseNumber(pagesInput.value, 1), 1, 50);
+
+        docsInput.value = documents.toString();
+        docsRange.value = documents.toString();
+        pagesInput.value = pages.toString();
+
+        const extraPages = Math.max(0, pages - includedPages);
+        const total =
+          documents * documentPrice + documents * extraPages * additionalPagePrice;
+
+        output.textContent = formatCurrency(total);
+      };
+
+      docsInput.addEventListener("input", update);
+      docsRange.addEventListener("input", (event) => {
+        docsInput.value = event.target.value;
+        update();
+      });
+      pagesInput.addEventListener("input", update);
+
+      update();
+    });
+  </script>
+</section>

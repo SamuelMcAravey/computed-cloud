@@ -1,0 +1,4 @@
+vendor_name,invoice_number,invoice_date,due_date,subtotal,tax,total,line_description,line_qty,line_unit_price,line_amount
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Warehouse gloves - nitrile, medium",120,4.50,540.00
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Pallet wrap, 18in x 1500ft",20,22.00,440.00
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Dock labels, thermal roll",10,50.00,500.00

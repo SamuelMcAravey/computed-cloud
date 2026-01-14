@@ -1,0 +1,186 @@
+---
+export interface Props {
+  sampleCsvUrl?: string;
+  sampleJsonUrl?: string;
+  title?: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  sampleCsvUrl = "/samples/sample-invoice.csv",
+  sampleJsonUrl = "/samples/sample-invoice.json",
+  title = "Preview the export",
+  id,
+  class: className,
+} = Astro.props;
+
+const previewJson = `{
+  "vendor_name": "Northwind Industrial Supply",
+  "invoice_number": "INV-10428",
+  "invoice_date": "2024-07-18",
+  "due_date": "2024-08-17",
+  "subtotal": 1480.0,
+  "tax": 118.4,
+  "total": 1598.4,
+  "line_items": [
+    { "description": "Warehouse gloves - nitrile, medium", "qty": 120, "unit_price": 4.5, "amount": 540.0 },
+    { "description": "Pallet wrap, 18in x 1500ft", "qty": 20, "unit_price": 22.0, "amount": 440.0 },
+    { "description": "Dock labels, thermal roll", "qty": 10, "unit_price": 50.0, "amount": 500.0 }
+  ]
+}`;
+
+const previewCsv = `vendor_name,invoice_number,invoice_date,due_date,subtotal,tax,total,line_description,line_qty,line_unit_price,line_amount
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Warehouse gloves - nitrile, medium",120,4.50,540.00
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Pallet wrap, 18in x 1500ft",20,22.00,440.00
+"Northwind Industrial Supply",INV-10428,2024-07-18,2024-08-17,1480.00,118.40,1598.40,"Dock labels, thermal roll",10,50.00,500.00`;
+---
+<section
+  id={id}
+  class:list={[
+    "rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm",
+    className,
+  ]}
+>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h3 class="text-sm font-semibold text-slate-900">{title}</h3>
+    <a
+      class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+      href={sampleCsvUrl}
+      download
+    >
+      Download sample CSV
+    </a>
+  </div>
+  <div class="mt-3 text-xs text-slate-500">Preview</div>
+  <div class="mt-3 space-y-4">
+    <div class="rounded-xl border border-slate-200 bg-white p-3">
+      <div class="text-xs font-semibold text-slate-600">Invoice header</div>
+      <div class="mt-2 divide-y divide-slate-100 text-sm text-slate-700">
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Vendor</span>
+          <span class="font-medium text-slate-900">Northwind Industrial Supply</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Invoice #</span>
+          <span class="font-medium text-slate-900">INV-10428</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Invoice date</span>
+          <span class="font-medium text-slate-900">2024-07-18</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Due date</span>
+          <span class="font-medium text-slate-900">2024-08-17</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Subtotal</span>
+          <span class="font-medium text-slate-900">$1,480.00</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Tax</span>
+          <span class="font-medium text-slate-900">$118.40</span>
+        </div>
+        <div class="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-500">Total</span>
+          <span class="font-semibold text-slate-900">$1,598.40</span>
+        </div>
+      </div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-3">
+      <div class="text-xs font-semibold text-slate-600">Line items</div>
+      <div class="mt-2 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-600">
+          <thead class="border-b border-slate-200 text-[10px] uppercase tracking-wide text-slate-400">
+            <tr>
+              <th class="py-2 pr-2">Description</th>
+              <th class="py-2 pr-2">Qty</th>
+              <th class="py-2 pr-2">Unit price</th>
+              <th class="py-2">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700">
+            <tr>
+              <td class="py-2 pr-2">Warehouse gloves - nitrile, medium</td>
+              <td class="py-2 pr-2">120</td>
+              <td class="py-2 pr-2">$4.50</td>
+              <td class="py-2">$540.00</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-2">Pallet wrap, 18in x 1500ft</td>
+              <td class="py-2 pr-2">20</td>
+              <td class="py-2 pr-2">$22.00</td>
+              <td class="py-2">$440.00</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-2">Dock labels, thermal roll</td>
+              <td class="py-2 pr-2">10</td>
+              <td class="py-2 pr-2">$50.00</td>
+              <td class="py-2">$500.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
+    <summary class="cursor-pointer text-xs font-semibold text-slate-600">
+      Advanced: JSON/CSV
+    </summary>
+    <div class="mt-3" data-advanced-tabs>
+      <div class="flex gap-2 text-xs" role="tablist" aria-label="Advanced export formats">
+        <button
+          type="button"
+          class="rounded-full border border-slate-900 bg-slate-900 px-3 py-1 font-semibold text-white"
+          role="tab"
+          aria-selected="true"
+          data-tab="json"
+        >
+          JSON
+        </button>
+        <button
+          type="button"
+          class="rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900"
+          role="tab"
+          aria-selected="false"
+          data-tab="csv"
+        >
+          CSV
+        </button>
+      </div>
+      <div class="mt-3 rounded-xl border border-slate-200 bg-slate-900/95 p-3 text-[11px] text-slate-100">
+        <pre class="overflow-x-auto font-mono leading-relaxed" data-panel="json">{previewJson}</pre>
+        <pre class="hidden overflow-x-auto font-mono leading-relaxed" data-panel="csv">{previewCsv}</pre>
+      </div>
+      <div class="mt-2 text-xs text-slate-500">
+        <a class="font-semibold text-slate-600 hover:text-slate-900" href={sampleJsonUrl} download>
+          Download JSON
+        </a>
+      </div>
+    </div>
+  </details>
+</section>
+
+<script is:inline>
+  const root = document.currentScript?.closest("section");
+  const advanced = root?.querySelector("[data-advanced-tabs]");
+  if (advanced) {
+    const tabs = Array.from(advanced.querySelectorAll("[data-tab]"));
+    const panels = Array.from(advanced.querySelectorAll("[data-panel]"));
+    const setActive = (tab) => {
+      const target = tab.getAttribute("data-tab");
+      tabs.forEach((btn) => {
+        const isActive = btn === tab;
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        btn.className = isActive
+          ? "rounded-full border border-slate-900 bg-slate-900 px-3 py-1 font-semibold text-white"
+          : "rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold text-slate-600 hover:border-slate-300 hover:text-slate-900";
+      });
+      panels.forEach((panel) => {
+        const isMatch = panel.getAttribute("data-panel") === target;
+        panel.classList.toggle("hidden", !isMatch);
+      });
+    };
+    tabs.forEach((tab) => tab.addEventListener("click", () => setActive(tab)));
+  }
+</script>

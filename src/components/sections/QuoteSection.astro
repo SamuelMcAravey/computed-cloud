@@ -1,0 +1,59 @@
+---
+export interface Props {
+  quote: string;
+  name?: string;
+  title?: string;
+  company?: string;
+  image?: { src: string; alt: string };
+  tone?: "plain" | "muted";
+}
+
+const { quote, name, title, company, image, tone = "muted" } = Astro.props;
+
+if (!quote) {
+  return null;
+}
+
+const toneClasses = {
+  plain: "bg-white",
+  muted: "bg-slate-50",
+} as const;
+
+const hasAttribution = Boolean(name || title || company);
+const titleParts = [title, company].filter(Boolean).join(" • ");
+---
+
+<section class:list={["py-12", toneClasses[tone]]}>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl border border-slate-200 bg-white p-8 md:flex md:items-center md:gap-8">
+      {image ? (
+        <div class="mb-6 flex justify-center md:mb-0 md:justify-start">
+          <img
+            src={image.src}
+            alt={image.alt}
+            class="h-20 w-20 rounded-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      ) : null}
+      <div class="space-y-4">
+        <blockquote class="text-lg font-semibold text-slate-900">
+          <span aria-hidden="true">“</span>
+          {quote}
+          <span aria-hidden="true">”</span>
+        </blockquote>
+        {hasAttribution ? (
+          <div class="text-sm text-slate-600">
+            {name && <span class="font-semibold text-slate-700">{name}</span>}
+            {titleParts && (
+              <span class="text-slate-500">
+                {name ? " — " : ""}
+                {titleParts}
+              </span>
+            )}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  </div>
+</section>

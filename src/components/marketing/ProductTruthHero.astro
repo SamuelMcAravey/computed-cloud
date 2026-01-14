@@ -1,0 +1,73 @@
+---
+import type { MarketingSampleOutput } from "../../templates/types/base";
+import ExtractHeroMock from "./ExtractHeroMock.astro";
+import ExportPreviewTabs from "./ExportPreviewTabs.astro";
+
+export interface Props {
+  headline: string;
+  subheadline?: string;
+  highlights?: string[];
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  sampleOutput?: MarketingSampleOutput;
+  showSampleOutput?: boolean;
+}
+
+const {
+  headline,
+  subheadline,
+  highlights,
+  primaryCta,
+  secondaryCta,
+  sampleOutput,
+  showSampleOutput = false,
+} = Astro.props;
+
+const hasSecondary = Boolean(secondaryCta);
+const hasHighlights = Boolean(highlights?.length);
+---
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100"></div>
+  <div class="relative container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="space-y-6">
+        <h1 class="text-4xl font-bold text-slate-900 sm:text-5xl">{headline}</h1>
+        {subheadline ? <p class="text-lg text-slate-700">{subheadline}</p> : null}
+        <div class="flex flex-wrap gap-4">
+          <a
+            href={primaryCta.href}
+            class="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow transition-colors hover:bg-blue-700"
+          >
+            {primaryCta.label}
+          </a>
+          {hasSecondary ? (
+            <a
+              href={secondaryCta.href}
+              class="inline-flex items-center rounded-lg border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900"
+            >
+              {secondaryCta.label}
+            </a>
+          ) : null}
+        </div>
+        {hasHighlights ? (
+          <ul class="flex flex-wrap gap-2 text-xs text-slate-700">
+            {highlights?.map((item) => (
+              <li class="rounded-full border border-slate-200 bg-white/80 px-3 py-1 font-semibold">
+                {item}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {showSampleOutput && sampleOutput ? (
+          <ExportPreviewTabs
+            id="export-preview"
+            sampleCsvUrl={sampleOutput.downloadCsvUrl}
+            sampleJsonUrl={sampleOutput.downloadJsonUrl}
+            title="Preview the export"
+          />
+        ) : null}
+      </div>
+      <ExtractHeroMock />
+    </div>
+  </div>
+</section>

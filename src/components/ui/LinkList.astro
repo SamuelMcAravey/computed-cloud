@@ -1,0 +1,68 @@
+---
+// Usage: <LinkList items={[{ label: "Docs", href: "/docs" }]} />
+export interface Props {
+  items: { label: string; href: string; external?: boolean }[];
+  variant?: "bullets" | "inline" | "stacked";
+  tone?: "default" | "muted";
+  showHoverMarker?: boolean;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  items,
+  variant = "stacked",
+  tone = "muted",
+  showHoverMarker = false,
+  class: className,
+  ariaLabel,
+} = Astro.props;
+
+const filteredItems = items.filter((item) => item?.href);
+const WrapperTag = ariaLabel ? "nav" : "div";
+
+const toneClasses = {
+  default: "text-slate-700 hover:text-blue-600",
+  muted: "text-slate-400 hover:text-blue-400",
+} as const;
+
+const listClasses = {
+  bullets: showHoverMarker ? "space-y-3" : "list-disc space-y-2 pl-5",
+  inline: "flex flex-wrap gap-x-4 gap-y-2",
+  stacked: "space-y-3",
+} as const;
+
+const markerColorClasses = {
+  default: "bg-blue-600",
+  muted: "bg-blue-400",
+} as const;
+---
+
+<WrapperTag aria-label={ariaLabel} class={className}>
+  <ul class={listClasses[variant]}>
+    {filteredItems.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener noreferrer" : undefined}
+          class:list={[
+            "text-sm inline-flex items-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2",
+            variant !== "inline" && showHoverMarker && "group",
+            toneClasses[tone],
+          ]}
+        >
+          {variant !== "inline" && showHoverMarker ? (
+            <span
+              class:list={[
+                "w-0 group-hover:w-2 h-0.5 transition-all mr-0 group-hover:mr-2",
+                markerColorClasses[tone],
+              ]}
+            />
+          ) : null}
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</WrapperTag>

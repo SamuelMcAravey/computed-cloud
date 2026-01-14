@@ -1,0 +1,186 @@
+---
+export interface Props {
+  headline?: string;
+  body?: string;
+  items: Array<{
+    src: string;
+    alt: string;
+    fullSrc?: string;
+    caption?: string;
+  }>;
+  variant?: "grid" | "masonry";
+  columns?: 2 | 3 | 4;
+  lightbox?: boolean;
+}
+
+const {
+  headline,
+  body,
+  items,
+  variant = "grid",
+  columns = 3,
+  lightbox = false,
+} = Astro.props;
+
+if (!items || items.length === 0) {
+  return null;
+}
+
+const gridColumns = {
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-2 lg:grid-cols-3",
+  4: "md:grid-cols-2 lg:grid-cols-4",
+} as const;
+
+const masonryColumns = {
+  2: "md:columns-2",
+  3: "md:columns-2 lg:columns-3",
+  4: "md:columns-2 lg:columns-4",
+} as const;
+---
+
+<section class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+  {(headline || body) && (
+    <div class="max-w-2xl space-y-2">
+      {headline && <h2 class="text-2xl font-bold text-slate-900">{headline}</h2>}
+      {body && <p class="text-sm text-slate-600">{body}</p>}
+    </div>
+  )}
+
+  {variant === "masonry" ? (
+    <div class:list={["mt-8 gap-6", masonryColumns[columns]]}>
+      {items.map((item) => {
+        const fullSrc = item.fullSrc ?? item.src;
+        return (
+          <div class="mb-6 break-inside-avoid overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+            <a
+              href={fullSrc}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "block focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2",
+                lightbox && "js-lightbox-trigger",
+              ]}
+              data-full-src={fullSrc}
+              data-caption={item.caption}
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
+                class="h-auto w-full object-cover"
+                loading="lazy"
+              />
+            </a>
+            {item.caption && (
+              <p class="px-4 py-3 text-xs text-slate-600">{item.caption}</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <div class:list={["mt-8 grid gap-6", gridColumns[columns]]}>
+      {items.map((item) => {
+        const fullSrc = item.fullSrc ?? item.src;
+        return (
+          <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+            <a
+              href={fullSrc}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "block focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2",
+                lightbox && "js-lightbox-trigger",
+              ]}
+              data-full-src={fullSrc}
+              data-caption={item.caption}
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
+                class="h-56 w-full object-cover"
+                loading="lazy"
+              />
+            </a>
+            {item.caption && (
+              <p class="px-4 py-3 text-xs text-slate-600">{item.caption}</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  {lightbox ? (
+    <>
+      <dialog class="js-gallery-dialog rounded-2xl border border-slate-200 bg-white p-0 shadow-xl">
+        <div class="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+          <p class="js-gallery-caption text-sm font-semibold text-slate-700"></p>
+          <button
+            type="button"
+            class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+            aria-label="Close dialog"
+          >
+            <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+        <div class="p-4">
+          <img
+            class="js-gallery-image max-h-[70vh] w-full rounded-xl object-contain"
+            alt=""
+          />
+        </div>
+      </dialog>
+      <script>
+        {String.raw`
+          (() => {
+            const dialog = document.querySelector('.js-gallery-dialog');
+            if (!dialog) return;
+            const image = dialog.querySelector('.js-gallery-image');
+            const caption = dialog.querySelector('.js-gallery-caption');
+            const closeButton = dialog.querySelector('button[aria-label="Close dialog"]');
+            const triggers = document.querySelectorAll('.js-lightbox-trigger');
+
+            const openDialog = (event) => {
+              event.preventDefault();
+              const target = event.currentTarget;
+              const src = target.getAttribute('data-full-src');
+              const captionText = target.getAttribute('data-caption') || '';
+              if (!src) return;
+              image.setAttribute('src', src);
+              image.setAttribute('alt', captionText || 'Gallery image');
+              caption.textContent = captionText;
+              dialog.showModal();
+              closeButton.focus();
+            };
+
+            const closeDialog = () => {
+              dialog.close();
+            };
+
+            triggers.forEach((trigger) => {
+              trigger.addEventListener('click', openDialog);
+            });
+
+            closeButton.addEventListener('click', closeDialog);
+            dialog.addEventListener('click', (event) => {
+              if (event.target === dialog) closeDialog();
+            });
+
+            dialog.addEventListener('close', () => {
+              image.removeAttribute('src');
+              image.setAttribute('alt', '');
+              caption.textContent = '';
+            });
+
+            document.addEventListener('keydown', (event) => {
+              if (event.key === 'Escape' && dialog.open) {
+                closeDialog();
+              }
+            });
+          })();
+        `}
+      </script>
+    </>
+  ) : null}
+</section>

@@ -1,0 +1,15 @@
+---
+export interface Props {
+  targetId?: string;
+  label?: string;
+}
+
+const { targetId = "main", label = "Skip to content" } = Astro.props;
+---
+
+<a
+  href={`#${targetId}`}
+  class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+>
+  {label}
+</a>

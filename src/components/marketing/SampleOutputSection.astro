@@ -1,0 +1,33 @@
+---
+import type { MarketingSampleOutput } from "../../templates/types/base";
+import ExportPreviewTabs from "./ExportPreviewTabs.astro";
+
+export interface Props {
+  headline: string;
+  body?: string[];
+  sampleOutput?: MarketingSampleOutput;
+}
+
+const { headline, body = [], sampleOutput } = Astro.props;
+---
+<section class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl space-y-4">
+    <h2 class="text-2xl font-bold text-slate-900">{headline}</h2>
+    {body.length ? (
+      <div class="space-y-4 text-sm text-slate-600">
+        {body.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    ) : null}
+  </div>
+  {sampleOutput ? (
+    <div class="mt-6">
+      <ExportPreviewTabs
+        sampleCsvUrl={sampleOutput.downloadCsvUrl}
+        sampleJsonUrl={sampleOutput.downloadJsonUrl}
+        title="Preview the export"
+      />
+    </div>
+  ) : null}
+</section>

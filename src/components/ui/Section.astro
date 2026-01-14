@@ -1,0 +1,47 @@
+---
+// Usage: <Section tone="muted" py="md">...</Section>
+import Container from "./Container.astro";
+
+export interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  id?: string;
+  py?: "none" | "sm" | "md" | "lg";
+  tone?: "plain" | "muted" | "inverse";
+  container?: false | "default" | "narrow" | "wide" | "full";
+  class?: string;
+  containerClass?: string;
+}
+
+const {
+  as: Tag = "section",
+  id,
+  py = "lg",
+  tone = "plain",
+  container = "default",
+  class: className,
+  containerClass,
+} = Astro.props;
+
+const pyClasses = {
+  none: "",
+  sm: "py-8",
+  md: "py-12",
+  lg: "py-16",
+} as const;
+
+const toneClasses = {
+  plain: "",
+  muted: "bg-slate-50",
+  inverse: "bg-slate-900 text-slate-100",
+} as const;
+---
+
+<Tag id={id} class:list={[pyClasses[py], toneClasses[tone], className]}>
+  {container === false ? (
+    <slot />
+  ) : (
+    <Container size={container} class={containerClass}>
+      <slot />
+    </Container>
+  )}
+</Tag>
