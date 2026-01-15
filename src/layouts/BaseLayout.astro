@@ -92,12 +92,12 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
       <img class="cc-lightbox-image" alt="" />
     </div>
     <script is:inline>
-      {`(() => {
+      (() => {
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
     const storageKey = "cc-theme";
     const setTheme = (theme) => {
-      document.documentElement.classList.toggle("dark", theme === "dark");
+      document.documentElement.classList.toggle("dark", theme === "dark");      
       document.documentElement.dataset.theme = theme;
     };
     const update = () => {
@@ -160,12 +160,12 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
 
   document.addEventListener("click", async (event) => {
     const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     const linkButton = target.closest("[data-copy-link]");
     if (linkButton instanceof HTMLElement) {
       const hash = linkButton.getAttribute("data-copy-link") ?? "";
-      const url = `${window.location.origin}${window.location.pathname}${hash}`;
+      const url = window.location.origin + window.location.pathname + hash;
       try {
         await navigator.clipboard.writeText(url);
         setCopied(linkButton);
@@ -195,7 +195,7 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
       setCopied(button);
     }
   });
-})();`}
+})();
     </script>
   </body>
 </html>

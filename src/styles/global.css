@@ -468,8 +468,9 @@ pre.mermaid[data-processed] {
 .cc-tool-button[data-copied="true"]::after {
   content: "Copied...";
   position: absolute;
-  right: 0;
-  top: -1.6rem;
+  left: 50%;
+  top: -1.4rem;
+  transform: translateX(-50%);
   padding: 0.2rem 0.5rem;
   border-radius: 999px;
   background: rgb(var(--cc-surface));
@@ -479,4 +480,13 @@ pre.mermaid[data-processed] {
   line-height: 1;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.cc-tool-button[data-copy-target][data-copied="true"]::after,
+.cc-tool-button[data-copy-link][data-copied="true"]::after,
+.cc-tool-button[data-tooltip="left"][data-copied="true"]::after {
+  left: auto;
+  right: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
 }

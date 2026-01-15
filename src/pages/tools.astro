@@ -4,17 +4,20 @@ import ToolCard from "@components/ToolCard.astro";
 import GuidTool from "@components/tools/GuidTool.astro";
 import Base64EncodeTool from "@components/tools/Base64EncodeTool.astro";
 import Base64DecodeTool from "@components/tools/Base64DecodeTool.astro";
+import Base32Tool from "@components/tools/Base32Tool.astro";
 import UrlEncodeTool from "@components/tools/UrlEncodeTool.astro";
 import UrlDecodeTool from "@components/tools/UrlDecodeTool.astro";
 import JsonFormatterTool from "@components/tools/JsonFormatterTool.astro";
 import JsonMinifierTool from "@components/tools/JsonMinifierTool.astro";
 import JsonValidatorTool from "@components/tools/JsonValidatorTool.astro";
 import JwtDecodeTool from "@components/tools/JwtDecodeTool.astro";
+import JwtVerifyTool from "@components/tools/JwtVerifyTool.astro";
 import HmacGeneratorTool from "@components/tools/HmacGeneratorTool.astro";
 import HashGeneratorTool from "@components/tools/HashGeneratorTool.astro";
 import TimestampToDateTool from "@components/tools/TimestampToDateTool.astro";
 import DateToTimestampTool from "@components/tools/DateToTimestampTool.astro";
 import UlidTool from "@components/tools/UlidTool.astro";
+import UuidV7Tool from "@components/tools/UuidV7Tool.astro";
 import SlugifyTool from "@components/tools/SlugifyTool.astro";
 import CaseConverterTool from "@components/tools/CaseConverterTool.astro";
 import WhitespaceCleanerTool from "@components/tools/WhitespaceCleanerTool.astro";
@@ -22,15 +25,19 @@ import DiffViewerTool from "@components/tools/DiffViewerTool.astro";
 import CsvToJsonTool from "@components/tools/CsvToJsonTool.astro";
 import JsonToCsvTool from "@components/tools/JsonToCsvTool.astro";
 import HexRgbTool from "@components/tools/HexRgbTool.astro";
-import EscapeUnescapeTool from "@components/tools/EscapeUnescapeTool.astro";
+import EscapeUnescapeTool from "@components/tools/EscapeUnescapeTool.astro";    
 import QuerystringTool from "@components/tools/QuerystringTool.astro";
-import HtmlFormatterTool from "@components/tools/HtmlFormatterTool.astro";
-import HtmlMinifierTool from "@components/tools/HtmlMinifierTool.astro";
+import HtmlFormatterTool from "@components/tools/HtmlFormatterTool.astro";      
+import HtmlMinifierTool from "@components/tools/HtmlMinifierTool.astro";        
 import CronParserTool from "@components/tools/CronParserTool.astro";
 import JsonDiffTool from "@components/tools/JsonDiffTool.astro";
-import XmlFormatterTool from "@components/tools/XmlFormatterTool.astro";
+import XmlFormatterTool from "@components/tools/XmlFormatterTool.astro";        
 import UrlPartsTool from "@components/tools/UrlPartsTool.astro";
 import HexBase64Tool from "@components/tools/HexBase64Tool.astro";
+import YamlJsonTool from "@components/tools/YamlJsonTool.astro";
+import HtmlEntityTool from "@components/tools/HtmlEntityTool.astro";
+import UnixPermissionsTool from "@components/tools/UnixPermissionsTool.astro";
+import LogViewerLinkTool from "@components/tools/LogViewerLinkTool.astro";
 
 const tools = [
   {
@@ -44,6 +51,18 @@ const tools = [
     title: "ULID generator",
     description: "Sortable IDs based on time.",
     Component: UlidTool,
+  },
+  {
+    id: "uuid-v7",
+    title: "UUID v7 generator",
+    description: "Time-ordered UUIDs.",
+    Component: UuidV7Tool,
+  },
+  {
+    id: "base32",
+    title: "Base32 encode/decode",
+    description: "RFC 4648 Base32.",
+    Component: Base32Tool,
   },
   {
     id: "base64-encode",
@@ -92,6 +111,12 @@ const tools = [
     title: "JWT decode",
     description: "Decode header and payload (no verification).",
     Component: JwtDecodeTool,
+  },
+  {
+    id: "jwt-verify",
+    title: "JWT verify",
+    description: "Verify HMAC signatures (HS256/384/512).",
+    Component: JwtVerifyTool,
   },
   {
     id: "hmac-generator",
@@ -154,10 +179,22 @@ const tools = [
     Component: JsonToCsvTool,
   },
   {
+    id: "yaml-json",
+    title: "YAML and JSON",
+    description: "Convert YAML <-> JSON (basic).",
+    Component: YamlJsonTool,
+  },
+  {
     id: "hex-rgb",
     title: "Hex and RGB",
     description: "Convert between hex and RGB.",
     Component: HexRgbTool,
+  },
+  {
+    id: "html-entities",
+    title: "HTML entities",
+    description: "Encode or decode HTML entities.",
+    Component: HtmlEntityTool,
   },
   {
     id: "escape-unescape",
@@ -208,10 +245,22 @@ const tools = [
     Component: UrlPartsTool,
   },
   {
+    id: "unix-permissions",
+    title: "Unix permissions",
+    description: "Convert rwx <-> octal.",
+    Component: UnixPermissionsTool,
+  },
+  {
     id: "hex-base64",
     title: "Hex/Base64 converter",
     description: "Convert hex bytes to base64 and back.",
     Component: HexBase64Tool,
+  },
+  {
+    id: "log-viewer-page",
+    title: "Log viewer",
+    description: "Filter and highlight logs in a full page tool.",
+    Component: LogViewerLinkTool,
   },
 ];
 
@@ -220,22 +269,22 @@ const categories = [
   {
     id: "identifiers",
     title: "Identifiers",
-    toolIds: ["guid", "ulid"],
+    toolIds: ["guid", "ulid", "uuid-v7"],
   },
   {
     id: "encoding",
     title: "Encoding & Escaping",
-    toolIds: ["base64-encode", "base64-decode", "url-encode", "url-decode", "escape-unescape", "hex-base64"],
+    toolIds: ["base32", "base64-encode", "base64-decode", "url-encode", "url-decode", "escape-unescape", "hex-base64", "html-entities"],
   },
   {
     id: "formats",
     title: "Format & Validate",
-    toolIds: ["json-formatter", "json-minifier", "json-validator", "html-formatter", "html-minifier", "xml-formatter"],
+    toolIds: ["json-formatter", "json-minifier", "json-validator", "html-formatter", "html-minifier", "xml-formatter", "yaml-json"],
   },
   {
     id: "data-conversion",
     title: "Data Conversion",
-    toolIds: ["csv-to-json", "json-to-csv", "hex-rgb", "querystring", "url-parts"],
+    toolIds: ["csv-to-json", "json-to-csv", "hex-rgb", "querystring", "url-parts", "unix-permissions"],
   },
   {
     id: "compare",
@@ -245,7 +294,7 @@ const categories = [
   {
     id: "security",
     title: "Hashing & Tokens",
-    toolIds: ["hash-generator", "hmac-generator", "jwt-decode"],
+    toolIds: ["hash-generator", "hmac-generator", "jwt-decode", "jwt-verify"],
   },
   {
     id: "time",
@@ -256,6 +305,11 @@ const categories = [
     id: "text",
     title: "Text Cleanup",
     toolIds: ["slugify", "case-converter", "whitespace-cleaner"],
+  },
+  {
+    id: "full-page",
+    title: "Full-page tools",
+    toolIds: ["log-viewer-page"],
   },
 ];
 

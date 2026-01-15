@@ -1,0 +1,121 @@
+<div class="space-y-3" data-tool="jwt-verify">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="jwt-verify-alg">Algorithm</label>
+      <select
+        id="jwt-verify-alg"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="HS256">HS256</option>
+        <option value="HS384">HS384</option>
+        <option value="HS512">HS512</option>
+      </select>
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="jwt-verify-key">HMAC key</label>
+      <input
+        id="jwt-verify-key"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        placeholder="Shared secret"
+      />
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="jwt-verify-input">JWT</label>
+    <textarea
+      id="jwt-verify-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Header.Payload.Signature"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="jwt-verify-output">Result</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#jwt-verify-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="jwt-verify-output"
+      class="min-h-[80px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted">Supports HMAC JWTs only (HS256/384/512).</p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="jwt-verify"]');
+      if (!root) return;
+      const algSelect = root.querySelector("#jwt-verify-alg");
+      const keyInput = root.querySelector("#jwt-verify-key");
+      const input = root.querySelector("#jwt-verify-input");
+      const output = root.querySelector("#jwt-verify-output");
+      const base64UrlToBytes = (part) => {
+        const padded = part.replace(/-/g, "+").replace(/_/g, "/");
+        const padLen = (4 - (padded.length % 4)) % 4;
+        const base = padded + "=".repeat(padLen);
+        const binary = atob(base);
+        return Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      };
+      const toHex = (bytes) => Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+      const verify = async () => {
+        if (!algSelect || !keyInput || !input || !output) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          return;
+        }
+        const parts = raw.split(".");
+        if (parts.length !== 3) {
+          output.value = "Invalid JWT format.";
+          return;
+        }
+        const algMap = { HS256: "SHA-256", HS384: "SHA-384", HS512: "SHA-512" };
+        const algo = algMap[algSelect.value] || "SHA-256";
+        const keyData = new TextEncoder().encode(keyInput.value);
+        const data = new TextEncoder().encode(`${parts[0]}.${parts[1]}`);
+        try {
+          const key = await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            { name: "HMAC", hash: { name: algo } },
+            false,
+            ["sign"]
+          );
+          const signature = await crypto.subtle.sign("HMAC", key, data);
+          const actual = new Uint8Array(signature);
+          const expected = base64UrlToBytes(parts[2]);
+          if (actual.length !== expected.length) {
+            output.value = "Invalid signature.";
+            return;
+          }
+          let diff = 0;
+          for (let i = 0; i < actual.length; i += 1) {
+            diff |= actual[i] ^ expected[i];
+          }
+          output.value = diff === 0 ? "Valid signature." : "Invalid signature.";
+          output.value += `\nAlgorithm: ${algSelect.value}`;
+          output.value += `\nSignature (hex): ${toHex(expected).slice(0, 32)}...`;
+        } catch {
+          output.value = "Unable to verify signature.";
+        }
+      };
+      let timer = 0;
+      const schedule = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          void verify();
+        }, 150);
+      };
+      input?.addEventListener("input", schedule);
+      keyInput?.addEventListener("input", schedule);
+      algSelect?.addEventListener("change", schedule);
+      schedule();
+    })();
+  </script>
+</div>

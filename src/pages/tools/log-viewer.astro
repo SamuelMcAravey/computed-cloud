@@ -1,0 +1,198 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Log Viewer" description="Paste logs, filter, and highlight matches.">
+  <section class="space-y-4">
+    <p class="text-xs uppercase tracking-wide text-muted">Tools</p>
+    <h1 class="font-heading text-4xl font-semibold text-text">Log viewer</h1>
+    <p class="text-lg text-muted">
+      Paste logs, filter by text or regex, and highlight matches. Everything runs locally.
+    </p>
+  </section>
+
+  <section class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div class="space-y-4">
+      <label class="text-xs uppercase tracking-wide text-muted" for="log-input">Log input</label>
+      <textarea
+        id="log-input"
+        class="min-h-[320px] w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm text-text"
+        placeholder="Paste logs here..."
+      ></textarea>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-muted">
+        <span id="log-count">0 lines</span>
+        <span id="log-visible">0 visible</span>
+      </div>
+    </div>
+    <aside class="space-y-4 rounded-2xl border border-border bg-surface/90 p-5 text-sm text-text">
+      <div class="space-y-2">
+        <label class="text-xs uppercase tracking-wide text-muted" for="log-filter">Filter</label>
+        <input
+          id="log-filter"
+          class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+          type="text"
+          placeholder="Text or regex"
+        />
+      </div>
+      <label class="flex items-center gap-2 text-sm text-muted">
+        <input id="log-regex" type="checkbox" /> Use regex
+      </label>
+      <label class="flex items-center gap-2 text-sm text-muted">
+        <input id="log-case" type="checkbox" /> Case sensitive
+      </label>
+      <div class="space-y-2">
+        <label class="text-xs uppercase tracking-wide text-muted" for="log-highlight">Highlight</label>
+        <input
+          id="log-highlight"
+          class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+          type="text"
+          placeholder="Highlight term"
+        />
+      </div>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        type="button"
+        id="log-clear"
+      >
+        Clear
+      </button>
+      <p id="log-error" class="text-xs text-muted"></p>
+    </aside>
+  </section>
+
+  <section class="mt-8">
+    <div class="rounded-2xl border border-border bg-surface/90 p-5">
+      <div class="mb-3 flex items-center justify-between text-xs uppercase tracking-wide text-muted">
+        <span>Output</span>
+        <button
+          class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+          type="button"
+          data-copy-target="#log-output"
+        >
+          Copy visible
+        </button>
+      </div>
+      <pre id="log-output" class="cc-log-output max-h-[60vh] overflow-auto text-sm text-text"></pre>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+  const input = document.getElementById("log-input");
+  const filter = document.getElementById("log-filter");
+  const regexToggle = document.getElementById("log-regex");
+  const caseToggle = document.getElementById("log-case");
+  const highlight = document.getElementById("log-highlight");
+  const output = document.getElementById("log-output");
+  const error = document.getElementById("log-error");
+  const countLabel = document.getElementById("log-count");
+  const visibleLabel = document.getElementById("log-visible");
+  const clear = document.getElementById("log-clear");
+
+  const escapeHtml = (value) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+  const buildRegex = (pattern, flags) => {
+    try {
+      return new RegExp(pattern, flags);
+    } catch {
+      return null;
+    }
+  };
+
+  const render = () => {
+    if (!input || !output || !error || !filter || !regexToggle || !caseToggle || !highlight) return;
+    const raw = input.value;
+    const lines = raw.split(/\\r?\\n/);
+    const query = filter.value.trim();
+    const highlightText = highlight.value.trim();
+    const caseSensitive = caseToggle.checked;
+    const flags = caseSensitive ? "g" : "gi";
+    let filterRegex = null;
+    if (query) {
+      filterRegex = regexToggle.checked
+        ? buildRegex(query, caseSensitive ? "" : "i")
+        : buildRegex(query.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&"), caseSensitive ? "" : "i");
+    }
+    let highlightRegex = null;
+    if (highlightText) {
+      highlightRegex = buildRegex(
+        highlightText.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&"),
+        flags
+      );
+    }
+    if (regexToggle.checked && query && !filterRegex) {
+      error.textContent = "Invalid regex filter.";
+    } else {
+      error.textContent = "";
+    }
+    let visible = 0;
+    const rendered = lines
+      .map((line, idx) => {
+        if (filterRegex && !filterRegex.test(line)) return null;
+        visible += 1;
+        let text = escapeHtml(line);
+        if (highlightRegex) {
+          text = text.replace(highlightRegex, (match) => `<mark class="cc-log-mark">${escapeHtml(match)}</mark>`);
+        }
+        return `<span class="cc-log-line"><span class="cc-log-line-number">${idx + 1}</span>${text}</span>`;
+      })
+      .filter(Boolean)
+      .join("\\n");
+    output.innerHTML = rendered || "";
+    if (countLabel) countLabel.textContent = `${lines.length} line${lines.length === 1 ? "" : "s"}`;
+    if (visibleLabel) visibleLabel.textContent = `${visible} visible`;
+  };
+
+  const schedule = (() => {
+    let raf = 0;
+    return () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(render);
+    };
+  })();
+
+  input?.addEventListener("input", schedule);
+  filter?.addEventListener("input", schedule);
+  regexToggle?.addEventListener("change", schedule);
+  caseToggle?.addEventListener("change", schedule);
+  highlight?.addEventListener("input", schedule);
+  clear?.addEventListener("click", () => {
+    if (input) input.value = "";
+    if (filter) filter.value = "";
+    if (highlight) highlight.value = "";
+    if (regexToggle) regexToggle.checked = false;
+    if (caseToggle) caseToggle.checked = false;
+    schedule();
+  });
+  render();
+})();
+  </script>
+
+  <style>
+    .cc-log-output {
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+    .cc-log-line {
+      display: block;
+    }
+    .cc-log-line-number {
+      display: inline-block;
+      width: 3.5rem;
+      color: rgb(var(--cc-muted));
+      user-select: none;
+    }
+    .cc-log-mark {
+      background: rgb(var(--cc-accent) / 0.2);
+      color: rgb(var(--cc-text));
+      border-radius: 0.2rem;
+      padding: 0 0.1rem;
+    }
+  </style>
+</BaseLayout>

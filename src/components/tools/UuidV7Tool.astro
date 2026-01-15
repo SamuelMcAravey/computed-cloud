@@ -1,0 +1,66 @@
+<div class="space-y-3" data-tool="uuid-v7">
+  <div class="flex flex-col gap-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="uuidv7-output">UUID v7</label>
+    <div class="flex flex-col gap-2 sm:flex-row">
+      <input
+        id="uuidv7-output"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        readonly
+      />
+      <button
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        type="button"
+        data-generate
+      >
+        Generate
+      </button>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        type="button"
+        data-copy-target="#uuidv7-output"
+      >
+        Copy
+      </button>
+    </div>
+  </div>
+  <p class="text-xs text-muted">Time-ordered UUIDs (v7).</p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="uuid-v7"]');
+      if (!root) return;
+      const output = root.querySelector("#uuidv7-output");
+      const generate = root.querySelector("[data-generate]");
+      const toHex = (value) => value.toString(16).padStart(2, "0");
+      const formatUuid = (bytes) => {
+        const hex = Array.from(bytes).map(toHex).join("");
+        return [
+          hex.slice(0, 8),
+          hex.slice(8, 12),
+          hex.slice(12, 16),
+          hex.slice(16, 20),
+          hex.slice(20),
+        ].join("-");
+      };
+      const makeUuidV7 = () => {
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+        const ts = BigInt(Date.now());
+        bytes[0] = Number((ts >> 40n) & 0xffn);
+        bytes[1] = Number((ts >> 32n) & 0xffn);
+        bytes[2] = Number((ts >> 24n) & 0xffn);
+        bytes[3] = Number((ts >> 16n) & 0xffn);
+        bytes[4] = Number((ts >> 8n) & 0xffn);
+        bytes[5] = Number(ts & 0xffn);
+        bytes[6] = (bytes[6] & 0x0f) | 0x70;
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+        return formatUuid(bytes);
+      };
+      const update = () => {
+        if (output) output.value = makeUuidV7();
+      };
+      generate?.addEventListener("click", update);
+      update();
+    })();
+  </script>
+</div>
