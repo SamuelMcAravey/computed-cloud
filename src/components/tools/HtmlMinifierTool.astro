@@ -1,0 +1,39 @@
+<div class="space-y-3" data-tool="html-minify">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-minify-input">HTML</label>
+    <textarea
+      id="html-minify-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="<div><span>Example</span></div>"
+    ></textarea>
+  </div>
+  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
+    Minify
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-minify-output">Minified</label>
+    <textarea
+      id="html-minify-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="html-minify"]');
+      if (!root) return;
+      const input = root.querySelector("#html-minify-input");
+      const output = root.querySelector("#html-minify-output");
+      const run = root.querySelector("[data-run]");
+      const minify = (value) =>
+        value
+          .replace(/>\s+</g, "><")
+          .replace(/\s{2,}/g, " ")
+          .trim();
+      run?.addEventListener("click", () => {
+        if (!input || !output) return;
+        output.value = minify(input.value);
+      });
+    })();
+  </script>
+</div>

@@ -1,0 +1,51 @@
+<div class="space-y-3" data-tool="html-format">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-format-input">HTML</label>
+    <textarea
+      id="html-format-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="<div><span>Example</span></div>"
+    ></textarea>
+  </div>
+  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
+    Format
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-format-output">Formatted</label>
+    <textarea
+      id="html-format-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="html-format"]');
+      if (!root) return;
+      const input = root.querySelector("#html-format-input");
+      const output = root.querySelector("#html-format-output");
+      const run = root.querySelector("[data-run]");
+      const formatHtml = (value) => {
+        const spaced = value
+          .replace(/>\s*</g, "><")
+          .replace(/</g, "\n<")
+          .replace(/\n\s*\n/g, "\n")
+          .trim();
+        const lines = spaced.split("\n");
+        let indent = 0;
+        return lines
+          .map((line) => {
+            if (line.match(/^<\//)) indent = Math.max(indent - 1, 0);
+            const out = `${"  ".repeat(indent)}${line}`;
+            if (line.match(/^<[^/!].*[^/]>$/)) indent += 1;
+            return out;
+          })
+          .join("\n");
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output) return;
+        output.value = formatHtml(input.value);
+      });
+    })();
+  </script>
+</div>

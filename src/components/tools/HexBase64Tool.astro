@@ -1,0 +1,84 @@
+<div class="space-y-3" data-tool="hex-base64">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="hex-base64-input">Hex or Base64</label>
+    <textarea
+      id="hex-base64-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Paste hex or base64"
+    ></textarea>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-hex>
+      Hex → Base64
+    </button>
+    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-b64>
+      Base64 → Hex
+    </button>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="hex-base64-output">Output</label>
+    <textarea
+      id="hex-base64-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="hex-base64"]');
+      if (!root) return;
+      const input = root.querySelector("#hex-base64-input");
+      const output = root.querySelector("#hex-base64-output");
+      const hexBtn = root.querySelector("[data-hex]");
+      const b64Btn = root.querySelector("[data-b64]");
+      const error = root.querySelector("[data-error]");
+      const hexToBytes = (hex) => {
+        const clean = hex.replace(/\s+/g, "").toLowerCase();
+        if (clean.length % 2 !== 0) return null;
+        const bytes = new Uint8Array(clean.length / 2);
+        for (let i = 0; i < clean.length; i += 2) {
+          const byte = parseInt(clean.slice(i, i + 2), 16);
+          if (Number.isNaN(byte)) return null;
+          bytes[i / 2] = byte;
+        }
+        return bytes;
+      };
+      const bytesToHex = (bytes) =>
+        Array.from(bytes)
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      const bytesToBase64 = (bytes) => {
+        let binary = "";
+        bytes.forEach((b) => (binary += String.fromCharCode(b)));
+        return btoa(binary);
+      };
+      const base64ToBytes = (b64) => {
+        const binary = atob(b64.trim());
+        return Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      };
+      hexBtn?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        const bytes = hexToBytes(input.value);
+        if (!bytes) {
+          output.value = "";
+          error.textContent = "Invalid hex input.";
+          return;
+        }
+        output.value = bytesToBase64(bytes);
+        error.textContent = "";
+      });
+      b64Btn?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          const bytes = base64ToBytes(input.value);
+          output.value = bytesToHex(bytes);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid base64 input.";
+        }
+      });
+    })();
+  </script>
+</div>

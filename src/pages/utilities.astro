@@ -24,6 +24,14 @@ import CsvToJsonTool from "@components/tools/CsvToJsonTool.astro";
 import JsonToCsvTool from "@components/tools/JsonToCsvTool.astro";
 import HexRgbTool from "@components/tools/HexRgbTool.astro";
 import EscapeUnescapeTool from "@components/tools/EscapeUnescapeTool.astro";
+import QuerystringTool from "@components/tools/QuerystringTool.astro";
+import HtmlFormatterTool from "@components/tools/HtmlFormatterTool.astro";
+import HtmlMinifierTool from "@components/tools/HtmlMinifierTool.astro";
+import CronParserTool from "@components/tools/CronParserTool.astro";
+import JsonDiffTool from "@components/tools/JsonDiffTool.astro";
+import XmlFormatterTool from "@components/tools/XmlFormatterTool.astro";
+import UrlPartsTool from "@components/tools/UrlPartsTool.astro";
+import HexBase64Tool from "@components/tools/HexBase64Tool.astro";
 
 const tools = [
   {
@@ -163,6 +171,54 @@ const tools = [
     title: "Escape and unescape",
     description: "HTML, JSON, or regex escaping.",
     Component: EscapeUnescapeTool,
+  },
+  {
+    id: "querystring",
+    title: "Querystring parser/builder",
+    description: "Parse or build querystrings from JSON.",
+    Component: QuerystringTool,
+  },
+  {
+    id: "html-formatter",
+    title: "HTML formatter",
+    description: "Pretty-print HTML for readability.",
+    Component: HtmlFormatterTool,
+  },
+  {
+    id: "html-minifier",
+    title: "HTML minifier",
+    description: "Minify HTML by removing extra whitespace.",
+    Component: HtmlMinifierTool,
+  },
+  {
+    id: "cron-parser",
+    title: "Cron parser",
+    description: "Show the next five runs for a cron expression.",
+    Component: CronParserTool,
+  },
+  {
+    id: "json-diff",
+    title: "JSON diff",
+    description: "Compare two JSON blobs and list changes.",
+    Component: JsonDiffTool,
+  },
+  {
+    id: "xml-formatter",
+    title: "XML formatter/validator",
+    description: "Validate and pretty-print XML.",
+    Component: XmlFormatterTool,
+  },
+  {
+    id: "url-parts",
+    title: "URL parts",
+    description: "Break down a URL into components.",
+    Component: UrlPartsTool,
+  },
+  {
+    id: "hex-base64",
+    title: "Hex/Base64 converter",
+    description: "Convert hex bytes to base64 and back.",
+    Component: HexBase64Tool,
   },
 ];
 ---

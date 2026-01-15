@@ -17,6 +17,8 @@ const currentPath = Astro.url.pathname;
       <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
       <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
       <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
+      <a class={currentPath.startsWith("/utilities") ? "text-text" : ""} href="/utilities">Tools</a>
+      <a class={currentPath === "/about" ? "text-text" : ""} href="/about">About</a>
     </nav>
   </div>
 </header>

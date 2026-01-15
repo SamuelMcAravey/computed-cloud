@@ -1,0 +1,63 @@
+<div class="space-y-3" data-tool="xml-format">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="xml-input">XML</label>
+    <textarea
+      id="xml-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="<root><item>One</item></root>"
+    ></textarea>
+  </div>
+  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
+    Format
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="xml-output">Formatted</label>
+    <textarea
+      id="xml-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="xml-format"]');
+      if (!root) return;
+      const input = root.querySelector("#xml-input");
+      const output = root.querySelector("#xml-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      const formatXml = (xml) => {
+        const formatted = xml
+          .replace(/>\s+</g, "><")
+          .replace(/</g, "\n<")
+          .replace(/\n\s*\n/g, "\n")
+          .trim()
+          .split("\n");
+        let indent = 0;
+        return formatted
+          .map((line) => {
+            if (line.match(/^<\//)) indent = Math.max(indent - 1, 0);
+            const out = `${"  ".repeat(indent)}${line}`;
+            if (line.match(/^<[^/!?].*[^/]>$/)) indent += 1;
+            return out;
+          })
+          .join("\n");
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(input.value, "text/xml");
+          const parserError = doc.getElementsByTagName("parsererror")[0];
+          if (parserError) throw new Error("Invalid XML");
+          output.value = formatXml(new XMLSerializer().serializeToString(doc));
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid XML.";
+        }
+      });
+    })();
+  </script>
+</div>
