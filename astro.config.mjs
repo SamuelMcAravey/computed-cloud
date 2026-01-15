@@ -24,6 +24,9 @@ export default defineConfig({
       frames: {
         showCopyToClipboardButton: true,
       },
+      defaultProps: {
+        frame: "terminal",
+      },
     }),
     mermaid({
       theme: "neutral",

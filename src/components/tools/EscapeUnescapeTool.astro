@@ -1,0 +1,92 @@
+<div class="space-y-3" data-tool="escape">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="escape-type">Type</label>
+      <select
+        id="escape-type"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="html">HTML</option>
+        <option value="json">JSON</option>
+        <option value="regex">Regex</option>
+      </select>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="escape-input">Input</label>
+    <textarea
+      id="escape-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+    ></textarea>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <button
+      class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      type="button"
+      data-escape
+    >
+      Escape
+    </button>
+    <button
+      class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      type="button"
+      data-unescape
+    >
+      Unescape
+    </button>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="escape-output">Output</label>
+    <textarea
+      id="escape-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="escape"]');
+    if (root) {
+      const typeSelect = root.querySelector("#escape-type");
+      const input = root.querySelector("#escape-input");
+      const output = root.querySelector("#escape-output");
+      const escapeBtn = root.querySelector("[data-escape]");
+      const unescapeBtn = root.querySelector("[data-unescape]");
+      const htmlEscape = (value) =>
+        value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      const htmlUnescape = (value) =>
+        value
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/&amp;/g, "&");
+      const jsonEscape = (value) => JSON.stringify(value).slice(1, -1);
+      const jsonUnescape = (value) => JSON.parse(`"${value.replace(/"/g, '\\"')}"`);
+      const regexEscape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regexUnescape = (value) => value.replace(/\\([.*+?^${}()|[\]\\])/g, "$1");
+      const run = (mode) => {
+        if (!typeSelect || !input || !output) return;
+        const type = typeSelect.value;
+        const value = input.value;
+        if (type === "html") output.value = mode === "escape" ? htmlEscape(value) : htmlUnescape(value);
+        if (type === "json") output.value = mode === "escape" ? jsonEscape(value) : jsonUnescape(value);
+        if (type === "regex") output.value = mode === "escape" ? regexEscape(value) : regexUnescape(value);
+      };
+      escapeBtn?.addEventListener("click", () => run("escape"));
+      unescapeBtn?.addEventListener("click", () => run("unescape"));
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

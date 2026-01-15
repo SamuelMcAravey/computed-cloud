@@ -1,0 +1,59 @@
+<div class="space-y-3" data-tool="uuid-v4">
+  <div class="flex flex-col gap-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="uuid-output">UUID v4</label>
+    <div class="flex flex-col gap-2 sm:flex-row">
+      <input
+        id="uuid-output"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        readonly
+      />
+      <button
+        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        type="button"
+        data-generate
+      >
+        Generate
+      </button>
+      <button
+        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        type="button"
+        data-copy
+      >
+        Copy
+      </button>
+    </div>
+  </div>
+  <p class="text-xs text-muted">Uses crypto.randomUUID().</p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="uuid-v4"]');
+    if (root) {
+      const output = root.querySelector("#uuid-output");
+      const generate = root.querySelector("[data-generate]");
+      const copy = root.querySelector("[data-copy]");
+      const makeUuid = () => (crypto.randomUUID ? crypto.randomUUID() : "");
+      const update = () => {
+        if (output) output.value = makeUuid();
+      };
+      generate?.addEventListener("click", update);
+      copy?.addEventListener("click", async () => {
+        if (!output?.value) return;
+        try {
+          await navigator.clipboard.writeText(output.value);
+        } catch {
+          output.select();
+          document.execCommand("copy");
+        }
+      });
+      update();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

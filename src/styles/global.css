@@ -104,16 +104,21 @@ a {
   @apply mt-2;
 }
 
+.prose li:has(input[type="checkbox"]) {
+  list-style: none;
+}
+
 .prose a {
   @apply text-text underline decoration-accent/50 underline-offset-4;
 }
 
 .prose blockquote {
-  @apply mt-6 border-l-2 border-border pl-4 text-muted;
+  @apply mt-6 rounded-xl border border-border bg-surface px-5 py-4 text-muted;
+  border-left-width: 4px;
 }
 
 .prose code {
-  @apply rounded bg-surface px-2 py-1 font-mono text-sm;
+  @apply rounded-md border border-border bg-surface px-1.5 py-0.5 font-mono text-sm;
   color: rgb(var(--cc-codeAccent));
 }
 
@@ -146,6 +151,36 @@ a {
 
 .expressive-code {
   @apply mt-6;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgb(var(--cc-border));
+  background: #0f172a;
+}
+
+.expressive-code pre {
+  margin: 0;
+  border-radius: 0;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.expressive-code figcaption {
+  margin: 0;
+  border: 0 !important;
+}
+
+.expressive-code .frame,
+.expressive-code .frame pre {
+  border: 0 !important;
+}
+
+.expressive-code .copy-to-clipboard-button {
+  opacity: 1;
+  visibility: visible;
+}
+
+.expressive-code .copy-to-clipboard-button:hover {
+  filter: brightness(1.1);
 }
 
 .cc-figure {
@@ -156,10 +191,39 @@ a {
   display: block;
   text-decoration: none;
   cursor: zoom-in;
+  position: relative;
 }
 
 .cc-figure img {
   @apply w-full rounded-2xl border border-border;
+}
+
+.cc-lightbox-link::after {
+  content: "Zoom";
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--cc-border));
+  background: rgb(var(--cc-surface) / 0.9);
+  color: rgb(var(--cc-text));
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.cc-lightbox-link:hover::after,
+.cc-lightbox-link:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cc-print-button {
+  cursor: pointer;
 }
 
 .cc-figure figcaption {
@@ -236,5 +300,85 @@ a {
 }
 
 .mermaid {
-  @apply mt-6 overflow-x-auto rounded-2xl border border-border bg-surface px-4 py-3;
+  @apply mt-6 overflow-x-auto rounded-2xl border border-border px-4 py-3;
+  background-color: rgb(var(--cc-surface)) !important;
+  opacity: 1;
+}
+
+pre.mermaid[data-processed] {
+  background-color: rgb(var(--cc-surface)) !important;
+  opacity: 1;
+}
+
+.prose input[type="checkbox"] {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.2rem;
+  border: 1px solid rgb(var(--cc-border));
+  background: rgb(var(--cc-surface));
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+  margin-top: 0.1rem;
+}
+
+.prose input[type="checkbox"]::after {
+  content: "";
+  width: 0.55rem;
+  height: 0.3rem;
+  border-left: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  transform: rotate(-45deg);
+}
+
+.prose input[type="checkbox"]:checked {
+  border-color: rgb(var(--cc-accent));
+  background: rgb(var(--cc-accent) / 0.15);
+}
+
+.prose input[type="checkbox"]:checked::after {
+  border-left-color: rgb(var(--cc-accent));
+  border-bottom-color: rgb(var(--cc-accent));
+}
+
+@media print {
+  header,
+  footer,
+  .cc-print-button,
+  .cc-backlink,
+  .cc-lightbox,
+  .cc-lightbox-link::after,
+  aside,
+  details,
+  summary {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .prose {
+    max-width: none;
+  }
+
+  .prose pre,
+  .prose table,
+  .cc-figure,
+  .callout,
+  blockquote {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .prose input[type="checkbox"] {
+    vertical-align: middle;
+    margin-top: 0;
+  }
+
+  .prose input[type="checkbox"]::after {
+    margin-top: -1px;
+  }
 }

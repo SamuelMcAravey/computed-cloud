@@ -1,0 +1,78 @@
+<div class="space-y-3" data-tool="jwt-decode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="jwt-input">JWT</label>
+    <textarea
+      id="jwt-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Header.Payload.Signature"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Decode
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="jwt-header">Header</label>
+    <textarea
+      id="jwt-header"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="jwt-payload">Payload</label>
+    <textarea
+      id="jwt-payload"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="jwt-decode"]');
+    if (root) {
+      const input = root.querySelector("#jwt-input");
+      const headerOut = root.querySelector("#jwt-header");
+      const payloadOut = root.querySelector("#jwt-payload");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      const decodePart = (part) => {
+        const padded = part.replace(/-/g, "+").replace(/_/g, "/");
+        const padLen = (4 - (padded.length % 4)) % 4;
+        const base = padded + "=".repeat(padLen);
+        const json = atob(base);
+        return JSON.stringify(JSON.parse(json), null, 2);
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !headerOut || !payloadOut || !error) return;
+        const parts = input.value.split(".");
+        if (parts.length < 2) {
+          error.textContent = "JWT must have at least two parts.";
+          headerOut.value = "";
+          payloadOut.value = "";
+          return;
+        }
+        try {
+          headerOut.value = decodePart(parts[0]);
+          payloadOut.value = decodePart(parts[1]);
+          error.textContent = "";
+        } catch {
+          headerOut.value = "";
+          payloadOut.value = "";
+          error.textContent = "Invalid JWT payload.";
+        }
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

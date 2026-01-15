@@ -8,35 +8,15 @@ const currentPath = Astro.url.pathname;
       <a class="flex items-center gap-3" href="/">
         <img src="/assets/logo-mark.svg" alt="Computed Cloud logo" class="h-8 w-8" />
         <span class="font-heading text-lg font-semibold tracking-tight text-text">
-          computedcloud
+          computed cloud
         </span>
       </a>
-      <button
-        type="button"
-        class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text sm:hidden"
-        aria-pressed="false"
-        aria-label="Toggle theme"
-        data-theme-toggle
-      >
-        <span class="dark:hidden">Light</span>
-        <span class="hidden dark:inline">Dark</span>
-      </button>
     </div>
     <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted">
       <a class={currentPath === "/" ? "text-text" : ""} href="/">Home</a>
       <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
       <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
       <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
-      <button
-        type="button"
-        class="hidden items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text sm:inline-flex"
-        aria-pressed="false"
-        aria-label="Toggle theme"
-        data-theme-toggle
-      >
-        <span class="dark:hidden">Light</span>
-        <span class="hidden dark:inline">Dark</span>
-      </button>
     </nav>
   </div>
 </header>

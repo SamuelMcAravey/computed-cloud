@@ -1,0 +1,58 @@
+<div class="space-y-3" data-tool="date-to-timestamp">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="date-input">Date</label>
+    <input
+      id="date-input"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      placeholder="2026-01-15T12:30:00Z"
+    />
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Convert
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="date-output">Timestamp</label>
+    <textarea
+      id="date-output"
+      class="min-h-[80px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted">Accepts ISO strings or any Date.parse format.</p>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="date-to-timestamp"]');
+    if (root) {
+      const input = root.querySelector("#date-input");
+      const output = root.querySelector("#date-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        const date = new Date(input.value.trim());
+        if (Number.isNaN(date.valueOf())) {
+          output.value = "";
+          error.textContent = "Invalid date.";
+          return;
+        }
+        const ms = date.getTime();
+        const seconds = Math.floor(ms / 1000);
+        output.value = `Seconds: ${seconds}\nMilliseconds: ${ms}`;
+        error.textContent = "";
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

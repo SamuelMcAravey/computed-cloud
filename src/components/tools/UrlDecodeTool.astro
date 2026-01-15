@@ -1,0 +1,53 @@
+<div class="space-y-3" data-tool="url-decode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-decode-input">Encoded</label>
+    <textarea
+      id="url-decode-input"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Encoded string"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Decode
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-decode-output">Decoded</label>
+    <textarea
+      id="url-decode-output"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="url-decode"]');
+    if (root) {
+      const input = root.querySelector("#url-decode-input");
+      const output = root.querySelector("#url-decode-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          output.value = decodeURIComponent(input.value);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid URL encoding.";
+        }
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

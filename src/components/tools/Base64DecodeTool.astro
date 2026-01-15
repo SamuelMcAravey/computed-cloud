@@ -1,0 +1,58 @@
+<div class="space-y-3" data-tool="base64-decode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="b64-decode-input">Base64</label>
+    <textarea
+      id="b64-decode-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Base64 to decode"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Decode
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="b64-decode-output">Text</label>
+    <textarea
+      id="b64-decode-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="base64-decode"]');
+    if (root) {
+      const input = root.querySelector("#b64-decode-input");
+      const output = root.querySelector("#b64-decode-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      const decode = (value) => {
+        const binary = atob(value.trim());
+        const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+        return new TextDecoder().decode(bytes);
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          output.value = decode(input.value);
+          error.textContent = "";
+        } catch (err) {
+          output.value = "";
+          error.textContent = "Invalid base64 input.";
+        }
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

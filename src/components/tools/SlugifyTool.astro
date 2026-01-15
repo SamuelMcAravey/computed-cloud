@@ -1,0 +1,53 @@
+<div class="space-y-3" data-tool="slugify">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="slugify-input">Text</label>
+    <textarea
+      id="slugify-input"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text to slugify"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Slugify
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="slugify-output">Slug</label>
+    <input
+      id="slugify-output"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      readonly
+    />
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="slugify"]');
+    if (root) {
+      const input = root.querySelector("#slugify-input");
+      const output = root.querySelector("#slugify-output");
+      const run = root.querySelector("[data-run]");
+      const slugify = (value) =>
+        value
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+      run?.addEventListener("click", () => {
+        if (!input || !output) return;
+        output.value = slugify(input.value);
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

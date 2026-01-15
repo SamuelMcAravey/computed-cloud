@@ -1,0 +1,70 @@
+<div class="space-y-3" data-tool="whitespace">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="whitespace-input">Text</label>
+    <textarea
+      id="whitespace-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Paste text to clean"
+    ></textarea>
+  </div>
+  <div class="grid gap-2 text-sm text-muted">
+    <label class="flex items-center gap-2">
+      <input type="checkbox" data-option="trim" checked /> Trim ends
+    </label>
+    <label class="flex items-center gap-2">
+      <input type="checkbox" data-option="collapse" checked /> Collapse spaces
+    </label>
+    <label class="flex items-center gap-2">
+      <input type="checkbox" data-option="newlines" checked /> Normalize newlines
+    </label>
+    <label class="flex items-center gap-2">
+      <input type="checkbox" data-option="empty" /> Remove empty lines
+    </label>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Clean
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="whitespace-output">Output</label>
+    <textarea
+      id="whitespace-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="whitespace"]');
+    if (root) {
+      const input = root.querySelector("#whitespace-input");
+      const output = root.querySelector("#whitespace-output");
+      const run = root.querySelector("[data-run]");
+      const opts = {
+        trim: root.querySelector('[data-option="trim"]'),
+        collapse: root.querySelector('[data-option="collapse"]'),
+        newlines: root.querySelector('[data-option="newlines"]'),
+        empty: root.querySelector('[data-option="empty"]'),
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output) return;
+        let value = input.value;
+        if (opts.newlines?.checked) value = value.replace(/\r\n?/g, "\n");
+        if (opts.trim?.checked) value = value.trim();
+        if (opts.collapse?.checked) value = value.replace(/[^\S\n]+/g, " ");
+        if (opts.empty?.checked) value = value.replace(/^\s*\n/gm, "");
+        output.value = value;
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

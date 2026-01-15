@@ -1,0 +1,216 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ToolCard from "@components/ToolCard.astro";
+import GuidTool from "@components/tools/GuidTool.astro";
+import Base64EncodeTool from "@components/tools/Base64EncodeTool.astro";
+import Base64DecodeTool from "@components/tools/Base64DecodeTool.astro";
+import UrlEncodeTool from "@components/tools/UrlEncodeTool.astro";
+import UrlDecodeTool from "@components/tools/UrlDecodeTool.astro";
+import JsonFormatterTool from "@components/tools/JsonFormatterTool.astro";
+import JsonMinifierTool from "@components/tools/JsonMinifierTool.astro";
+import JsonValidatorTool from "@components/tools/JsonValidatorTool.astro";
+import JwtDecodeTool from "@components/tools/JwtDecodeTool.astro";
+import HmacGeneratorTool from "@components/tools/HmacGeneratorTool.astro";
+import HashGeneratorTool from "@components/tools/HashGeneratorTool.astro";
+import TimestampToDateTool from "@components/tools/TimestampToDateTool.astro";
+import DateToTimestampTool from "@components/tools/DateToTimestampTool.astro";
+import UuidV4Tool from "@components/tools/UuidV4Tool.astro";
+import UlidTool from "@components/tools/UlidTool.astro";
+import SlugifyTool from "@components/tools/SlugifyTool.astro";
+import CaseConverterTool from "@components/tools/CaseConverterTool.astro";
+import WhitespaceCleanerTool from "@components/tools/WhitespaceCleanerTool.astro";
+import DiffViewerTool from "@components/tools/DiffViewerTool.astro";
+import CsvToJsonTool from "@components/tools/CsvToJsonTool.astro";
+import JsonToCsvTool from "@components/tools/JsonToCsvTool.astro";
+import HexRgbTool from "@components/tools/HexRgbTool.astro";
+import EscapeUnescapeTool from "@components/tools/EscapeUnescapeTool.astro";
+
+const tools = [
+  {
+    id: "guid",
+    title: "GUID generator",
+    description: "Generate a GUID (uppercase, braced).",
+    Component: GuidTool,
+  },
+  {
+    id: "uuid-v4",
+    title: "UUID v4 generator",
+    description: "Generate a UUID v4 string.",
+    Component: UuidV4Tool,
+  },
+  {
+    id: "ulid",
+    title: "ULID generator",
+    description: "Sortable IDs based on time.",
+    Component: UlidTool,
+  },
+  {
+    id: "base64-encode",
+    title: "Base64 encode",
+    description: "Encode text as base64.",
+    Component: Base64EncodeTool,
+  },
+  {
+    id: "base64-decode",
+    title: "Base64 decode",
+    description: "Decode base64 to text.",
+    Component: Base64DecodeTool,
+  },
+  {
+    id: "url-encode",
+    title: "URL encode",
+    description: "Encode text for URLs.",
+    Component: UrlEncodeTool,
+  },
+  {
+    id: "url-decode",
+    title: "URL decode",
+    description: "Decode URL-encoded text.",
+    Component: UrlDecodeTool,
+  },
+  {
+    id: "json-formatter",
+    title: "JSON formatter",
+    description: "Pretty-print JSON with indentation.",
+    Component: JsonFormatterTool,
+  },
+  {
+    id: "json-minifier",
+    title: "JSON minifier",
+    description: "Minify JSON to a single line.",
+    Component: JsonMinifierTool,
+  },
+  {
+    id: "json-validator",
+    title: "JSON validator",
+    description: "Check JSON validity.",
+    Component: JsonValidatorTool,
+  },
+  {
+    id: "jwt-decode",
+    title: "JWT decode",
+    description: "Decode header and payload (no verification).",
+    Component: JwtDecodeTool,
+  },
+  {
+    id: "hmac-generator",
+    title: "HMAC generator",
+    description: "Generate an HMAC signature.",
+    Component: HmacGeneratorTool,
+  },
+  {
+    id: "hash-generator",
+    title: "Hash generator",
+    description: "SHA-256, SHA-1, or MD5.",
+    Component: HashGeneratorTool,
+  },
+  {
+    id: "timestamp-to-date",
+    title: "Timestamp to date",
+    description: "Convert epoch timestamps to dates.",
+    Component: TimestampToDateTool,
+  },
+  {
+    id: "date-to-timestamp",
+    title: "Date to timestamp",
+    description: "Convert dates to epoch timestamps.",
+    Component: DateToTimestampTool,
+  },
+  {
+    id: "slugify",
+    title: "Slugify",
+    description: "Create URL-friendly slugs.",
+    Component: SlugifyTool,
+  },
+  {
+    id: "case-converter",
+    title: "Case converter",
+    description: "Snake, camel, pascal, kebab.",
+    Component: CaseConverterTool,
+  },
+  {
+    id: "whitespace-cleaner",
+    title: "Whitespace cleaner",
+    description: "Trim and normalize spacing.",
+    Component: WhitespaceCleanerTool,
+  },
+  {
+    id: "diff-viewer",
+    title: "Diff viewer",
+    description: "Simple line-based diff.",
+    Component: DiffViewerTool,
+  },
+  {
+    id: "csv-to-json",
+    title: "CSV to JSON",
+    description: "Convert CSV rows to JSON objects.",
+    Component: CsvToJsonTool,
+  },
+  {
+    id: "json-to-csv",
+    title: "JSON to CSV",
+    description: "Convert JSON arrays to CSV.",
+    Component: JsonToCsvTool,
+  },
+  {
+    id: "hex-rgb",
+    title: "Hex and RGB",
+    description: "Convert between hex and RGB.",
+    Component: HexRgbTool,
+  },
+  {
+    id: "escape-unescape",
+    title: "Escape and unescape",
+    description: "HTML, JSON, or regex escaping.",
+    Component: EscapeUnescapeTool,
+  },
+];
+---
+
+<BaseLayout title="Utilities" description="Small in-browser tools for day-to-day engineering work.">
+  <section class="space-y-6">
+    <p class="text-xs uppercase tracking-wide text-muted">Utilities</p>
+    <h1 class="font-heading text-4xl font-semibold text-text">Utilities</h1>
+    <p class="text-lg text-muted">
+      A catalog of small, in-browser tools I use often. Each tool is isolated, runs locally,
+      and avoids external dependencies.
+    </p>
+  </section>
+
+  <details class="mt-6 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text lg:hidden">
+    <summary class="cursor-pointer font-semibold text-text">On this page</summary>
+    <ol class="mt-3 space-y-1 text-muted">
+      {tools.map((tool) => (
+        <li>
+          <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+            {tool.title}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </details>
+
+  <section class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
+    <div class="space-y-6">
+      {tools.map((tool) => (
+        <ToolCard id={tool.id} title={tool.title} description={tool.description}>
+          <tool.Component />
+        </ToolCard>
+      ))}
+    </div>
+    <aside class="hidden lg:block">
+      <div class="sticky top-24 rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
+        <p class="font-semibold text-text">On this page</p>
+        <ol class="mt-3 space-y-2">
+          {tools.map((tool) => (
+            <li>
+              <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+                {tool.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

@@ -1,0 +1,90 @@
+<div class="space-y-3" data-tool="csv-to-json">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="csv-input">CSV</label>
+    <textarea
+      id="csv-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="name,age\nSam,40"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Convert
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="csv-output">JSON</label>
+    <textarea
+      id="csv-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="csv-to-json"]');
+    if (root) {
+      const input = root.querySelector("#csv-input");
+      const output = root.querySelector("#csv-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      const parseCsvLine = (line) => {
+        const result = [];
+        let current = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i += 1) {
+          const ch = line[i];
+          if (ch === '"') {
+            if (inQuotes && line[i + 1] === '"') {
+              current += '"';
+              i += 1;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (ch === "," && !inQuotes) {
+            result.push(current);
+            current = "";
+          } else {
+            current += ch;
+          }
+        }
+        result.push(current);
+        return result;
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        const lines = input.value.split(/\r?\n/).filter((line) => line.trim().length > 0);
+        if (lines.length === 0) {
+          output.value = "[]";
+          return;
+        }
+        try {
+          const headers = parseCsvLine(lines[0]).map((h) => h.trim());
+          const rows = lines.slice(1).map((line) => parseCsvLine(line));
+          const data = rows.map((row) => {
+            const obj = {};
+            headers.forEach((header, idx) => {
+              obj[header] = row[idx] ?? "";
+            });
+            return obj;
+          });
+          output.value = JSON.stringify(data, null, 2);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Unable to parse CSV.";
+        }
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

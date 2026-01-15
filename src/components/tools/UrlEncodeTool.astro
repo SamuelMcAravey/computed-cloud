@@ -1,0 +1,45 @@
+<div class="space-y-3" data-tool="url-encode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-input">Input</label>
+    <textarea
+      id="url-encode-input"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text to encode"
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Encode
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-output">Encoded</label>
+    <textarea
+      id="url-encode-output"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="url-encode"]');
+    if (root) {
+      const input = root.querySelector("#url-encode-input");
+      const output = root.querySelector("#url-encode-output");
+      const run = root.querySelector("[data-run]");
+      run?.addEventListener("click", () => {
+        if (!input || !output) return;
+        output.value = encodeURIComponent(input.value);
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

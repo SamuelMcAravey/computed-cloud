@@ -12,19 +12,6 @@ This post is a practical walkthrough of the authoring toolkit in this blog. It i
 
 Inline code should read cleanly, like `POSTS_PER_PAGE` and `import.meta.env.DEV`, without overpowering the paragraph. Links should be readable and consistent with the surrounding text.
 
-## Table of contents
-
-1. Overview and goals
-2. Code blocks and frames
-3. Mermaid diagrams
-4. Images, captions, and lightbox
-5. Callouts and notes
-6. GFM features
-7. Longer narrative example
-8. Wrap-up checklist
-
----
-
 ## Overview and goals
 
 The goal is a writing system that does not get in the way. That means:

@@ -1,0 +1,69 @@
+<div class="space-y-3" data-tool="json-to-csv">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="json-csv-input">JSON Array</label>
+    <textarea
+      id="json-csv-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder='[{"name":"Sam","age":40}]'
+    ></textarea>
+  </div>
+  <button
+    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+    type="button"
+    data-run
+  >
+    Convert
+  </button>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="json-csv-output">CSV</label>
+    <textarea
+      id="json-csv-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="json-to-csv"]');
+    if (root) {
+      const input = root.querySelector("#json-csv-input");
+      const output = root.querySelector("#json-csv-output");
+      const run = root.querySelector("[data-run]");
+      const error = root.querySelector("[data-error]");
+      const escapeCsv = (value) => {
+        const str = value == null ? "" : String(value);
+        if (/[",\n]/.test(str)) {
+          return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      };
+      run?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          const data = JSON.parse(input.value);
+          if (!Array.isArray(data)) throw new Error("Not an array");
+          const headers = Array.from(
+            data.reduce((set, row) => {
+              Object.keys(row || {}).forEach((key) => set.add(key));
+              return set;
+            }, new Set())
+          );
+          const rows = data.map((row) => headers.map((key) => escapeCsv(row?.[key])).join(","));
+          output.value = [headers.join(","), ...rows].join("\n");
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid JSON array.";
+        }
+      });
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

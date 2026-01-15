@@ -80,24 +80,25 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
     <script is:inline>
       {`(() => {
   const toggle = document.querySelector("[data-theme-toggle]");
-  if (!toggle) return;
-  const storageKey = "cc-theme";
-  const setTheme = (theme) => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    document.documentElement.dataset.theme = theme;
-  };
-  const update = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-    toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
-  };
-  toggle.addEventListener("click", () => {
-    const isDark = !document.documentElement.classList.contains("dark");
-    const next = isDark ? "dark" : "light";
-    setTheme(next);
-    localStorage.setItem(storageKey, next);
+  if (toggle) {
+    const storageKey = "cc-theme";
+    const setTheme = (theme) => {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      document.documentElement.dataset.theme = theme;
+    };
+    const update = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+    };
+    toggle.addEventListener("click", () => {
+      const isDark = !document.documentElement.classList.contains("dark");
+      const next = isDark ? "dark" : "light";
+      setTheme(next);
+      localStorage.setItem(storageKey, next);
+      update();
+    });
     update();
-  });
-  update();
+  }
 
   const lightbox = document.getElementById("cc-lightbox");
   const lightboxImage = lightbox?.querySelector(".cc-lightbox-image");
