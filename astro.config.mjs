@@ -13,7 +13,7 @@ import { rehypeImageFigure } from "./src/utils/rehype-figure.js";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://computedcloud.com",
   adapter: cloudflare(),
   imageService: "compile",
   integrations: [

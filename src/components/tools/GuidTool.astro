@@ -1,13 +1,6 @@
 <div class="space-y-3" data-tool="guid">
   <div class="flex flex-col gap-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="guid-output">GUID</label>
-    <div class="flex flex-col gap-2 sm:flex-row">
-      <input
-        id="guid-output"
-        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
-        type="text"
-        readonly
-      />
+    <div class="flex flex-wrap items-center gap-2">
       <button
         class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
         type="button"
@@ -15,37 +8,80 @@
       >
         Generate
       </button>
-      <button
-        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-        type="button"
-        data-copy
-      >
-        Copy
-      </button>
+      <p class="text-xs text-muted">Uses the browser crypto API.</p>
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="uuid-output">UUID v4</label>
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <input
+          id="uuid-output"
+          class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+          type="text"
+          readonly
+        />
+        <button
+          class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+          type="button"
+          data-copy="uuid"
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="guid-output">GUID</label>
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <input
+          id="guid-output"
+          class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+          type="text"
+          readonly
+        />
+        <button
+          class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+          type="button"
+          data-copy="guid"
+        >
+          Copy
+        </button>
+      </div>
     </div>
   </div>
-  <p class="text-xs text-muted">Uses the browser crypto API.</p>
   <script is:inline>
     (() => {
       const root = document.querySelector('[data-tool="guid"]');
     if (root) {
-      const output = root.querySelector("#guid-output");
+      const uuidOutput = root.querySelector("#uuid-output");
+      const guidOutput = root.querySelector("#guid-output");
       const generate = root.querySelector("[data-generate]");
-      const copy = root.querySelector("[data-copy]");
-      const makeGuid = () => {
-        if (!crypto.randomUUID) return "";
-        return `{${crypto.randomUUID().toUpperCase()}}`;
-      };
+      const copyUuid = root.querySelector('[data-copy="uuid"]');
+      const copyGuid = root.querySelector('[data-copy="guid"]');
+      const makeUuid = () => (crypto.randomUUID ? crypto.randomUUID() : "");
       const update = () => {
-        if (output) output.value = makeGuid();
+        const uuid = makeUuid();
+        if (uuidOutput) uuidOutput.value = uuid;
+        if (guidOutput) guidOutput.value = uuid ? `{${uuid.toUpperCase()}}` : "";
       };
       generate?.addEventListener("click", update);
-      copy?.addEventListener("click", async () => {
-        if (!output?.value) return;
+      copyUuid?.addEventListener("click", async () => {
+        const value = uuidOutput?.value;
+        if (!value) return;
         try {
-          await navigator.clipboard.writeText(output.value);
+          await navigator.clipboard.writeText(value);
         } catch {
-          output.select();
+          uuidOutput.select();
+          document.execCommand("copy");
+        }
+      });
+      copyGuid?.addEventListener("click", async () => {
+        const value = guidOutput?.value;
+        if (!value) return;
+        try {
+          await navigator.clipboard.writeText(value);
+        } catch {
+          guidOutput.select();
           document.execCommand("copy");
         }
       });

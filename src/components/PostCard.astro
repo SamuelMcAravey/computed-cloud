@@ -17,19 +17,31 @@ const date = post.data.pubDate.toLocaleDateString("en-US", {
 });
 ---
 
-<article class="rounded-2xl border border-border bg-surface/90 p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-card">
-  {SHOW_POST_DATES && (
-    <div class="text-xs uppercase tracking-wide text-muted">{date}</div>
-  )}
-  <h2 class="mt-3 font-heading text-2xl font-semibold text-text">
-    <a class="hover:text-primary" href={`/blog/${slug}`}>{post.data.title}</a>
-  </h2>
-  <p class="mt-3 text-sm text-muted">{post.data.description}</p>
-  {post.data.tags.length > 0 && (
-    <div class="mt-4 flex flex-wrap gap-2">
-      {post.data.tags.map((tag) => (
-        <TagChip label={tag} href={`/tags/${normalizeTag(tag)}`} />
-      ))}
-    </div>
-  )}
+<article class="group relative rounded-2xl border border-border bg-surface/90 p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-card">
+  <a
+    class="absolute inset-0 z-10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary"
+    href={`/blog/${slug}`}
+    aria-label={`Read ${post.data.title}`}
+  />
+  <div
+    class="relative z-0 pointer-events-none"
+    data-post-title={post.data.title}
+    data-post-description={post.data.description}
+    data-post-tags={(post.data.tags ?? []).join(",")}
+  >
+    {SHOW_POST_DATES && (
+      <div class="text-xs uppercase tracking-wide text-muted">{date}</div>      
+    )}
+    <h2 class="mt-3 font-heading text-2xl font-semibold text-text transition-colors group-hover:text-primary">
+      {post.data.title}
+    </h2>
+    <p class="mt-3 text-sm text-muted">{post.data.description}</p>
+    {post.data.tags.length > 0 && (
+      <div class="relative z-20 mt-4 flex flex-wrap gap-2 pointer-events-auto">
+        {post.data.tags.map((tag) => (
+          <TagChip label={tag} href={`/tags/${normalizeTag(tag)}`} />
+        ))}
+      </div>
+    )}
+  </div>
 </article>

@@ -20,13 +20,6 @@
       placeholder="Text to hash"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Generate Hash
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="hash-output">Output (hex)</label>
     <textarea
@@ -43,7 +36,6 @@
       const algoSelect = root.querySelector("#hash-algo");
       const input = root.querySelector("#hash-input");
       const output = root.querySelector("#hash-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const toHex = (buffer) =>
         Array.from(new Uint8Array(buffer))
@@ -181,23 +173,44 @@
         }
         return (wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d)).toLowerCase();
       };
-      run?.addEventListener("click", async () => {
+      let runId = 0;
+      const update = async () => {
         if (!algoSelect || !input || !output || !error) return;
+        const raw = input.value;
+        if (!raw.trim()) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const currentRun = ++runId;
         const algo = algoSelect.value;
         try {
           if (algo === "MD5") {
-            output.value = md5(input.value);
+            if (currentRun !== runId) return;
+            output.value = md5(raw);
           } else {
-            const data = new TextEncoder().encode(input.value);
+            const data = new TextEncoder().encode(raw);
             const digest = await crypto.subtle.digest(algo, data);
+            if (currentRun !== runId) return;
             output.value = toHex(digest);
           }
           error.textContent = "";
         } catch {
+          if (currentRun !== runId) return;
           output.value = "";
           error.textContent = "Unable to generate hash.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          void update();
+        });
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      algoSelect?.addEventListener("change", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

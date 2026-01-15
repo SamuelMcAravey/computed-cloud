@@ -1,20 +1,37 @@
 ---
 import PostLayout from "@layouts/PostLayout.astro";
 import { getCollection } from "astro:content";
-import { getPostSlug, includeDrafts } from "../../utils/blog";
+import { byNewest, getPostSlug, includeDrafts } from "../../utils/blog";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("blog")).filter(
-    (post) => includeDrafts || !post.data.draft
-  );
+  const posts = (await getCollection("blog"))
+    .filter((post) => includeDrafts || !post.data.draft)
+    .sort(byNewest);
 
-  return posts.map((post) => ({
-    params: { slug: getPostSlug(post) },
-    props: { post },
-  }));
+  return posts.map((post, index) => {
+    const newer = index > 0 ? posts[index - 1] : undefined;
+    const older = index < posts.length - 1 ? posts[index + 1] : undefined;
+
+    return {
+      params: { slug: getPostSlug(post) },
+      props: {
+        post,
+        newer:
+          newer && ({
+            title: newer.data.title,
+            slug: getPostSlug(newer),
+          } as const),
+        older:
+          older && ({
+            title: older.data.title,
+            slug: getPostSlug(older),
+          } as const),
+      },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content, headings } = await post.render();
 ---
 
@@ -26,6 +43,8 @@ const { Content, headings } = await post.render();
   tags={post.data.tags}
   heroImage={post.data.heroImage}
   headings={headings}
+  newer={newer}
+  older={older}
 >
   <Content />
 </PostLayout>

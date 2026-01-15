@@ -23,6 +23,14 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
 <!doctype html>
 <html lang="en" data-theme="light">
   <head>
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W6SX7F5T');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
@@ -37,6 +45,7 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
@@ -62,6 +71,11 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
     </script>
   </head>
   <body class="flex min-h-screen flex-col bg-bg text-text font-sans">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6SX7F5T"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 cc-bg-pattern opacity-60"></div>
     <!-- Replace with Storyblocks asset -->
     <div
@@ -69,7 +83,7 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
       class="pointer-events-none fixed inset-0 -z-10 opacity-40 bg-[url('/assets/bg-placeholder.svg')] bg-cover bg-center"
     ></div>
     <Header />
-    <main id="main" class="mx-auto w-full max-w-4xl flex-1 px-6 pb-16 pt-10">
+    <main id="main" class="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-10">   
       <slot />
     </main>
     <Footer />

@@ -7,13 +7,6 @@
       placeholder="Header.Payload.Signature"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Decode
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="jwt-header">Header</label>
     <textarea
@@ -38,7 +31,6 @@
       const input = root.querySelector("#jwt-input");
       const headerOut = root.querySelector("#jwt-header");
       const payloadOut = root.querySelector("#jwt-payload");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const decodePart = (part) => {
         const padded = part.replace(/-/g, "+").replace(/_/g, "/");
@@ -47,9 +39,16 @@
         const json = atob(base);
         return JSON.stringify(JSON.parse(json), null, 2);
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !headerOut || !payloadOut || !error) return;
-        const parts = input.value.split(".");
+        const raw = input.value.trim();
+        if (!raw) {
+          headerOut.value = "";
+          payloadOut.value = "";
+          error.textContent = "";
+          return;
+        }
+        const parts = raw.split(".");
         if (parts.length < 2) {
           error.textContent = "JWT must have at least two parts.";
           headerOut.value = "";
@@ -65,7 +64,14 @@
           payloadOut.value = "";
           error.textContent = "Invalid JWT payload.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

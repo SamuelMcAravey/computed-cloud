@@ -14,7 +14,6 @@ import HmacGeneratorTool from "@components/tools/HmacGeneratorTool.astro";
 import HashGeneratorTool from "@components/tools/HashGeneratorTool.astro";
 import TimestampToDateTool from "@components/tools/TimestampToDateTool.astro";
 import DateToTimestampTool from "@components/tools/DateToTimestampTool.astro";
-import UuidV4Tool from "@components/tools/UuidV4Tool.astro";
 import UlidTool from "@components/tools/UlidTool.astro";
 import SlugifyTool from "@components/tools/SlugifyTool.astro";
 import CaseConverterTool from "@components/tools/CaseConverterTool.astro";
@@ -36,15 +35,9 @@ import HexBase64Tool from "@components/tools/HexBase64Tool.astro";
 const tools = [
   {
     id: "guid",
-    title: "GUID generator",
-    description: "Generate a GUID (uppercase, braced).",
+    title: "GUID / UUID v4 generator",
+    description: "Generate a UUID v4, plus the common GUID variant.",
     Component: GuidTool,
-  },
-  {
-    id: "uuid-v4",
-    title: "UUID v4 generator",
-    description: "Generate a UUID v4 string.",
-    Component: UuidV4Tool,
   },
   {
     id: "ulid",

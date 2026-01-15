@@ -8,13 +8,6 @@
       placeholder="1690000000 or 1690000000000"
     />
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Convert
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="timestamp-output">Date</label>
     <textarea
@@ -30,12 +23,15 @@
     if (root) {
       const input = root.querySelector("#timestamp-input");
       const output = root.querySelector("#timestamp-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
         const value = input.value.trim();
-        if (!value) return;
+        if (!value) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
         const num = Number(value);
         if (Number.isNaN(num)) {
           output.value = "";
@@ -51,7 +47,14 @@
         }
         output.value = `ISO: ${date.toISOString()}\nLocal: ${date.toString()}`;
         error.textContent = "";
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

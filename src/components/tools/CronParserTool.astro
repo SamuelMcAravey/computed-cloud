@@ -8,9 +8,6 @@
       placeholder="*/15 9-17 * * 1-5"
     />
   </div>
-  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
-    Next runs
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="cron-output">Next 5</label>
     <textarea
@@ -26,7 +23,6 @@
       if (!root) return;
       const input = root.querySelector("#cron-input");
       const output = root.querySelector("#cron-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const parseField = (value, min, max) => {
         const set = new Set();
@@ -76,9 +72,15 @@
         }
         return results;
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
-        const runs = getNextRuns(input.value);
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const runs = getNextRuns(raw);
         if (!runs) {
           output.value = "";
           error.textContent = "Invalid cron expression.";
@@ -86,7 +88,14 @@
         }
         output.value = runs.map((d) => `${d.toISOString()} | ${d.toString()}`).join("\n");
         error.textContent = "";
-      });
+      };
+      let timer = 0;
+      const scheduleUpdate = () => {
+        clearTimeout(timer);
+        timer = setTimeout(update, 150);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     })();
   </script>
 </div>

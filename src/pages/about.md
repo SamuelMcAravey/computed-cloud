@@ -48,8 +48,8 @@ At Nvoicepay (Corpay), I led development teams and modernization work for a high
 
 ## Contact
 
-- Email: samuel@mcaravey.pro
-- LinkedIn: linkedin.com/in/samuel-mcaravey
-- GitHub: github.com/samuelmcaravey
+- Email: [samuel@mcaravey.pro](mailto:samuel@mcaravey.pro)
+- LinkedIn: [linkedin.com/in/samuel-mcaravey](https://linkedin.com/in/samuel-mcaravey)
+- GitHub: [github.com/samuelmcaravey](https://github.com/samuelmcaravey)
 
 </div>

@@ -17,9 +17,6 @@
       ></textarea>
     </div>
   </div>
-  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
-    Diff
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="json-diff-output">Changes</label>
     <textarea
@@ -36,7 +33,6 @@
       const leftInput = root.querySelector("#json-diff-left");
       const rightInput = root.querySelector("#json-diff-right");
       const output = root.querySelector("#json-diff-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const diff = (left, right, path = "") => {
         const changes = [];
@@ -54,8 +50,15 @@
         });
         return changes;
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!leftInput || !rightInput || !output || !error) return;
+        const leftRaw = leftInput.value.trim();
+        const rightRaw = rightInput.value.trim();
+        if (!leftRaw && !rightRaw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
         try {
           const left = JSON.parse(leftInput.value);
           const right = JSON.parse(rightInput.value);
@@ -68,7 +71,15 @@
           output.value = "";
           error.textContent = "Invalid JSON input.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      leftInput?.addEventListener("input", scheduleUpdate);
+      rightInput?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     })();
   </script>
 </div>

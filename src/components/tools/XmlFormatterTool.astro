@@ -7,9 +7,6 @@
       placeholder="<root><item>One</item></root>"
     ></textarea>
   </div>
-  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
-    Format
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="xml-output">Formatted</label>
     <textarea
@@ -25,7 +22,6 @@
       if (!root) return;
       const input = root.querySelector("#xml-input");
       const output = root.querySelector("#xml-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const formatXml = (xml) => {
         const formatted = xml
@@ -44,8 +40,14 @@
           })
           .join("\n");
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
         try {
           const parser = new DOMParser();
           const doc = parser.parseFromString(input.value, "text/xml");
@@ -57,7 +59,14 @@
           output.value = "";
           error.textContent = "Invalid XML.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     })();
   </script>
 </div>

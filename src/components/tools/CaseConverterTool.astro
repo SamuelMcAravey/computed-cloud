@@ -7,13 +7,6 @@
       placeholder="Text to convert"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Convert
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="case-camel">camelCase</label>
     <input id="case-camel" class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text" type="text" readonly />
@@ -39,7 +32,26 @@
       const pascal = root.querySelector("#case-pascal");
       const snake = root.querySelector("#case-snake");
       const kebab = root.querySelector("#case-kebab");
-      const run = root.querySelector("[data-run]");
+      const update = () => {
+        if (!input || !camel || !pascal || !snake || !kebab) return;
+        if (!input.value.trim()) {
+          camel.value = "";
+          pascal.value = "";
+          snake.value = "";
+          kebab.value = "";
+          return;
+        }
+        const words = splitWords(input.value);
+        camel.value = toCamel(words);
+        pascal.value = toPascal(words);
+        snake.value = toSnake(words);
+        kebab.value = toKebab(words);
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
       const splitWords = (value) =>
         value
           .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -61,14 +73,8 @@
           .join("");
       const toSnake = (words) => words.map((word) => word.toLowerCase()).join("_");
       const toKebab = (words) => words.map((word) => word.toLowerCase()).join("-");
-      run?.addEventListener("click", () => {
-        if (!input || !camel || !pascal || !snake || !kebab) return;
-        const words = splitWords(input.value);
-        camel.value = toCamel(words);
-        pascal.value = toPascal(words);
-        snake.value = toSnake(words);
-        kebab.value = toKebab(words);
-      });
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

@@ -72,7 +72,15 @@ a {
 }
 
 .prose h1 {
-  @apply mt-8 text-4xl;
+  @apply text-4xl;
+}
+
+.prose > h1 {
+  @apply mt-0;
+}
+
+.prose > * + h1 {
+  @apply mt-8;
 }
 
 .prose h2 {
@@ -347,6 +355,7 @@ pre.mermaid[data-processed] {
   footer,
   .cc-print-button,
   .cc-backlink,
+  .cc-post-nav,
   .cc-lightbox,
   .cc-lightbox-link::after,
   aside,
@@ -362,6 +371,13 @@ pre.mermaid[data-processed] {
 
   .prose {
     max-width: none;
+  }
+
+  .cc-article-card {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
 
   .prose pre,

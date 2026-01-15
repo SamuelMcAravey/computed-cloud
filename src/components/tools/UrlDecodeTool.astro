@@ -7,13 +7,6 @@
       placeholder="Encoded string"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Decode
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="url-decode-output">Decoded</label>
     <textarea
@@ -29,18 +22,30 @@
     if (root) {
       const input = root.querySelector("#url-decode-input");
       const output = root.querySelector("#url-decode-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
         try {
-          output.value = decodeURIComponent(input.value);
+          output.value = decodeURIComponent(raw);
           error.textContent = "";
         } catch {
           output.value = "";
           error.textContent = "Invalid URL encoding.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

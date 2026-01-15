@@ -7,13 +7,6 @@
       placeholder='{"key":"value"}'
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Format
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="json-format-output">Formatted</label>
     <textarea
@@ -29,10 +22,15 @@
     if (root) {
       const input = root.querySelector("#json-format-input");
       const output = root.querySelector("#json-format-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
         try {
           const value = JSON.parse(input.value);
           output.value = JSON.stringify(value, null, 2);
@@ -41,7 +39,14 @@
           output.value = "";
           error.textContent = "Invalid JSON.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

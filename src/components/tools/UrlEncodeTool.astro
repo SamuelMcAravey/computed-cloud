@@ -7,13 +7,6 @@
       placeholder="Text to encode"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Encode
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-output">Encoded</label>
     <textarea
@@ -28,11 +21,17 @@
     if (root) {
       const input = root.querySelector("#url-encode-input");
       const output = root.querySelector("#url-encode-output");
-      const run = root.querySelector("[data-run]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output) return;
-        output.value = encodeURIComponent(input.value);
-      });
+        output.value = input.value ? encodeURIComponent(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

@@ -8,13 +8,6 @@
       placeholder="2026-01-15T12:30:00Z"
     />
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Convert
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="date-output">Timestamp</label>
     <textarea
@@ -31,11 +24,16 @@
     if (root) {
       const input = root.querySelector("#date-input");
       const output = root.querySelector("#date-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
-        const date = new Date(input.value.trim());
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const date = new Date(raw);
         if (Number.isNaN(date.valueOf())) {
           output.value = "";
           error.textContent = "Invalid date.";
@@ -45,7 +43,14 @@
         const seconds = Math.floor(ms / 1000);
         output.value = `Seconds: ${seconds}\nMilliseconds: ${ms}`;
         error.textContent = "";
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

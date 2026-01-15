@@ -4,3 +4,4 @@ export const SITE_DESCRIPTION =
 export const SITE_URL = "https://computedcloud.com";
 export const POSTS_PER_PAGE = 10;
 export const SHOW_POST_DATES = false;
+export const ARTICLE_CONTENT_CARD = true;

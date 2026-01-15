@@ -28,13 +28,6 @@
       placeholder="Message to sign"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Generate HMAC
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="hmac-output">Output (hex)</label>
     <textarea
@@ -52,17 +45,25 @@
       const algoSelect = root.querySelector("#hmac-algo");
       const msgInput = root.querySelector("#hmac-message");
       const output = root.querySelector("#hmac-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
       const toHex = (buffer) =>
         Array.from(new Uint8Array(buffer))
           .map((b) => b.toString(16).padStart(2, "0"))
           .join("");
-      run?.addEventListener("click", async () => {
+      let runId = 0;
+      const update = async () => {
         if (!keyInput || !msgInput || !output || !algoSelect || !error) return;
+        const keyRaw = keyInput.value;
+        const msgRaw = msgInput.value;
+        if (!keyRaw.trim() && !msgRaw.trim()) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const currentRun = ++runId;
         try {
-          const keyData = new TextEncoder().encode(keyInput.value);
-          const msgData = new TextEncoder().encode(msgInput.value);
+          const keyData = new TextEncoder().encode(keyRaw);
+          const msgData = new TextEncoder().encode(msgRaw);
           const key = await crypto.subtle.importKey(
             "raw",
             keyData,
@@ -71,13 +72,26 @@
             ["sign"]
           );
           const signature = await crypto.subtle.sign("HMAC", key, msgData);
+          if (currentRun !== runId) return;
           output.value = toHex(signature);
           error.textContent = "";
         } catch {
+          if (currentRun !== runId) return;
           output.value = "";
           error.textContent = "Unable to generate HMAC.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          void update();
+        });
+      };
+      keyInput?.addEventListener("input", scheduleUpdate);
+      msgInput?.addEventListener("input", scheduleUpdate);
+      algoSelect?.addEventListener("change", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>

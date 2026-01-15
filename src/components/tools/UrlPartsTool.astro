@@ -8,9 +8,6 @@
       placeholder="https://computedcloud.com/blog?tag=tools#section"
     />
   </div>
-  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
-    Parse
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="url-output">Parts</label>
     <textarea
@@ -26,12 +23,16 @@
       if (!root) return;
       const input = root.querySelector("#url-input");
       const output = root.querySelector("#url-output");
-      const run = root.querySelector("[data-run]");
       const error = root.querySelector("[data-error]");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output || !error) return;
         try {
           const raw = input.value.trim();
+          if (!raw) {
+            output.value = "";
+            error.textContent = "";
+            return;
+          }
           const url = new URL(raw.includes("://") ? raw : `https://${raw}`);
           const params = {};
           url.searchParams.forEach((value, key) => {
@@ -55,7 +56,14 @@
           output.value = "";
           error.textContent = "Invalid URL.";
         }
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     })();
   </script>
 </div>

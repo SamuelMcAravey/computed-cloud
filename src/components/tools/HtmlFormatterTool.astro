@@ -7,9 +7,6 @@
       placeholder="<div><span>Example</span></div>"
     ></textarea>
   </div>
-  <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-run>
-    Format
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="html-format-output">Formatted</label>
     <textarea
@@ -24,7 +21,6 @@
       if (!root) return;
       const input = root.querySelector("#html-format-input");
       const output = root.querySelector("#html-format-output");
-      const run = root.querySelector("[data-run]");
       const formatHtml = (value) => {
         const spaced = value
           .replace(/>\s*</g, "><")
@@ -42,10 +38,17 @@
           })
           .join("\n");
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output) return;
-        output.value = formatHtml(input.value);
-      });
+        output.value = input.value.trim() ? formatHtml(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     })();
   </script>
 </div>

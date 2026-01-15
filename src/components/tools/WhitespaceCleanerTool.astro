@@ -21,13 +21,6 @@
       <input type="checkbox" data-option="empty" /> Remove empty lines
     </label>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Clean
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="whitespace-output">Output</label>
     <textarea
@@ -42,14 +35,13 @@
     if (root) {
       const input = root.querySelector("#whitespace-input");
       const output = root.querySelector("#whitespace-output");
-      const run = root.querySelector("[data-run]");
       const opts = {
         trim: root.querySelector('[data-option="trim"]'),
         collapse: root.querySelector('[data-option="collapse"]'),
         newlines: root.querySelector('[data-option="newlines"]'),
         empty: root.querySelector('[data-option="empty"]'),
       };
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output) return;
         let value = input.value;
         if (opts.newlines?.checked) value = value.replace(/\r\n?/g, "\n");
@@ -57,7 +49,15 @@
         if (opts.collapse?.checked) value = value.replace(/[^\S\n]+/g, " ");
         if (opts.empty?.checked) value = value.replace(/^\s*\n/gm, "");
         output.value = value;
-      });
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      Object.values(opts).forEach((el) => el?.addEventListener("change", scheduleUpdate));
+      scheduleUpdate();
     }
     })();
   </script>

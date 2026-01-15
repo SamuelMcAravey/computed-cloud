@@ -7,13 +7,6 @@
       placeholder="Text to slugify"
     ></textarea>
   </div>
-  <button
-    class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
-    type="button"
-    data-run
-  >
-    Slugify
-  </button>
   <div class="space-y-2">
     <label class="text-xs uppercase tracking-wide text-muted" for="slugify-output">Slug</label>
     <input
@@ -29,7 +22,6 @@
     if (root) {
       const input = root.querySelector("#slugify-input");
       const output = root.querySelector("#slugify-output");
-      const run = root.querySelector("[data-run]");
       const slugify = (value) =>
         value
           .toLowerCase()
@@ -37,10 +29,17 @@
           .trim()
           .replace(/\s+/g, "-")
           .replace(/-+/g, "-");
-      run?.addEventListener("click", () => {
+      const update = () => {
         if (!input || !output) return;
-        output.value = slugify(input.value);
-      });
+        output.value = input.value.trim() ? slugify(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
     }
     })();
   </script>
