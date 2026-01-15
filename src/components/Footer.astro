@@ -1,182 +1,25 @@
 ---
-import { site } from '../data/site';
-import SocialLinks from './footer/SocialLinks.astro';
-
-const footerDescription = site.footer.description ?? site.tagline;
-const quickLinks = site.footer.quickLinks;
-const serviceLinks = site.footer.serviceLinks ?? [];
-const cta = site.footer.cta;
-const ctaHref = cta.href ?? '/contact';
-const legalLinks = site.footer.legalLinks ?? [];
-const business = site.business ?? site;
-const copyrightName = site.footer.copyrightName ?? business.businessName ?? site.businessName;
-const logo = site.brand.logo;
-const footerLogoSrc = logo?.light ?? logo?.icon;
-const showFooterText = !logo?.light;
-const showContactInfo = site.footer.showContactInfo ?? false;
-const contactHeadline = site.footer.contactHeadline ?? "Contact";
-const hasContactInfo =
-  showContactInfo &&
-  (business.phone ||
-    business.email ||
-    business.addressLine ||
-    business.cityStateZip ||
-    business.serviceArea ||
-    (business.hoursText && business.hoursText.length > 0));
+import { SITE_TITLE } from "../consts";
+const year = new Date().getFullYear();
 ---
 
-<footer class="bg-slate-900 text-slate-300">
-  <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 gap-12 lg:grid-cols-4">
-      <!-- Company Info -->
-      <div class="lg:col-span-1 space-y-6">
-        <a href="/" class="flex items-center space-x-3 group">
-          {footerLogoSrc && (
-            <img
-              src={footerLogoSrc}
-              alt={`${business.businessName ?? site.businessName} logo`}
-              class={`h-12 ${logo?.icon && !logo?.light ? "w-12" : "w-auto"}`}
-              loading="lazy"
-              decoding="async"
-            />
-          )}
-          {showFooterText && (
-            <span class="text-2xl font-bold text-white">
-              {business.businessName ?? site.businessName}
-            </span>
-          )}
-        </a>
-        <p class="text-sm text-slate-400 leading-relaxed max-w-xs">
-          {footerDescription}
-        </p>
-        <SocialLinks social={site.social} />
+<footer class="border-t border-border bg-bg">
+  <div class="mx-auto w-full max-w-4xl space-y-6 px-6 py-10 text-sm text-muted">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-3">
+        <img src="/assets/logo-mark.svg" alt="Computed Cloud logo" class="h-7 w-7" />
+        <span class="font-heading text-base font-semibold text-text">computedcloud</span>
       </div>
-
-      <!-- Quick Links -->
-      <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-          Quick Links
-        </h3>
-        <ul class="space-y-3">
-          {quickLinks.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="text-sm text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center group"
-              >
-                <span class="w-0 group-hover:w-2 h-0.5 bg-blue-400 transition-all mr-0 group-hover:mr-2"></span>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        {hasContactInfo && serviceLinks.length > 0 && (
-          <div class="mt-8">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-              Services
-            </h3>
-            <ul class="space-y-3">
-              {serviceLinks.map((item) => (
-                <li>
-                  <a
-                    href={item.href}
-                    class="text-sm text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center group"
-                  >
-                    <span class="w-0 group-hover:w-2 h-0.5 bg-blue-400 transition-all mr-0 group-hover:mr-2"></span>
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <!-- Services -->
-      {serviceLinks.length > 0 && !hasContactInfo && (
-        <div>
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-            Services
-          </h3>
-          <ul class="space-y-3">
-            {serviceLinks.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class="text-sm text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center group"
-                >
-                  <span class="w-0 group-hover:w-2 h-0.5 bg-blue-400 transition-all mr-0 group-hover:mr-2"></span>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {hasContactInfo && (
-        <div>
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-            {contactHeadline}
-          </h3>
-          <div class="space-y-2 text-sm text-slate-400">
-            {business.phone && (
-              <a class="block hover:text-blue-400 transition-colors" href={`tel:${business.phone}`}>
-                {business.phone}
-              </a>
-            )}
-            {business.email && (
-              <a class="block hover:text-blue-400 transition-colors" href={`mailto:${business.email}`}>
-                {business.email}
-              </a>
-            )}
-            {business.addressLine && <p>{business.addressLine}</p>}
-            {business.cityStateZip && <p>{business.cityStateZip}</p>}
-            {business.serviceArea && <p>{business.serviceArea}</p>}
-            {business.hoursText && business.hoursText.length > 0 && (
-              <div class="space-y-1">
-                {business.hoursText.map((line) => (
-                  <p>{line}</p>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      <!-- Get Started -->
-      <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-          {cta.headline}
-        </h3>
-        {cta.body && <p class="text-sm text-slate-400 leading-relaxed">{cta.body}</p>}
-        <div class="mt-6">
-          <a
-            href={ctaHref}
-            class="inline-flex items-center px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg shadow-lg hover:shadow-xl transition-all"
-          >
-            {cta.buttonLabel}
-          </a>
-        </div>
+      <div class="flex flex-wrap items-center gap-4 text-sm">
+        <a href="/blog">Blog</a>
+        <a href="/tags">Tags</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="#">Contact</a>
       </div>
     </div>
-
-    <!-- Bottom Bar -->
-    <div class="mt-16 pt-8 border-t border-slate-800">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-sm text-slate-400">
-          &copy; {new Date().getFullYear()} {copyrightName}. All rights reserved.
-        </p>
-        {legalLinks.length > 0 && (
-          <div class="flex flex-wrap items-center gap-4 text-sm">
-            {legalLinks.map((link) => (
-              <a href={link.href} class="text-slate-400 hover:text-blue-400 transition-colors">
-                {link.label}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <span>&copy; {year} {SITE_TITLE}. All rights reserved.</span>
+      <span class="text-xs text-muted">Placeholder footer links. Replace as needed.</span>
     </div>
   </div>
 </footer>

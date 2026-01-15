@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import TagChip from "@components/TagChip.astro";
+import { getCollection } from "astro:content";
+import { includeDrafts, normalizeTag } from "../../utils/blog";
+
+const posts = (await getCollection("blog")).filter(
+  (post) => includeDrafts || !post.data.draft
+);
+
+const tagMap = new Map<string, { label: string; count: number }>();
+
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    const key = normalizeTag(tag);
+    const current = tagMap.get(key);
+    if (current) {
+      current.count += 1;
+    } else {
+      tagMap.set(key, { label: tag, count: 1 });
+    }
+  }
+}
+
+const tags = Array.from(tagMap.entries()).sort((a, b) =>
+  a[1].label.localeCompare(b[1].label)
+);
+---
+
+<BaseLayout title="Tags">
+  <section class="space-y-4">
+    <p class="text-xs uppercase tracking-wide text-muted">Tags</p>
+    <h1 class="font-heading text-3xl font-semibold text-text">Browse by topic</h1>
+    <p class="text-muted">A quick way to find related posts.</p>
+  </section>
+
+  <section class="mt-10">
+    {tags.length > 0 ? (
+      <div class="flex flex-wrap gap-3">
+        {tags.map(([slug, tag]) => (
+          <TagChip label={`${tag.label} (${tag.count})`} href={`/tags/${slug}`} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted">No tags yet.</p>
+    )}
+  </section>
+</BaseLayout>

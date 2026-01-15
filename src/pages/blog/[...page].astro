@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Pagination from "@components/Pagination.astro";
+import PostCard from "@components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { POSTS_PER_PAGE } from "../../consts";
+import { byNewest, getPostSlug, includeDrafts } from "../../utils/blog";
+
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection("blog"))
+    .filter((post) => includeDrafts || !post.data.draft)
+    .sort(byNewest);
+
+  return paginate(posts, { pageSize: POSTS_PER_PAGE });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Blog">
+  <section class="space-y-4">
+    <p class="text-xs uppercase tracking-wide text-muted">Blog</p>
+    <h1 class="font-heading text-3xl font-semibold text-text">Writing archive</h1>
+    <p class="text-muted">Essays, notes, and links. Sorted newest first.</p>
+  </section>
+
+  <section class="mt-10 space-y-6">
+    {page.data.length > 0 ? (
+      page.data.map((post) => <PostCard post={post} slug={getPostSlug(post)} />)
+    ) : (
+      <p class="text-muted">No posts yet. Check back soon.</p>
+    )}
+  </section>
+
+  <Pagination page={page} />
+</BaseLayout>

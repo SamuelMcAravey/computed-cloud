@@ -1,0 +1,42 @@
+---
+export interface Props {
+  page: {
+    currentPage: number;
+    lastPage: number;
+    url: {
+      prev?: string;
+      next?: string;
+    };
+  };
+}
+
+const { page } = Astro.props;
+---
+
+{page.lastPage > 1 && (
+  <nav class="mt-10 flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
+    {page.url.prev ? (
+      <a
+        class="rounded-full border border-border px-4 py-2 text-xs font-medium text-text hover:border-primary"
+        href={page.url.prev}
+      >
+        Previous
+      </a>
+    ) : (
+      <span></span>
+    )}
+    <span class="text-xs uppercase tracking-wide text-muted">
+      Page {page.currentPage} of {page.lastPage}
+    </span>
+    {page.url.next ? (
+      <a
+        class="rounded-full border border-border px-4 py-2 text-xs font-medium text-text hover:border-primary"
+        href={page.url.next}
+      >
+        Next
+      </a>
+    ) : (
+      <span></span>
+    )}
+  </nav>
+)}

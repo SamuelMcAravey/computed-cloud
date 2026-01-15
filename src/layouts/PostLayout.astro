@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import TagChip from "@components/TagChip.astro";
+import { normalizeTag } from "../utils/blog";
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  heroImage?: string;
+}
+
+const { title, description, pubDate, updatedDate, tags, heroImage } = Astro.props;
+const published = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const updated =
+  updatedDate &&
+  updatedDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+---
+
+<BaseLayout title={title} description={description} ogType="article" ogImage={heroImage}>
+  <article class="prose">
+    <a class="text-xs uppercase tracking-wide text-muted no-underline" href="/blog">
+      ← Back to blog
+    </a>
+    <h1 class="mt-5">{title}</h1>
+    <p class="text-sm text-muted">
+      {published}
+      {updated && ` · Updated ${updated}`}
+    </p>
+    {tags.length > 0 && (
+      <div class="mt-4 flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <TagChip label={tag} href={`/tags/${normalizeTag(tag)}`} />
+        ))}
+      </div>
+    )}
+    {heroImage && (
+      <img class="mt-8" src={heroImage} alt={title} loading="lazy" decoding="async" />
+    )}
+    <div class="mt-10">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

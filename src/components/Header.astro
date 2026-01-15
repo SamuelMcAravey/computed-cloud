@@ -1,100 +1,42 @@
 ---
-import { site } from "../data/site";
-import MobileMenu from "@components/react/MobileMenu";
-import NavDropdown from "@components/nav/NavDropdown.astro";
-
-const { currentPathname } = Astro.props;
-const normalizePath = (path: string): string => {
-  if (!path || path === "/") {
-    return "/";
-  }
-
-  return path.replace(/\/+$/, "");
-};
-
-const normalizedCurrent = normalizePath(currentPathname);
-const isActiveLink = (href: string): boolean => {
-  const normalizedHref = normalizePath(href);
-  if (normalizedHref === "/") {
-    return normalizedCurrent === "/";
-  }
-
-  return normalizedCurrent.startsWith(normalizedHref);
-};
-const logo = site.brand.logo;
-const headerLogoSrc = logo?.dark ?? logo?.icon;
-const showHeaderText = !logo?.dark;
-
+const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
-  <nav class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-    <!-- Logo -->
-    <div class="flex items-center">
-      <a href="/" class="flex items-center space-x-3 group">
-        {headerLogoSrc && (
-          <img
-            src={headerLogoSrc}
-            alt={`${site.businessName} logo`}
-            class={`h-10 ${logo?.icon && !logo?.dark ? "w-10" : "w-auto"}`}
-            loading="lazy"
-            decoding="async"
-          />
-        )}
-        {showHeaderText && (
-          <span class="text-2xl font-bold bg-linear-to-r from-blue-800 to-teal-600 bg-clip-text text-transparent">
-            {site.businessName}
-          </span>
-        )}
+<header class="sticky top-0 z-20 border-b border-border/80 bg-bg/80 backdrop-blur">
+  <div class="mx-auto flex w-full max-w-4xl flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center justify-between gap-4">
+      <a class="flex items-center gap-3" href="/">
+        <img src="/assets/logo-mark.svg" alt="Computed Cloud logo" class="h-8 w-8" />
+        <span class="font-heading text-lg font-semibold tracking-tight text-text">
+          computedcloud
+        </span>
       </a>
-    </div>
-
-    <!-- Desktop Navigation -->
-    <ul class="hidden lg:flex lg:items-center lg:space-x-1">
-      {site.nav.map((item) =>
-        item.children && item.children.length > 0 ? (
-          <NavDropdown
-            label={item.label}
-            href={item.href}
-            children={item.children}
-            currentPathname={currentPathname}
-          />
-        ) : (
-          <li>
-            <a
-              href={item.href}
-              aria-current={isActiveLink(item.href) ? "page" : undefined}
-              class:list={[
-                "px-4 py-2 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all relative group",
-                isActiveLink(item.href) && "nav-active",
-              ]}
-            >
-              {item.label}
-            </a>
-          </li>
-        )
-      )}
-    </ul>
-
-    <!-- CTA Button -->
-    <div class="hidden lg:flex lg:items-center lg:space-x-4">
-      {site.headerSecondaryCta && (
-        <a
-          href={site.headerSecondaryCta.href}
-          class="inline-flex items-center px-6 py-2.5 text-sm font-semibold text-slate-700 border border-slate-200 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all"
-        >
-          {site.headerSecondaryCta.label}
-        </a>
-      )}
-      <a
-        href={site.headerCta.href}
-        class="inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg shadow-md hover:shadow-lg transition-all"
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text sm:hidden"
+        aria-pressed="false"
+        aria-label="Toggle theme"
+        data-theme-toggle
       >
-        {site.headerCta.label}
-      </a>
+        <span class="dark:hidden">Light</span>
+        <span class="hidden dark:inline">Dark</span>
+      </button>
     </div>
-
-    <!-- Mobile Menu Button -->
-    <MobileMenu client:idle />
-  </nav>
+    <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted">
+      <a class={currentPath === "/" ? "text-text" : ""} href="/">Home</a>
+      <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
+      <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
+      <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
+      <button
+        type="button"
+        class="hidden items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text sm:inline-flex"
+        aria-pressed="false"
+        aria-label="Toggle theme"
+        data-theme-toggle
+      >
+        <span class="dark:hidden">Light</span>
+        <span class="hidden dark:inline">Dark</span>
+      </button>
+    </nav>
+  </div>
 </header>

@@ -1,256 +1,142 @@
 ---
 import "../styles/global.css";
-import SeoHead from "@components/layout/SeoHead.astro";
-import SkipToContent from "@components/a11y/SkipToContent.astro";
-import AnnouncementBar from "@components/layout/AnnouncementBar.astro";
-import TopBar from "@components/layout/TopBar.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import { site } from "../data/site";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
 
 export interface Props {
-  pageTitle?: string;
   title?: string;
   description?: string;
-  canonicalPath?: string;
   ogImage?: string;
-  ogImageAlt?: string;
-  noIndex?: boolean;
-  showHeader?: boolean;
-  showFooter?: boolean;
+  ogType?: "website" | "article";
 }
 
-const currentPathname = Astro.url.pathname;
-const {
-  pageTitle,
-  title,
-  description,
-  canonicalPath,
-  ogImage,
-  ogImageAlt,
-  noIndex = false,
-  showHeader = true,
-  showFooter = true,
-} = Astro.props;
-
-const fullTitle =
-  title ??
-  (pageTitle
-    ? `${pageTitle} | ${site.business.businessName}`
-    : `${site.business.businessName} | ${site.business.tagline}`);
-const metaDescription = description ?? site.business.tagline;
-const resolvedOgImage = ogImage ?? site.seo?.ogImage?.src;
-const resolvedOgImageAlt = ogImageAlt ?? site.seo?.ogImage?.alt;
-const googleTagId = site.analytics?.googleTagId;
-
-const showAnnouncement = Boolean(site.announcement?.message);
-const showTopBar =
-  site.topBar?.enabled !== false &&
-  (Boolean(site.phone) ||
-    Boolean(site.email) ||
-    Boolean(site.serviceArea) ||
-    Boolean(site.hours));
-
-const theme = site.theme ?? {};
-const palette = theme.palette ?? {};
-const footerPalette = palette.footer ?? {};
-const brandScale = palette.brand ?? {};
-const accentScale = palette.accent ?? {};
-const radius = theme.radius ?? {};
-const typography = theme.typography ?? {};
-const fonts = theme.fonts ?? [];
-const preloadFonts = theme.preloadFonts ?? [];
-const shadows = theme.shadows ?? {};
-const background = theme.background ?? {};
-
-const hexToRgb = (value: string | undefined): string | null => {
-  if (!value) return null;
-  let hex = value.trim().replace("#", "");
-  if (hex.length === 3) {
-    hex = hex
-      .split("")
-      .map((char) => char + char)
-      .join("");
-  }
-  if (hex.length !== 6) return null;
-  const int = Number.parseInt(hex, 16);
-  if (Number.isNaN(int)) return null;
-  const r = (int >> 16) & 255;
-  const g = (int >> 8) & 255;
-  const b = int & 255;
-  return `${r}, ${g}, ${b}`;
-};
-
-const percentToAlpha = (value: string | undefined, fallback: number): number => {
-  if (!value) return fallback;
-  const trimmed = value.trim();
-  const numeric = trimmed.endsWith("%")
-    ? Number.parseFloat(trimmed) / 100
-    : Number.parseFloat(trimmed);
-  if (Number.isNaN(numeric)) return fallback;
-  return Math.min(1, Math.max(0, numeric));
-};
-
-const pageAccent = background.accent ?? brandScale["100"] ?? "#dbeafe";
-const pageAccentRgb = hexToRgb(pageAccent) ?? "103, 103, 103";
-const patternAlpha = percentToAlpha(background.patternOpacity, 0.5);
-
-const themeStyle = [
-  `--brand-primary: ${site.brand.primary};`,
-  `--brand-accent: ${site.brand.accent};`,
-  `--color-surface: ${palette.surface ?? "#ffffff"};`,
-  `--color-surface-muted: ${palette.surfaceMuted ?? "#f8fafc"};`,
-  `--color-text: ${palette.text ?? "#0f172a"};`,
-  `--color-text-strong: ${palette.textStrong ?? palette.text ?? "#0f172a"};`,
-  `--color-text-muted: ${palette.textMuted ?? "#475569"};`,
-  `--color-text-subtle: ${palette.textSubtle ?? "#64748b"};`,
-  `--color-border: ${palette.border ?? "#e2e8f0"};`,
-  `--color-ring: ${palette.ring ?? site.brand.accent};`,
-  `--footer-bg: ${footerPalette.background ?? "#0f172a"};`,
-  `--footer-text: ${footerPalette.text ?? "#cbd5f5"};`,
-  `--footer-text-strong: ${footerPalette.textStrong ?? "#ffffff"};`,
-  `--footer-text-muted: ${footerPalette.textMuted ?? "#94a3b8"};`,
-  `--footer-link: ${footerPalette.link ?? "#94a3b8"};`,
-  `--footer-link-hover: ${footerPalette.linkHover ?? "#38bdf8"};`,
-  `--footer-border: ${footerPalette.border ?? "#1e293b"};`,
-  `--color-brand-50: ${brandScale["50"] ?? "#eff6ff"};`,
-  `--color-brand-100: ${brandScale["100"] ?? "#dbeafe"};`,
-  `--color-brand-200: ${brandScale["200"] ?? "#bfdbfe"};`,
-  `--color-brand-300: ${brandScale["300"] ?? "#93c5fd"};`,
-  `--color-brand-400: ${brandScale["400"] ?? "#60a5fa"};`,
-  `--color-brand-500: ${brandScale["500"] ?? "#3b82f6"};`,
-  `--color-brand-600: ${brandScale["600"] ?? site.brand.accent};`,
-  `--color-brand-700: ${brandScale["700"] ?? "#1d4ed8"};`,
-  `--color-brand-800: ${brandScale["800"] ?? "#1e40af"};`,
-  `--color-brand-900: ${brandScale["900"] ?? "#1e3a8a"};`,
-  `--color-accent-500: ${accentScale["500"] ?? site.brand.accent};`,
-  `--color-accent-600: ${accentScale["600"] ?? site.brand.accent};`,
-  `--color-accent-700: ${
-    accentScale["700"] ?? `color-mix(in srgb, ${site.brand.accent} 80%, black)`
-  };`,
-  `--radius-sm: ${radius.sm ?? "0.5rem"};`,
-  `--radius-md: ${radius.md ?? "0.75rem"};`,
-  `--radius-lg: ${radius.lg ?? "1rem"};`,
-  `--radius-xl: ${radius.xl ?? "1.25rem"};`,
-  `--radius-2xl: ${radius["2xl"] ?? "1.5rem"};`,
-  `--font-body: ${
-    typography.body ?? 'ui-sans-serif, system-ui, "Segoe UI", sans-serif'
-  };`,
-  `--font-display: ${typography.heading ?? 'ui-serif, "Georgia", serif'};`,
-  `--shadow-card: ${shadows.card ?? "0 8px 24px rgb(15 23 42 / 0.08)"};`,
-  `--shadow-card-hover: ${shadows.hover ?? "0 12px 32px rgb(15 23 42 / 0.12)"};`,
-  `--shadow-elevated: ${shadows.elevated ?? "0 18px 54px rgb(15 23 42 / 0.18)"};`,
-  `--page-bg-base: ${background.base ?? palette.surface ?? "#ffffff"};`,
-  `--page-bg-accent: ${pageAccent};`,
-  `--page-bg-accent-rgb: ${pageAccentRgb};`,
-  `--page-bg-pattern-alpha: ${patternAlpha};`,
-  `--page-bg-pattern-size: ${background.patternSize ?? "32px 32px"};`,
-].join(" ");
-
-const bodyThemeClass =
-  background.mode === "gradient"
-    ? "theme-bg-gradient"
-    : background.mode === "pattern"
-    ? "theme-bg-pattern"
-    : "";
-
-const fontFaceCss = fonts
-  .map((font) => {
-    const srcList = font.src
-      .map((entry) => `url("${entry.url}") format("${entry.format}")`)
-      .join(", ");
-    return `@font-face{font-family:"${font.family}";font-style:${
-      font.style ?? "normal"
-    };font-weight:${font.weight ?? "400"};font-display:${
-      font.display ?? "swap"
-    };src:${srcList};${font.unicodeRange ? `unicode-range:${font.unicodeRange};` : ""}}`;
-  })
-  .join("");
-
-const getFontType = (url: string): string | undefined => {
-  const normalized = url.split("?")[0]?.toLowerCase() ?? "";
-  if (normalized.endsWith(".woff2")) return "font/woff2";
-  if (normalized.endsWith(".woff")) return "font/woff";
-  if (normalized.endsWith(".ttf")) return "font/ttf";
-  if (normalized.endsWith(".otf")) return "font/otf";
-  return undefined;
-};
+const { title, description, ogImage, ogType = "website" } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const metaDescription = description ?? SITE_DESCRIPTION;
+const canonicalUrl = SITE_URL
+  ? new URL(Astro.url.pathname, SITE_URL).toString()
+  : undefined;
+const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() : ogImage;
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  style={themeStyle}
->
+<html lang="en" data-theme="light">
   <head>
-    {googleTagId ? (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}></script>
-        <script is:inline>
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${googleTagId}');`}
-        </script>
-      </>
-    ) : null}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
-    {preloadFonts.map((href) => {
-      const type = getFontType(href);
-      return (
-        <link
-          rel="preload"
-          as="font"
-          href={href}
-          type={type}
-          crossorigin
-        />
-      );
-    })}
-    {fontFaceCss && <style is:global>{fontFaceCss}</style>}
     <meta name="generator" content={Astro.generator} />
-    <SeoHead
-      title={fullTitle}
-      description={metaDescription}
-      canonicalPath={canonicalPath}
-      ogImage={resolvedOgImage}
-      ogImageAlt={resolvedOgImageAlt}
-      noIndex={noIndex}
-    />
+    <title>{pageTitle}</title>
+    <meta name="description" content={metaDescription} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:type" content={ogType} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content={ogImageUrl ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    <script is:inline>
+      {`(() => {
+  const storageKey = "cc-theme";
+  const stored = localStorage.getItem(storageKey);
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = stored ?? (prefersDark ? "dark" : "light");
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.dataset.theme = theme;
+})();`}
+    </script>
   </head>
-  <body
-    class:list={[
-      "flex min-h-screen flex-col bg-white font-sans text-neutral-900 antialiased",
-      bodyThemeClass,
-    ]}
-  >
-    <SkipToContent targetId="main" />
-    {showAnnouncement && (
-      <AnnouncementBar
-        message={site.announcement?.message}
-        href={site.announcement?.href}
-        linkLabel={site.announcement?.linkLabel}
-        variant={site.announcement?.variant}
-      />
-    )}
-    {showTopBar && (
-      <TopBar
-        phone={site.phone}
-        email={site.email}
-        serviceArea={site.serviceArea}
-        hours={site.hours}
-      />
-    )}
-    {showHeader && <Header currentPathname={currentPathname} />}
-    <main id="main" class="flex-1 pb-16">
+  <body class="flex min-h-screen flex-col bg-bg text-text font-sans">
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 cc-bg-pattern opacity-60"></div>
+    <!-- Replace with Storyblocks asset -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 -z-10 opacity-40 bg-[url('/assets/bg-placeholder.svg')] bg-cover bg-center"
+    ></div>
+    <Header />
+    <main id="main" class="mx-auto w-full max-w-4xl flex-1 px-6 pb-16 pt-10">
       <slot />
     </main>
-    {showFooter && <Footer />}
+    <Footer />
+    <div id="cc-lightbox" class="cc-lightbox" aria-hidden="true">
+      <button class="cc-lightbox-close" type="button" aria-label="Close image">×</button>
+      <img class="cc-lightbox-image" alt="" />
+    </div>
+    <script is:inline>
+      {`(() => {
+  const toggle = document.querySelector("[data-theme-toggle]");
+  if (!toggle) return;
+  const storageKey = "cc-theme";
+  const setTheme = (theme) => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.dataset.theme = theme;
+  };
+  const update = () => {
+    const isDark = document.documentElement.classList.contains("dark");
+    toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+  };
+  toggle.addEventListener("click", () => {
+    const isDark = !document.documentElement.classList.contains("dark");
+    const next = isDark ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem(storageKey, next);
+    update();
+  });
+  update();
+
+  const lightbox = document.getElementById("cc-lightbox");
+  const lightboxImage = lightbox?.querySelector(".cc-lightbox-image");
+  const closeButton = lightbox?.querySelector(".cc-lightbox-close");
+  if (!lightbox || !lightboxImage || !closeButton) return;
+
+  const openLightbox = (src, alt) => {
+    lightboxImage.src = src;
+    lightboxImage.alt = alt || "";
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImage.src = "";
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const link = target.closest(".cc-lightbox-link");
+    if (link) {
+      event.preventDefault();
+      const img = link.querySelector("img");
+      openLightbox(link.getAttribute("href"), img?.getAttribute("alt"));
+      return;
+    }
+    if (target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  closeButton.addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+})();`}
+    </script>
   </body>
 </html>
