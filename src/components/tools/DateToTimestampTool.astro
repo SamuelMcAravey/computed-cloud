@@ -9,7 +9,16 @@
     />
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="date-output">Timestamp</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="date-output">Timestamp</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#date-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="date-output"
       class="min-h-[80px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"

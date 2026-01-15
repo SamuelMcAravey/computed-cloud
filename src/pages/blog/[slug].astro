@@ -33,6 +33,7 @@ export async function getStaticPaths() {
 
 const { post, newer, older } = Astro.props;
 const { Content, headings } = await post.render();
+const slug = getPostSlug(post);
 ---
 
 <PostLayout
@@ -43,6 +44,7 @@ const { Content, headings } = await post.render();
   tags={post.data.tags}
   heroImage={post.data.heroImage}
   headings={headings}
+  slug={slug}
   newer={newer}
   older={older}
 >

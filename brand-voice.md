@@ -17,7 +17,7 @@
 ### Attribute 2: Professional
 - Definition: Clear, respectful, and businesslike without being stiff.
 - Sounds like: "We respond within PLACEHOLDER: response window." "You will always know the next step."
-- Does NOT sound like: "No worries, we got you." "We’re obsessed with your success."
+- Does NOT sound like: "No worries, we got you." "We're obsessed with your success."
 
 ### Attribute 3: Practical
 - Definition: Focus on what the client gets and what happens next, not abstract benefits.
@@ -31,8 +31,8 @@
 
 ### Attribute 5: Calm
 - Definition: Confident and steady; reduces stress for busy owners.
-- Sounds like: "We keep scope tight so projects stay on time." "We’ll tell you what we need and when."
-- Does NOT sound like: "Hurry, spots are limited." "Don’t miss out."
+- Sounds like: "We keep scope tight so projects stay on time." "We'll tell you what we need and when."
+- Does NOT sound like: "Hurry, spots are limited." "Don't miss out."
 
 ## 3) Tone Modulation (Contextual)
 
@@ -43,7 +43,7 @@
 
 ### Services descriptions
 - Emotional intent: Practical and matter-of-fact.
-- Emphasize: What’s included, what’s optional, and what is not included.
+- Emphasize: What's included, what's optional, and what is not included.
 - Avoid: Overpromising results or using undefined terms.
 
 ### About page / story
@@ -62,10 +62,10 @@
 - Avoid: Blame, jargon, or humor.
 
 ## 4) Writing Rules (Hard Constraints)
-- Sentence length: 8–20 words; avoid sentences over 24 words.
-- Paragraph length: 1–3 sentences; keep blocks short.
+- Sentence length: 8-20 words; avoid sentences over 24 words.
+- Paragraph length: 1-3 sentences; keep blocks short.
 - Voice: Active voice by default; use passive only when the actor is unknown.
-- Reading level: Grade 6–9.
+- Reading level: Grade 6-9.
 - Jargon policy: Avoid technical terms unless defined in the same sentence.
 - Contractions: Allowed; use sparingly for a natural tone.
 - Capitalization: Sentence case for headings and UI labels; avoid Title Case in body copy.
@@ -76,7 +76,7 @@
 ## 5) Messaging Pillars
 
 ### Pillar 1: Clear scope
-- Meaning in practice: Define what’s included and what’s optional.
+- Meaning in practice: Define what's included and what's optional.
 - Approved themes and ideas: core pages, timeline steps, revision limits, launch checklist.
 - Disallowed language or framing: "Unlimited," "everything included," or open-ended promises.
 
@@ -154,7 +154,7 @@
 ## 8) CTA System
 
 ### Learn / explore
-- Approved patterns: "See what’s included" "View services" "Learn about the process"
+- Approved patterns: "See what's included" "View services" "Learn about the process"
 
 ### Contact / conversation
 - Approved patterns: "Request a quote" "Send a message" "Schedule a call" "Contact us"
@@ -164,7 +164,7 @@
 
 ### CTA tone rules
 - Use verbs that describe the next action.
-- Keep CTAs 2–4 words when possible.
+- Keep CTAs 2-4 words when possible.
 - Avoid urgency language unless time-bound and true.
 
 ### CTA anti-patterns
@@ -186,7 +186,7 @@
 
 ### Success states
 - Confirm receipt and set expectations.
-- Example: "Thanks — we received your message. We’ll reply within PLACEHOLDER: response window."
+- Example: "Thanks - we received your message. We'll reply within PLACEHOLDER: response window."
 
 ### Empty states
 - Explain what should appear and how to proceed.
@@ -209,7 +209,7 @@
 - "Bighorn Web Foundry builds small-business websites with a clear scope and a simple process. We focus on the core pages your customers need, and we keep the timeline short so you can launch without a drawn-out project."
 
 ### Contact form success message
-- "Thanks — we received your message and will reply within PLACEHOLDER: response window."
+- "Thanks - we received your message and will reply within PLACEHOLDER: response window."
 
 ## 11) Guardrails & Compliance
 

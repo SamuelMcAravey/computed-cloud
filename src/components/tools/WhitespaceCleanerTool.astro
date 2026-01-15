@@ -22,7 +22,16 @@
     </label>
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="whitespace-output">Output</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="whitespace-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#whitespace-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="whitespace-output"
       class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"

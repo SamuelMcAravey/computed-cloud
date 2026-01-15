@@ -85,8 +85,8 @@ Blog management skills live in `skills/blog/`. Prefer using a skill over ad-hoc 
 
 When asked to draft a post, always output **all** of the following:
 
-1) **Title options** (3–5)  
-2) **Recommended title + why** (1–2 sentences)  
+1) **Title options** (3-5)  
+2) **Recommended title + why** (1-2 sentences)  
 3) **Tags** (string array suggestions)  
 4) **Frontmatter** (Astro Content Collections format)  
 5) **Full Markdown body** (complete, publishable)  
@@ -137,8 +137,8 @@ Practical engineering notes: get to the point, name the constraint, explain the 
 
 ### Non-negotiables
 
-* Start with a **TL;DR** (3–5 bullets) that states: **decision + constraint + outcome**. Do not bury the lead.
-* Use **simple words** and **short sentences**. Prefer 2–4 sentence paragraphs.
+* Start with a **TL;DR** (3-5 bullets) that states: **decision + constraint + outcome**. Do not bury the lead.
+* Use **simple words** and **short sentences**. Prefer 2-4 sentence paragraphs.
 * Be confident about what's known. If uncertain, say so directly.
 * Include at least one "scar" in substantive posts: **failure mode → change made → new rule of thumb**.
 * Don't blame users for confusion. Treat it as UX/product feedback.
@@ -188,7 +188,7 @@ Use:
 
 Default structure (unless the user asks otherwise):
 
-1. **TL;DR** (3–5 bullets): decision + constraint + outcome
+1. **TL;DR** (3-5 bullets): decision + constraint + outcome
 2. **Context**: only the constraints that matter
 3. **Decision**: what I picked and why (alternatives + tradeoffs)
 4. **Implementation**: key files + diagrams + code (only what matters)
@@ -240,7 +240,7 @@ Example fallback:
 
 When given a topic or repo context:
 
-1. Propose **2–3 angles** (different narratives).
+1. Propose **2-3 angles** (different narratives).
 2. Recommend the best one with a short reason.
 3. Draft the post following the output contract.
 4. Include:

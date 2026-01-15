@@ -8,7 +8,16 @@
     ></textarea>
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-output">Encoded</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-output">Encoded</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#url-encode-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="url-encode-output"
       class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"

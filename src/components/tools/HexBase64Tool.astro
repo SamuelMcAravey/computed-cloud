@@ -8,15 +8,24 @@
     ></textarea>
   </div>
   <div class="flex flex-wrap gap-2">
-    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-hex>
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-hex>
       Hex → Base64
     </button>
-    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-b64>
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-b64>
       Base64 → Hex
     </button>
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="hex-base64-output">Output</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="hex-base64-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#hex-base64-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="hex-base64-output"
       class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"

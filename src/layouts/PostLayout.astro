@@ -3,7 +3,11 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import TagChip from "@components/TagChip.astro";
 import { normalizeTag } from "../utils/blog";
 import { SHOW_POST_DATES } from "../consts";
-import { ARTICLE_CONTENT_CARD } from "../consts";
+import {
+  ARTICLE_CONTENT_CARD,
+  SHOW_START_HERE_PROMPT,
+  START_HERE_PROMPT_EXCLUDE,
+} from "../consts";
 import type { MarkdownHeading } from "astro";
 
 type PostNavItem = {
@@ -21,6 +25,7 @@ export interface Props {
   headings?: MarkdownHeading[];
   newer?: PostNavItem;
   older?: PostNavItem;
+  slug?: string;
 }
 
 const { title, description, pubDate, updatedDate, tags, heroImage, headings, newer, older } =
@@ -37,9 +42,12 @@ const updated =
     month: "long",
     day: "numeric",
   });
-const tocHeadings =
-  headings?.filter((heading) => heading.depth >= 2 && heading.depth <= 3) ?? [];
+const tocHeadings = headings?.filter((heading) => heading.depth === 2) ?? [];
 const hasToc = tocHeadings.length > 0;
+const showStartHerePrompt =
+  SHOW_START_HERE_PROMPT &&
+  typeof Astro.props.slug === "string" &&
+  !START_HERE_PROMPT_EXCLUDE.includes(Astro.props.slug);
 ---
 
 <BaseLayout title={title} description={description} ogType="article" ogImage={heroImage}>
@@ -82,9 +90,9 @@ const hasToc = tocHeadings.length > 0;
     {hasToc && (
       <details class="mt-6 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text xl:hidden">
         <summary class="cursor-pointer font-semibold text-text">On this page</summary>
-        <ol class="mt-3 space-y-1 text-muted">
+        <ol class="cc-scrollbox mt-3 max-h-[60vh] space-y-1 overflow-auto text-muted">
           {tocHeadings.map((heading) => (
-            <li class={heading.depth === 3 ? "pl-4" : ""}>
+            <li>
               <a
                 class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
                 href={`#${heading.slug}`}
@@ -100,21 +108,53 @@ const hasToc = tocHeadings.length > 0;
       {ARTICLE_CONTENT_CARD ? (
         <div class="cc-article-card rounded-2xl border border-border bg-surface/90 p-6 shadow-sm">
           <div class="prose max-w-none">
+            {showStartHerePrompt && (
+              <p class="mt-0 text-sm text-muted">
+                If you're new here, start with{" "}
+                <a class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent" href="/blog/start-here">
+                  Start Here
+                </a>{" "}
+                or{" "}
+                <a
+                  class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                  href="/blog/how-i-build-software-that-survives-reality"
+                >
+                  How I Build Software That Survives Reality
+                </a>
+                .
+              </p>
+            )}
             <slot />
           </div>
         </div>
       ) : (
         <div class="prose max-w-none">
+          {showStartHerePrompt && (
+            <p class="mt-0 text-sm text-muted">
+              If you're new here, start with{" "}
+              <a class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent" href="/blog/start-here">
+                Start Here
+              </a>{" "}
+              or{" "}
+              <a
+                class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                href="/blog/how-i-build-software-that-survives-reality"
+              >
+                How I Build Software That Survives Reality
+              </a>
+              .
+            </p>
+          )}
           <slot />
         </div>
       )}
       {hasToc && (
         <aside class="hidden xl:block">
-          <div class="sticky top-24 rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
+          <div class="cc-scrollbox sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
             <p class="font-semibold text-text">On this page</p>
             <ol class="mt-3 space-y-2">
               {tocHeadings.map((heading) => (
-                <li class={heading.depth === 3 ? "pl-4" : ""}>
+                <li>
                   <a
                     class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
                     href={`#${heading.slug}`}

@@ -9,14 +9,14 @@
         readonly
       />
       <button
-        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
         type="button"
         data-generate
       >
         Generate
       </button>
       <button
-        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
         type="button"
         data-copy
       >
@@ -32,6 +32,11 @@
       const output = root.querySelector("#ulid-output");
       const generate = root.querySelector("[data-generate]");
       const copy = root.querySelector("[data-copy]");
+      const setCopied = (button) => {
+        if (!button) return;
+        button.setAttribute("data-copied", "true");
+        setTimeout(() => button.removeAttribute("data-copied"), 1200);
+      };
       const encodeTime = (time) => {
         const alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
         let value = time;
@@ -61,9 +66,11 @@
         if (!output?.value) return;
         try {
           await navigator.clipboard.writeText(output.value);
+          setCopied(copy);
         } catch {
           output.select();
           document.execCommand("copy");
+          setCopied(copy);
         }
       });
       update();

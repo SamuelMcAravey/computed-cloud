@@ -12,7 +12,7 @@ Computed Cloud is my place to document practical engineering work in enterprise 
 
 My writing style is practical, implementation-focused, and opinionated about reliability and maintainability.
 
-## What you’ll find here
+## What you'll find here
 
 - Enterprise integrations with ERP and finance systems
 - Payments and compliance workflows that must be correct and auditable
@@ -29,7 +29,7 @@ My writing style is practical, implementation-focused, and opinionated about rel
 
 ## My background (short version)
 
-I’m Samuel McAravey, a strategic engineering leader based in Billings, MT. I have over 16 years of experience building and scaling engineering organizations and platforms, primarily in B2B SaaS with payment and compliance constraints. My work is grounded in data-intensive systems and practical delivery at scale.
+I'm Samuel McAravey, a strategic engineering leader based in Billings, MT. I have over 16 years of experience building and scaling engineering organizations and platforms, primarily in B2B SaaS with payment and compliance constraints. My work is grounded in data-intensive systems and practical delivery at scale.
 
 At PayeWaive, I led technology and engineering as CTO/Head of Engineering for a multi-tenant B2B SaaS platform on Azure. The platform was built to be geo-redundant and achieved 99.99% uptime for mission-critical payment and compliance workflows. We integrated with ERP systems like Viewpoint Vista and Spectrum, and I built a metrics-driven engineering culture for a globally distributed team. Over time, we improved delivery speed and reduced defects, including through an AI-powered SDLC.
 

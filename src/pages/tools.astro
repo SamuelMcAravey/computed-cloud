@@ -214,26 +214,84 @@ const tools = [
     Component: HexBase64Tool,
   },
 ];
+
+const toolById = new Map(tools.map((tool) => [tool.id, tool]));
+const categories = [
+  {
+    id: "identifiers",
+    title: "Identifiers",
+    toolIds: ["guid", "ulid"],
+  },
+  {
+    id: "encoding",
+    title: "Encoding & Escaping",
+    toolIds: ["base64-encode", "base64-decode", "url-encode", "url-decode", "escape-unescape", "hex-base64"],
+  },
+  {
+    id: "formats",
+    title: "Format & Validate",
+    toolIds: ["json-formatter", "json-minifier", "json-validator", "html-formatter", "html-minifier", "xml-formatter"],
+  },
+  {
+    id: "data-conversion",
+    title: "Data Conversion",
+    toolIds: ["csv-to-json", "json-to-csv", "hex-rgb", "querystring", "url-parts"],
+  },
+  {
+    id: "compare",
+    title: "Compare",
+    toolIds: ["diff-viewer", "json-diff"],
+  },
+  {
+    id: "security",
+    title: "Hashing & Tokens",
+    toolIds: ["hash-generator", "hmac-generator", "jwt-decode"],
+  },
+  {
+    id: "time",
+    title: "Time & Scheduling",
+    toolIds: ["timestamp-to-date", "date-to-timestamp", "cron-parser"],
+  },
+  {
+    id: "text",
+    title: "Text Cleanup",
+    toolIds: ["slugify", "case-converter", "whitespace-cleaner"],
+  },
+];
+
+const categoriesWithTools = categories.map((category) => ({
+  ...category,
+  tools: category.toolIds.map((toolId) => toolById.get(toolId)).filter(Boolean),
+}));
 ---
 
-<BaseLayout title="Utilities" description="Small in-browser tools for day-to-day engineering work.">
+<BaseLayout title="Tools" description="Small in-browser tools for day-to-day engineering work.">
   <section class="space-y-6">
-    <p class="text-xs uppercase tracking-wide text-muted">Utilities</p>
-    <h1 class="font-heading text-4xl font-semibold text-text">Utilities</h1>
+    <p class="text-xs uppercase tracking-wide text-muted">Tools</p>
+    <h1 class="font-heading text-4xl font-semibold text-text">Tools</h1>
     <p class="text-lg text-muted">
       A catalog of small, in-browser tools I use often. Each tool is isolated, runs locally,
-      and avoids external dependencies.
+      and avoids external dependencies. Use the sidebar to jump to a tool or section.
     </p>
   </section>
 
   <details class="mt-6 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text lg:hidden">
     <summary class="cursor-pointer font-semibold text-text">On this page</summary>
-    <ol class="mt-3 space-y-1 text-muted">
-      {tools.map((tool) => (
+    <ol class="cc-scrollbox mt-3 max-h-[60vh] space-y-1 overflow-auto text-muted">
+      {categoriesWithTools.map((category) => (
         <li>
-          <a class="no-underline hover:text-text" href={`#${tool.id}`}>
-            {tool.title}
+          <a class="no-underline hover:text-text" href={`#${category.id}`}>
+            {category.title}
           </a>
+          <ol class="mt-2 space-y-1 pl-4 text-xs">
+            {category.tools.map((tool) => (
+              <li>
+                <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+                  {tool.title}
+                </a>
+              </li>
+            ))}
+          </ol>
         </li>
       ))}
     </ol>
@@ -241,21 +299,37 @@ const tools = [
 
   <section class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
     <div class="space-y-6">
-      {tools.map((tool) => (
-        <ToolCard id={tool.id} title={tool.title} description={tool.description}>
-          <tool.Component />
-        </ToolCard>
+      {categoriesWithTools.map((category) => (
+        <section id={category.id} data-tool-section class="space-y-6">
+          <h2 class="font-heading text-2xl font-semibold text-text">
+            {category.title}
+          </h2>
+          {category.tools.map((tool) => (
+            <ToolCard id={tool.id} title={tool.title} description={tool.description}>
+              <tool.Component />
+            </ToolCard>
+          ))}
+        </section>
       ))}
     </div>
     <aside class="hidden lg:block">
-      <div class="sticky top-24 rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
+      <div class="cc-scrollbox sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
         <p class="font-semibold text-text">On this page</p>
         <ol class="mt-3 space-y-2">
-          {tools.map((tool) => (
+          {categoriesWithTools.map((category) => (
             <li>
-              <a class="no-underline hover:text-text" href={`#${tool.id}`}>
-                {tool.title}
+              <a class="no-underline hover:text-text" href={`#${category.id}`}>
+                {category.title}
               </a>
+              <ol class="mt-2 space-y-1 pl-4 text-xs">
+                {category.tools.map((tool) => (
+                  <li>
+                    <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+                      {tool.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </li>
           ))}
         </ol>

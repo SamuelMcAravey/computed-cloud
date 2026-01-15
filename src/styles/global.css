@@ -84,11 +84,24 @@ a {
 }
 
 .prose h2 {
-  @apply mt-10 text-2xl;
+  @apply mt-8 text-2xl;
 }
 
 .prose h3 {
   @apply mt-8 text-xl;
+}
+
+.prose h2,
+.prose h3 {
+  scroll-margin-top: 6rem;
+}
+
+[data-tool-card] {
+  scroll-margin-top: 6rem;
+}
+
+[data-tool-section] {
+  scroll-margin-top: 6rem;
 }
 
 .prose p {
@@ -121,8 +134,14 @@ a {
 }
 
 .prose blockquote {
-  @apply mt-6 rounded-xl border border-border bg-surface px-5 py-4 text-muted;
+  @apply mt-6 rounded-xl border border-border bg-surface px-5 py-4 text-muted;  
   border-left-width: 4px;
+}
+
+.prose hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid rgb(var(--cc-border));
 }
 
 .prose code {
@@ -397,4 +416,67 @@ pre.mermaid[data-processed] {
   .prose input[type="checkbox"]::after {
     margin-top: -1px;
   }
+}
+:root {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+.cc-scrollbox {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--cc-border)) transparent;
+  scrollbar-gutter: stable;
+}
+
+.cc-scrollbox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cc-scrollbox::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cc-scrollbox::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.cc-scrollbox::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--cc-border) / 0.7);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.cc-scrollbox::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--cc-muted));
+}
+
+.cc-tool-button {
+  position: relative;
+  transition: transform 0.05s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.cc-tool-button:active {
+  transform: translateY(1px);
+}
+
+.cc-tool-button[data-copied="true"]::after {
+  content: "Copied...";
+  position: absolute;
+  right: 0;
+  top: -1.6rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(var(--cc-surface));
+  border: 1px solid rgb(var(--cc-border));
+  color: rgb(var(--cc-text));
+  font-size: 0.7rem;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
 }

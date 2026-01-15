@@ -2,6 +2,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Pagination from "@components/Pagination.astro";
 import PostCard from "@components/PostCard.astro";
+import StartHereCallout from "@components/StartHereCallout.astro";
 import { getCollection } from "astro:content";
 import { POSTS_PER_PAGE } from "../../consts";
 import { byNewest, getPostSlug, includeDrafts } from "../../utils/blog";
@@ -21,46 +22,11 @@ const { page } = Astro.props;
   <section class="space-y-4">
     <p class="text-xs uppercase tracking-wide text-muted">Blog</p>
     <h1 class="font-heading text-3xl font-semibold text-text">Writing archive</h1>
-    <p class="text-muted">Essays, notes, and links. Sorted newest first.</p>    
+    <p class="text-muted">Essays, notes, and links. Sorted newest first.</p>
   </section>
 
-  <section class="mt-8">
-    <label class="sr-only" for="blog-search">Search posts</label>
-    <input
-      id="blog-search"
-      class="w-full rounded-xl border border-border bg-surface/90 px-4 py-3 text-sm text-text shadow-sm"
-      type="search"
-      placeholder="Search posts…"
-      autocomplete="off"
-    />
-    <p class="mt-2 text-xs text-muted">Search filters the posts on this page.</p>
-    <script is:inline>
-      {`(() => {
-  const input = document.getElementById("blog-search");
-  if (!(input instanceof HTMLInputElement)) return;
-  const getHaystack = (el) => {
-    const title = el.getAttribute("data-post-title") ?? "";
-    const description = el.getAttribute("data-post-description") ?? "";
-    const tags = el.getAttribute("data-post-tags") ?? "";
-    return (title + " " + description + " " + tags).toLowerCase();
-  };
-  const update = () => {
-    const q = input.value.trim().toLowerCase();
-    const nodes = document.querySelectorAll("[data-post-title]");
-    nodes.forEach((node) => {
-      const article = node.closest("article");
-      if (!(article instanceof HTMLElement)) return;
-      if (!q) {
-        article.style.display = "";
-        return;
-      }
-      const match = getHaystack(node).includes(q);
-      article.style.display = match ? "" : "none";
-    });
-  };
-  input.addEventListener("input", update);
-})();`}
-    </script>
+  <section class="mt-6">
+    <StartHereCallout />
   </section>
 
   <section class="mt-10 space-y-6">

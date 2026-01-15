@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2">
     <div class="flex flex-wrap items-center gap-2">
       <button
-        class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+        class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
         type="button"
         data-generate
       >
@@ -21,7 +21,7 @@
           readonly
         />
         <button
-          class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+          class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
           type="button"
           data-copy="uuid"
         >
@@ -40,7 +40,7 @@
           readonly
         />
         <button
-          class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+          class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
           type="button"
           data-copy="guid"
         >
@@ -59,6 +59,11 @@
       const copyUuid = root.querySelector('[data-copy="uuid"]');
       const copyGuid = root.querySelector('[data-copy="guid"]');
       const makeUuid = () => (crypto.randomUUID ? crypto.randomUUID() : "");
+      const setCopied = (button) => {
+        if (!button) return;
+        button.setAttribute("data-copied", "true");
+        setTimeout(() => button.removeAttribute("data-copied"), 1200);
+      };
       const update = () => {
         const uuid = makeUuid();
         if (uuidOutput) uuidOutput.value = uuid;
@@ -70,9 +75,11 @@
         if (!value) return;
         try {
           await navigator.clipboard.writeText(value);
+          setCopied(copyUuid);
         } catch {
           uuidOutput.select();
           document.execCommand("copy");
+          setCopied(copyUuid);
         }
       });
       copyGuid?.addEventListener("click", async () => {
@@ -80,9 +87,11 @@
         if (!value) return;
         try {
           await navigator.clipboard.writeText(value);
+          setCopied(copyGuid);
         } catch {
           guidOutput.select();
           document.execCommand("copy");
+          setCopied(copyGuid);
         }
       });
       update();

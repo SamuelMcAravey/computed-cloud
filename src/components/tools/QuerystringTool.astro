@@ -1,6 +1,15 @@
 <div class="space-y-3" data-tool="querystring">
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="qs-input">Querystring or URL</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="qs-input">Querystring or URL</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#qs-input"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="qs-input"
       class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
@@ -8,15 +17,24 @@
     ></textarea>
   </div>
   <div class="flex flex-wrap gap-2">
-    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-parse>
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-parse>
       Parse
     </button>
-    <button class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-build>
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-build>
       Build from JSON
     </button>
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="qs-output">JSON</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="qs-output">JSON</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#qs-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="qs-output"
       class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"

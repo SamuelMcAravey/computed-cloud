@@ -3,7 +3,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="sticky top-0 z-20 border-b border-border/80 bg-bg/80 backdrop-blur">
-  <div class="mx-auto flex w-full max-w-4xl flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
     <div class="flex items-center justify-between gap-4">
       <a class="flex items-center gap-3" href="/">
         <img src="/assets/logo-mark.svg" alt="Computed Cloud logo" class="h-8 w-8" />
@@ -12,13 +12,31 @@ const currentPath = Astro.url.pathname;
         </span>
       </a>
     </div>
-    <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted">
-      <a class={currentPath === "/" ? "text-text" : ""} href="/">Home</a>
-      <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
-      <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
-      <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
-      <a class={currentPath.startsWith("/utilities") ? "text-text" : ""} href="/utilities">Tools</a>
-      <a class={currentPath === "/about" ? "text-text" : ""} href="/about">About</a>
-    </nav>
+    <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+      <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted">
+        <a
+          class={currentPath.startsWith("/blog/start-here") ? "text-text" : ""}
+          href="/blog/start-here"
+        >
+          Start Here
+        </a>
+        <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
+        <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
+        <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
+        <a class={currentPath.startsWith("/tools") ? "text-text" : ""} href="/tools">Tools</a>
+        <a class={currentPath === "/about" ? "text-text" : ""} href="/about">About</a>
+      </nav>
+      <form class="flex items-center" action="/search" method="get" role="search">
+        <label class="sr-only" for="site-search">Search posts</label>
+        <input
+          id="site-search"
+          class="w-full rounded-full border border-border bg-surface/90 px-4 py-2 text-sm text-text shadow-sm lg:w-64"
+          type="search"
+          name="q"
+          placeholder="Search posts"
+          autocomplete="off"
+        />
+      </form>
+    </div>
   </div>
 </header>

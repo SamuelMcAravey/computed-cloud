@@ -21,14 +21,14 @@
   </div>
   <div class="flex flex-wrap gap-2">
     <button
-      class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
       type="button"
       data-escape
     >
       Escape
     </button>
     <button
-      class="rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
       type="button"
       data-unescape
     >
@@ -36,7 +36,16 @@
     </button>
   </div>
   <div class="space-y-2">
-    <label class="text-xs uppercase tracking-wide text-muted" for="escape-output">Output</label>
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="escape-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#escape-output"
+      >
+        Copy
+      </button>
+    </div>
     <textarea
       id="escape-output"
       class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
