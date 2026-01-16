@@ -38,6 +38,11 @@ import YamlJsonTool from "@components/tools/YamlJsonTool.astro";
 import HtmlEntityTool from "@components/tools/HtmlEntityTool.astro";
 import UnixPermissionsTool from "@components/tools/UnixPermissionsTool.astro";
 import LogViewerLinkTool from "@components/tools/LogViewerLinkTool.astro";
+import SortLinesTool from "@components/tools/SortLinesTool.astro";
+import IpifyTool from "@components/tools/IpifyTool.astro";
+import DnsLookupTool from "@components/tools/DnsLookupTool.astro";
+import HttpPingTool from "@components/tools/HttpPingTool.astro";
+import PortHelperTool from "@components/tools/PortHelperTool.astro";
 
 const tools = [
   {
@@ -251,6 +256,36 @@ const tools = [
     Component: UnixPermissionsTool,
   },
   {
+    id: "sort-lines",
+    title: "Sort lines",
+    description: "Sort or dedupe text lines.",
+    Component: SortLinesTool,
+  },
+  {
+    id: "ipify",
+    title: "What's my IP",
+    description: "Fetch your public IP.",
+    Component: IpifyTool,
+  },
+  {
+    id: "dns-lookup",
+    title: "DNS lookup",
+    description: "Resolve common record types.",
+    Component: DnsLookupTool,
+  },
+  {
+    id: "http-ping",
+    title: "Ping (HTTP)",
+    description: "Measure HTTP response time.",
+    Component: HttpPingTool,
+  },
+  {
+    id: "port-helper",
+    title: "Port helper",
+    description: "Quick reference for common ports.",
+    Component: PortHelperTool,
+  },
+  {
     id: "hex-base64",
     title: "Hex/Base64 converter",
     description: "Convert hex bytes to base64 and back.",
@@ -304,7 +339,12 @@ const categories = [
   {
     id: "text",
     title: "Text Cleanup",
-    toolIds: ["slugify", "case-converter", "whitespace-cleaner"],
+    toolIds: ["slugify", "case-converter", "whitespace-cleaner", "sort-lines"],
+  },
+  {
+    id: "networking",
+    title: "Networking",
+    toolIds: ["ipify", "dns-lookup", "http-ping", "port-helper"],
   },
   {
     id: "full-page",
