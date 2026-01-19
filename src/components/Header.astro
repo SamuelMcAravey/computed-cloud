@@ -13,18 +13,49 @@ const currentPath = Astro.url.pathname;
       </a>
     </div>
     <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-      <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted">
+      <nav class="flex flex-wrap items-center gap-3 text-sm font-medium text-muted" aria-label="Primary">
         <a
           class={currentPath.startsWith("/blog/start-here") ? "text-text" : ""}
+          aria-current={currentPath.startsWith("/blog/start-here") ? "page" : undefined}
           href="/blog/start-here"
         >
           Start Here
         </a>
-        <a class={currentPath.startsWith("/blog") ? "text-text" : ""} href="/blog">Blog</a>
-        <a class={currentPath.startsWith("/tags") ? "text-text" : ""} href="/tags">Tags</a>
-        <a class={currentPath === "/rss.xml" ? "text-text" : ""} href="/rss.xml">RSS</a>
-        <a class={currentPath.startsWith("/tools") ? "text-text" : ""} href="/tools">Tools</a>
-        <a class={currentPath === "/about" ? "text-text" : ""} href="/about">About</a>
+        <a
+          class={currentPath.startsWith("/blog") ? "text-text" : ""}
+          aria-current={currentPath.startsWith("/blog") ? "page" : undefined}
+          href="/blog"
+        >
+          Blog
+        </a>
+        <a
+          class={currentPath.startsWith("/tags") ? "text-text" : ""}
+          aria-current={currentPath.startsWith("/tags") ? "page" : undefined}
+          href="/tags"
+        >
+          Tags
+        </a>
+        <a
+          class={currentPath === "/rss.xml" ? "text-text" : ""}
+          aria-current={currentPath === "/rss.xml" ? "page" : undefined}
+          href="/rss.xml"
+        >
+          RSS
+        </a>
+        <a
+          class={currentPath.startsWith("/tools") ? "text-text" : ""}
+          aria-current={currentPath.startsWith("/tools") ? "page" : undefined}
+          href="/tools"
+        >
+          Tools
+        </a>
+        <a
+          class={currentPath === "/about" ? "text-text" : ""}
+          aria-current={currentPath === "/about" ? "page" : undefined}
+          href="/about"
+        >
+          About
+        </a>
       </nav>
       <form class="flex items-center" action="/search" method="get" role="search">
         <label class="sr-only" for="site-search">Search posts</label>

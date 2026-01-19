@@ -10,12 +10,21 @@ import remarkGfm from "remark-gfm";
 import remarkDirective from "remark-directive";
 import { remarkCallouts } from "./src/utils/remark-callouts.js";
 import { rehypeImageFigure } from "./src/utils/rehype-figure.js";
+import pagefind from "astro-pagefind";
+
+const USE_MISSING_IMAGE_PLACEHOLDER = true;
+const MISSING_IMAGE_PLACEHOLDER_SRC = "/assets/image-missing.svg";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://computedcloud.com",
   adapter: cloudflare(),
   imageService: "compile",
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/compile",
+    },
+  },
   integrations: [
     robotsTxt(),
     sitemap(),
@@ -32,10 +41,19 @@ export default defineConfig({
       theme: "neutral",
       autoTheme: true,
     }),
+    pagefind(),
   ],
   markdown: {
     remarkPlugins: [remarkGfm, remarkDirective, remarkCallouts],
-    rehypePlugins: [rehypeImageFigure],
+    rehypePlugins: [
+      [
+        rehypeImageFigure,
+        {
+          missingImage: USE_MISSING_IMAGE_PLACEHOLDER ? "placeholder" : "remove",
+          placeholderSrc: MISSING_IMAGE_PLACEHOLDER_SRC,
+        },
+      ],
+    ],
   },
   vite: {
     plugins: [tailwindcss()],

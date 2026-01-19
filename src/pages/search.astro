@@ -1,93 +1,55 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PostCard from "@components/PostCard.astro";
-import { getCollection } from "astro:content";
-import { byNewest, getPostSlug, includeDrafts } from "../utils/blog";
-
-const posts = (await getCollection("blog"))
-  .filter((post) => includeDrafts || !post.data.draft)
-  .sort(byNewest);
+import "@pagefind/default-ui/css/ui.css";
 ---
 
-<BaseLayout title="Search">
+<BaseLayout
+  title="Search"
+  description="Search the blog archive by title, description, or tags."
+  data-pagefind-ignore="all"
+>
   <section class="space-y-3">
     <p class="text-xs uppercase tracking-wide text-muted">Search</p>
     <h1 class="font-heading text-3xl font-semibold text-text">Search posts</h1>
     <p class="text-sm text-muted">
-      Results for: <span id="search-query" class="text-text">All posts</span>
-    </p>
-    <p id="search-count" class="text-xs text-muted"></p>
-  </section>
-
-  <section class="mt-8 space-y-6">
-    {posts.map((post) => (
-      <PostCard post={post} slug={getPostSlug(post)} />
-    ))}
-    <p id="search-empty" class="hidden text-muted">
-      No results. Try a different search.
+      Search across titles, descriptions, and tags. Results update as you type.
     </p>
   </section>
 
-  <script is:inline>
-    {`(() => {
-  const input = document.getElementById("site-search");
-  const queryLabel = document.getElementById("search-query");
-  const countLabel = document.getElementById("search-count");
-  const emptyLabel = document.getElementById("search-empty");
-  const nodes = Array.from(document.querySelectorAll("[data-post-title]"));
+  <section class="mt-8">
+    <div id="pagefind" class="cc-search"></div>
+  </section>
 
-  const getHaystack = (el) => {
-    const title = el.getAttribute("data-post-title") ?? "";
-    const description = el.getAttribute("data-post-description") ?? "";
-    const tags = el.getAttribute("data-post-tags") ?? "";
-    return (title + " " + description + " " + tags).toLowerCase();
-  };
-
-  const applyQuery = (raw, updateUrl = true) => {
-    const q = (raw ?? "").trim();
-    const qLower = q.toLowerCase();
-    let visible = 0;
-
-    nodes.forEach((node) => {
-      const article = node.closest("article");
-      if (!(article instanceof HTMLElement)) return;
-      if (!qLower) {
-        article.style.display = "";
-        visible += 1;
-        return;
+  <script type="module" src="/pagefind/pagefind-ui.js"></script>
+  <script type="module">
+    const applyInitialQuery = () => {
+      const params = new URLSearchParams(window.location.search);
+      const initial = params.get("q");
+      if (!initial) return;
+      const input = document.querySelector(".pagefind-ui__search-input");
+      if (!(input instanceof HTMLInputElement)) return;
+      input.value = initial;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      const headerInput = document.getElementById("site-search");
+      if (headerInput instanceof HTMLInputElement) {
+        headerInput.value = initial;
       }
-      const match = getHaystack(node).includes(qLower);
-      article.style.display = match ? "" : "none";
-      if (match) visible += 1;
-    });
+    };
 
-    if (queryLabel) {
-      queryLabel.textContent = q ? q : "All posts";
-    }
-    if (countLabel) {
-      countLabel.textContent = q
-        ? `${visible} result${visible === 1 ? "" : "s"}`
-        : `${visible} post${visible === 1 ? "" : "s"}`;
-    }
-    if (emptyLabel) {
-      emptyLabel.classList.toggle("hidden", visible !== 0);
-    }
+    const init = () => {
+      if (!window.PagefindUI) return;
+      new window.PagefindUI({
+        element: "#pagefind",
+        showImages: false,
+        resetStyles: false,
+      });
+      requestAnimationFrame(applyInitialQuery);
+    };
 
-    if (updateUrl) {
-      const url = new URL(window.location.href);
-      if (q) url.searchParams.set("q", q);
-      else url.searchParams.delete("q");
-      window.history.replaceState({}, "", url);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
     }
-  };
-
-  const params = new URLSearchParams(window.location.search);
-  const initial = params.get("q") ?? "";
-  if (input instanceof HTMLInputElement) {
-    input.value = initial;
-    input.addEventListener("input", () => applyQuery(input.value));
-  }
-  applyQuery(initial, false);
-})();`}
   </script>
 </BaseLayout>

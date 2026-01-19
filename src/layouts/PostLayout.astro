@@ -2,7 +2,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import TagChip from "@components/TagChip.astro";
 import { normalizeTag } from "../utils/blog";
-import { SHOW_POST_DATES } from "../consts";
+import { SHOW_POST_DATES, SITE_TITLE, SITE_URL } from "../consts";
 import {
   ARTICLE_CONTENT_CARD,
   SHOW_START_HERE_PROMPT,
@@ -28,8 +28,18 @@ export interface Props {
   slug?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags, heroImage, headings, newer, older } =
-  Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags,
+  heroImage,
+  headings,
+  newer,
+  older,
+  slug,
+} = Astro.props;
 const published = pubDate.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
@@ -42,6 +52,29 @@ const updated =
     month: "long",
     day: "numeric",
   });
+const authorName = "Samuel McAravey";
+const postUrl =
+  SITE_URL && slug ? new URL(`/blog/${slug}`, SITE_URL).toString() : undefined;
+const postImage =
+  heroImage && SITE_URL ? new URL(heroImage, SITE_URL).toString() : heroImage;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: updatedDate ? updatedDate.toISOString() : undefined,
+  author: {
+    "@type": "Person",
+    name: authorName,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE_TITLE,
+  },
+  url: postUrl,
+  image: postImage,
+};
 const tocHeadings = headings?.filter((heading) => heading.depth === 2) ?? [];
 const hasToc = tocHeadings.length > 0;
 const showStartHerePrompt =
@@ -51,6 +84,9 @@ const showStartHerePrompt =
 ---
 
 <BaseLayout title={title} description={description} ogType="article" ogImage={heroImage}>
+  <script type="application/ld+json" is:inline>
+    {JSON.stringify(jsonLd)}
+  </script>
   <article>
     <div class="flex flex-wrap items-center justify-between gap-3">
       <a class="cc-backlink text-xs uppercase tracking-wide text-muted no-underline" href="/blog">

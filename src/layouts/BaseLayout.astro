@@ -11,9 +11,25 @@ export interface Props {
   ogType?: "website" | "article";
 }
 
-const { title, description, ogImage, ogType = "website" } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
-const metaDescription = description ?? SITE_DESCRIPTION;
+const { title, description, ogImage, ogType = "website", frontmatter } =
+  Astro.props;
+const pagefindIgnore = Astro.props["data-pagefind-ignore"];
+const resolvedTitle = title ?? frontmatter?.title;
+const resolvedDescription = description ?? frontmatter?.description;
+if (import.meta.env.DEV) {
+  if (!resolvedTitle || !resolvedDescription) {
+    throw new Error(
+      `BaseLayout requires title and description in development. Missing: ${[
+        !resolvedTitle ? "title" : null,
+        !resolvedDescription ? "description" : null,
+      ]
+        .filter(Boolean)
+        .join(", ")}`
+    );
+  }
+}
+const pageTitle = resolvedTitle ? `${resolvedTitle} | ${SITE_TITLE}` : SITE_TITLE;
+const metaDescription = resolvedDescription ?? SITE_DESCRIPTION;
 const canonicalUrl = SITE_URL
   ? new URL(Astro.url.pathname, SITE_URL).toString()
   : undefined;
@@ -70,7 +86,10 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
 })();`}
     </script>
   </head>
-  <body class="flex min-h-screen flex-col bg-bg text-text font-sans">
+  <body
+    class="flex min-h-screen flex-col bg-bg text-text font-sans"
+    data-pagefind-ignore={pagefindIgnore}
+  >
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6SX7F5T"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -82,12 +101,26 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
       aria-hidden="true"
       class="pointer-events-none fixed inset-0 -z-10 opacity-40 bg-[url('/assets/bg-placeholder.svg')] bg-cover bg-center"
     ></div>
+    <a
+      class="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:text-text focus:shadow-lg"
+      href="#main"
+    >
+      Skip to main content
+    </a>
     <Header />
-    <main id="main" class="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-10">   
+    <main id="main" tabindex="-1" class="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-10">
       <slot />
     </main>
     <Footer />
-    <div id="cc-lightbox" class="cc-lightbox" aria-hidden="true">
+    <div
+      id="cc-lightbox"
+      class="cc-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+      aria-hidden="true"
+      tabindex="-1"
+    >
       <button class="cc-lightbox-close" type="button" aria-label="Close image">×</button>
       <img class="cc-lightbox-image" alt="" />
     </div>
@@ -119,17 +152,24 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
   const closeButton = lightbox?.querySelector(".cc-lightbox-close");
   if (!lightbox || !lightboxImage || !closeButton) return;
 
+  let lastFocused = null;
   const openLightbox = (src, alt) => {
+    lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     lightboxImage.src = src;
     lightboxImage.alt = alt || "";
     lightbox.classList.add("is-open");
     lightbox.setAttribute("aria-hidden", "false");
+    closeButton.focus();
   };
 
   const closeLightbox = () => {
     lightbox.classList.remove("is-open");
     lightbox.setAttribute("aria-hidden", "true");
     lightboxImage.src = "";
+    if (lastFocused) {
+      lastFocused.focus();
+      lastFocused = null;
+    }
   };
 
   document.addEventListener("click", (event) => {

@@ -18,7 +18,11 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout
+  title="Blog"
+  description="Essays, notes, and links from the Computed Cloud blog."
+  data-pagefind-ignore="all"
+>
   <section class="space-y-4">
     <p class="text-xs uppercase tracking-wide text-muted">Blog</p>
     <h1 class="font-heading text-3xl font-semibold text-text">Writing archive</h1>

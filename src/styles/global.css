@@ -134,8 +134,12 @@ a {
 }
 
 .prose blockquote {
-  @apply mt-6 rounded-xl border border-border bg-surface px-5 py-4 text-muted;  
+  @apply mt-6 rounded-xl border border-border bg-surface px-5 py-4 text-muted;
   border-left-width: 4px;
+}
+
+.prose blockquote > p:first-child {
+  margin-top: 0;
 }
 
 .prose hr {
@@ -211,18 +215,25 @@ a {
 }
 
 .cc-figure {
-  @apply mt-8 space-y-3;
+  @apply mt-8 space-y-3 rounded-2xl border border-border p-4;
 }
 
 .cc-lightbox-link {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
   cursor: zoom-in;
   position: relative;
+  width: 100%;
 }
 
 .cc-figure img {
-  @apply w-full rounded-2xl border border-border;
+  @apply max-w-full h-auto rounded-xl;
+  width: auto;
+  border: 0;
+  display: block;
+  margin: 0 auto;
 }
 
 .cc-lightbox-link::after {
@@ -347,7 +358,7 @@ pre.mermaid[data-processed] {
   display: inline-grid;
   place-content: center;
   vertical-align: middle;
-  margin-top: 0.1rem;
+  margin-top: 0;
 }
 
 .prose input[type="checkbox"]::after {
@@ -367,6 +378,16 @@ pre.mermaid[data-processed] {
 .prose input[type="checkbox"]:checked::after {
   border-left-color: rgb(var(--cc-accent));
   border-bottom-color: rgb(var(--cc-accent));
+}
+
+.cc-search .pagefind-ui__search-input {
+  @apply w-full rounded-full border border-border bg-surface/90 px-4 py-2 text-sm text-text shadow-sm;
+}
+
+.cc-search .pagefind-ui__search-input:focus {
+  outline: none;
+  border-color: rgb(var(--cc-primary));
+  box-shadow: 0 0 0 2px rgb(var(--cc-primary) / 0.2);
 }
 
 @media print {

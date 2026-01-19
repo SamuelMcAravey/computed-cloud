@@ -38,6 +38,7 @@ import YamlJsonTool from "@components/tools/YamlJsonTool.astro";
 import HtmlEntityTool from "@components/tools/HtmlEntityTool.astro";
 import UnixPermissionsTool from "@components/tools/UnixPermissionsTool.astro";
 import LogViewerLinkTool from "@components/tools/LogViewerLinkTool.astro";
+import CloudInitTool from "@components/tools/CloudInitTool.astro";
 import SortLinesTool from "@components/tools/SortLinesTool.astro";
 import IpifyTool from "@components/tools/IpifyTool.astro";
 import DnsLookupTool from "@components/tools/DnsLookupTool.astro";
@@ -297,6 +298,12 @@ const tools = [
     description: "Filter and highlight logs in a full page tool.",
     Component: LogViewerLinkTool,
   },
+  {
+    id: "cloud-init",
+    title: "Cloud-init generator",
+    description: "Build cloud-init YAML with users, packages, and commands.",
+    Component: CloudInitTool,
+  },
 ];
 
 const toolById = new Map(tools.map((tool) => [tool.id, tool]));
@@ -349,7 +356,7 @@ const categories = [
   {
     id: "full-page",
     title: "Full-page tools",
-    toolIds: ["log-viewer-page"],
+    toolIds: ["log-viewer-page", "cloud-init"],
   },
 ];
 
@@ -359,7 +366,7 @@ const categoriesWithTools = categories.map((category) => ({
 }));
 ---
 
-<BaseLayout title="Tools" description="Small in-browser tools for day-to-day engineering work.">
+<BaseLayout title="Tools" description="Small in-browser tools for day-to-day engineering work." data-pagefind-ignore="all">
   <section class="space-y-6">
     <p class="text-xs uppercase tracking-wide text-muted">Tools</p>
     <h1 class="font-heading text-4xl font-semibold text-text">Tools</h1>

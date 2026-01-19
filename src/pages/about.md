@@ -2,6 +2,7 @@
 title: "About"
 description: "About Samuel McAravey and Computed Cloud."
 layout: "../layouts/BaseLayout.astro"
+data-pagefind-ignore: all
 ---
 
 <div class="prose">
