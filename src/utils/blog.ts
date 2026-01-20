@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 
-export const includeDrafts = import.meta.env.DEV;
+export const includeDrafts =
+  import.meta.env.DEV && import.meta.env.PUBLIC_SHOW_DRAFTS === "true";
 
 export const normalizeTag = (tag: string): string =>
   tag.trim().toLowerCase().replace(/\s+/g, "-");
