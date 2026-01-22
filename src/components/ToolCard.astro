@@ -8,13 +8,31 @@ export interface Props {
 const { title, description, id } = Astro.props;
 ---
 
-<section id={id} data-tool-card class="rounded-2xl border border-border bg-surface/90 p-6 shadow-sm">
+<section id={id} data-tool-card data-collapsed="true" class="rounded-2xl border border-border bg-surface/90 p-6 shadow-sm">
   <header class="space-y-2">
     <div class="flex items-start justify-between gap-3">
-      <h2 class="font-heading text-xl font-semibold text-text">{title}</h2>
+      <button
+        type="button"
+        data-toggle-card
+        class="flex-1 text-left flex items-center gap-2 group"
+        aria-label={`Expand ${title}`}
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="h-5 w-5 text-muted transition-transform duration-200"
+          data-chevron
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <h2 class="font-heading text-xl font-semibold text-text group-hover:text-primary transition-colors">{title}</h2>
+      </button>
       {id && (
         <button
-          class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+          class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text flex-shrink-0"
           type="button"
           data-copy-link={`#${id}`}
           aria-label={`Copy link to ${title}`}
@@ -42,9 +60,104 @@ const { title, description, id } = Astro.props;
         </button>
       )}
     </div>
-    {description && <p class="text-sm text-muted">{description}</p>}
+    {description && <p class="text-sm text-muted mt-2">{description}</p>}
   </header>
-  <div class="mt-4">
+  <div class="mt-4 overflow-hidden" data-card-content style="display: none;">
     <slot />
   </div>
 </section>
+
+<script is:inline>
+  (() => {
+    // Only initialize once globally
+    if (window.__toolCardsInitialized) return;
+    window.__toolCardsInitialized = true;
+    
+    // Initialize all tool cards
+    const initToolCards = () => {
+      const cards = document.querySelectorAll('[data-tool-card]');
+      
+      cards.forEach((card) => {
+        const toggleBtn = card.querySelector('[data-toggle-card]');
+        const content = card.querySelector('[data-card-content]');
+        const chevron = card.querySelector('[data-chevron]');
+        const cardId = card.getAttribute('id');
+        
+        if (!toggleBtn || !content || !chevron) return;
+        
+        const isCollapsed = () => card.getAttribute('data-collapsed') === 'true';
+        
+        const expand = () => {
+          card.setAttribute('data-collapsed', 'false');
+          content.style.display = 'block';
+          chevron.style.transform = 'rotate(90deg)';
+          toggleBtn.setAttribute('aria-label', toggleBtn.getAttribute('aria-label').replace('Expand', 'Collapse'));
+        };
+        
+        const collapse = () => {
+          card.setAttribute('data-collapsed', 'true');
+          content.style.display = 'none';
+          chevron.style.transform = 'rotate(0deg)';
+          toggleBtn.setAttribute('aria-label', toggleBtn.getAttribute('aria-label').replace('Collapse', 'Expand'));
+        };
+        
+        const toggle = () => {
+          if (isCollapsed()) {
+            expand();
+          } else {
+            collapse();
+          }
+        };
+        
+        // Toggle on button click
+        toggleBtn.addEventListener('click', toggle);
+        
+        // Auto-expand if URL fragment matches this card's ID on page load
+        if (cardId && window.location.hash === `#${cardId}`) {
+          expand();
+        }
+      });
+    };
+    
+    // Handle clicks on table of contents links
+    const handleTocLinks = () => {
+      const tocLinks = document.querySelectorAll('a[href^="#"]');
+      
+      tocLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (!href || href === '#') return;
+          
+          const targetId = href.substring(1);
+          const targetCard = document.querySelector(`[data-tool-card][id="${targetId}"]`);
+          
+          if (targetCard) {
+            const content = targetCard.querySelector('[data-card-content]');
+            const chevron = targetCard.querySelector('[data-chevron]');
+            const toggleBtn = targetCard.querySelector('[data-toggle-card]');
+            
+            if (content && targetCard.getAttribute('data-collapsed') === 'true') {
+              targetCard.setAttribute('data-collapsed', 'false');
+              content.style.display = 'block';
+              if (chevron) chevron.style.transform = 'rotate(90deg)';
+              if (toggleBtn) {
+                toggleBtn.setAttribute('aria-label', toggleBtn.getAttribute('aria-label').replace('Expand', 'Collapse'));
+              }
+            }
+          }
+        });
+      });
+    };
+    
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        initToolCards();
+        handleTocLinks();
+      });
+    } else {
+      initToolCards();
+      handleTocLinks();
+    }
+  })();
+</script>
