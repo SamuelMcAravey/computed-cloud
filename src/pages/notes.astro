@@ -25,7 +25,7 @@ const notes = flattenNotes(await getCollection("notes"));
     </p>
   </section>
 
-  <section class="mt-10 space-y-6">
+  <section class="mt-10 grid gap-6 xl:grid-cols-2">
     {notes.map((note) => (
       <NoteCard note={note} />
     ))}

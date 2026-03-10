@@ -21,6 +21,7 @@ still worth keeping public.
 - `context`: where or when the note belongs, for example `Pearl Bakery, 2020-2023`
 - `published`: when the note was added to the site
 - `links`: optional related links
+- Keep links short and cap them at two per note
 
 ## Dates
 
