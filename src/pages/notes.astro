@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import NoteCard from "@components/NoteCard.astro";
+import { flattenNotes } from "../utils/notes";
+
+const notes = flattenNotes(await getCollection("notes"));
+---
+
+<BaseLayout
+  title="Notes"
+  description="Shorter notes on systems, integrations, operations, and things worth keeping."
+>
+  <section class="space-y-6">
+    <p class="text-xs uppercase tracking-[0.2em] text-muted">Notes</p>
+    <h1 class="font-heading text-4xl font-semibold text-text">Notes</h1>
+    <p class="max-w-3xl text-lg leading-8 text-muted">
+      Shorter entries on systems, integrations, operations, and things I want to
+      keep. Some are current. Some come from older work that is still worth writing
+      down.
+    </p>
+    <p class="max-w-3xl text-sm leading-7 text-muted">
+      Published dates show when a note was added here. Context labels show where the
+      work belongs.
+    </p>
+  </section>
+
+  <section class="mt-10 space-y-6">
+    {notes.map((note) => (
+      <NoteCard note={note} />
+    ))}
+  </section>
+</BaseLayout>

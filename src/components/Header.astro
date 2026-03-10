@@ -36,6 +36,13 @@ const currentPath = Astro.url.pathname;
           Blog
         </a>
         <a
+          class={currentPath === "/notes" ? "text-text" : ""}
+          aria-current={currentPath === "/notes" ? "page" : undefined}
+          href="/notes"
+        >
+          Notes
+        </a>
+        <a
           class={currentPath.startsWith("/tags") ? "text-text" : ""}
           aria-current={currentPath.startsWith("/tags") ? "page" : undefined}
           href="/tags"

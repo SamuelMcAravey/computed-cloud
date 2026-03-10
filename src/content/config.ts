@@ -16,4 +16,28 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const noteLink = z.object({
+  label: z.string(),
+  href: z.string(),
+});
+
+const noteEntry = z.object({
+  id: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  body: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
+  context: z.string().optional(),
+  published: z.string(),
+  links: z.array(noteLink).default([]),
+});
+
+const notes = defineCollection({
+  type: "data",
+  schema: z.object({
+    month: z.string(),
+    entries: z.array(noteEntry),
+  }),
+});
+
+export const collections = { blog, notes };

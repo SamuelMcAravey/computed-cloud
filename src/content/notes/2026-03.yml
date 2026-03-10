@@ -1,0 +1,65 @@
+month: "2026-03"
+entries:
+  - id: bakery-floor-software
+    title: Software changes when the bakery opens before sunrise
+    summary: The useful feature was never the one that looked clean in a demo. It was the one the floor could understand when the day was already moving.
+    context: Pearl Bakery, 2020-2023
+    published: "2026-03-10"
+    tags:
+      - bakery
+      - operations
+      - erp
+    body:
+      - "At Pearl Bakery, the ERP mattered because it tied order intake, production planning, packing, and invoicing into one daily flow. If one step was confusing, the whole morning got worse."
+      - "That pushed the design toward boring screens, obvious status, and fewer places for people to get lost. In that environment, clarity beats cleverness every time."
+    links:
+      - label: Read the bakery ERP write-up
+        href: /blog/pearl-bakery-custom-erp-for-production
+
+  - id: integration-work-is-mostly-constraint-discovery
+    title: Integration work is mostly constraint discovery
+    summary: The hard part is rarely calling the external system. The hard part is learning where its assumptions do not match yours.
+    context: PayeWaive, 2017-present
+    published: "2026-03-10"
+    tags:
+      - integrations
+      - erp
+      - architecture
+    body:
+      - "ERP integrations look straightforward until real customer data arrives. Then the edge cases show up: missing fields, inconsistent naming, one-off workflow exceptions, and rules that only exist because someone had to survive an earlier mess."
+      - "The lesson is to treat integration work as product and operations work, not only transport and mapping work. The contract on paper is not the whole system."
+    links:
+      - label: Read more on schema drift
+        href: /blog/schema-drift-erp-integrations
+
+  - id: grounded-ai-workflows-are-the-only-ones-i-trust
+    title: Grounded AI workflows are the only ones I trust
+    summary: AI gets useful when it has enough context to be specific. Without that, it mostly produces clean-looking guesses.
+    context: PayeWaive, 2024-present
+    published: "2026-03-10"
+    tags:
+      - ai
+      - support
+      - tooling
+    body:
+      - "The support and debugging workflows that helped us were the ones grounded in the ticket, the Sentry event, and the relevant code. That is what made the output worth reading."
+      - "I have become more skeptical of generic AI features over time. If the system cannot see enough of the real problem, it should not pretend otherwise."
+    links:
+      - label: Read the support triage post
+        href: /blog/codex-assisted-support-ticket-triage-freshdesk
+
+  - id: reliability-is-what-people-remember
+    title: Reliability is what people remember
+    summary: Users rarely care how elegant the internals were. They remember whether the system was available when they needed it.
+    context: Payments platforms
+    published: "2026-03-10"
+    tags:
+      - reliability
+      - payments
+      - operations
+    body:
+      - "A lot of engineering conversations drift toward architecture as an abstract exercise. In payment and compliance systems, the more practical question is what happens when something fails on a real deadline."
+      - "That is why I tend to care so much about recovery paths, auditability, deployment safety, and operational clarity. They decide whether the software feels trustworthy."
+    links:
+      - label: Read the engineering principles post
+        href: /blog/how-i-build-software-that-survives-reality
