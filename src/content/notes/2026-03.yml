@@ -1,65 +1,120 @@
 month: "2026-03"
 entries:
-  - id: bakery-floor-software
-    title: Software changes when the bakery opens before sunrise
-    summary: The useful feature was never the one that looked clean in a demo. It was the one the floor could understand when the day was already moving.
-    context: Pearl Bakery, 2020-2023
+  - id: recovery-paths-are-part-of-the-product
+    title: "Recovery paths are part of the product"
+    summary: "I do not think a workflow is really done until the failure path makes sense to the user and to support."
+    context: "Payments and integrations"
+    published: "2026-03-10"
+    tags:
+      - reliability
+      - operations
+      - payments
+    body:
+      - "I have seen too many workflows where the happy path is mapped out and the failure path is basically 'we'll sort it out if it happens.' That sounds fine until one external step succeeds, the next one does not, and now somebody wants to know whether the money moved or whether they need to do something again."
+      - "That is probably why I keep coming back to retries, reconciliation, and visible states. Maybe that is not glamorous enough to call product work, but I do not really know what else to call it."
+    links:
+      - label: Read the idempotency post
+        href: /blog/idempotency-in-payments-workflows
+
+  - id: if-one-person-does-the-daily-math-thats-a-problem
+    title: "If one person has to do the daily math, that's a problem"
+    summary: "One of the clearest signs something had to change at the bakery was that the day depended on me finishing the planning math before everyone else could really get moving."
+    context: "Pearl Bakery, 2020-2023"
     published: "2026-03-10"
     tags:
       - bakery
       - operations
       - erp
     body:
-      - "At Pearl Bakery, the ERP mattered because it tied order intake, production planning, packing, and invoicing into one daily flow. If one step was confusing, the whole morning got worse."
-      - "That pushed the design toward boring screens, obvious status, and fewer places for people to get lost. In that environment, clarity beats cleverness every time."
+      - "For a while the spreadsheet worked. Then volume went up, the SKU count went up, and the plan for the day was half in my head and half in a pile of calculations I had to get right before sunrise. That is not a great feeling when a full crew is about to start and the whole day is leaning on you."
+      - "That was the real reason I built the planning system. Not because I wanted to build ERP software. Because I could feel the business depending way too hard on one tired person not making a mistake."
     links:
       - label: Read the bakery ERP write-up
         href: /blog/pearl-bakery-custom-erp-for-production
 
-  - id: integration-work-is-mostly-constraint-discovery
-    title: Integration work is mostly constraint discovery
-    summary: The hard part is rarely calling the external system. The hard part is learning where its assumptions do not match yours.
-    context: PayeWaive, 2017-present
-    published: "2026-03-10"
-    tags:
-      - integrations
-      - erp
-      - architecture
-    body:
-      - "ERP integrations look straightforward until real customer data arrives. Then the edge cases show up: missing fields, inconsistent naming, one-off workflow exceptions, and rules that only exist because someone had to survive an earlier mess."
-      - "The lesson is to treat integration work as product and operations work, not only transport and mapping work. The contract on paper is not the whole system."
-    links:
-      - label: Read more on schema drift
-        href: /blog/schema-drift-erp-integrations
-
   - id: grounded-ai-workflows-are-the-only-ones-i-trust
-    title: Grounded AI workflows are the only ones I trust
-    summary: AI gets useful when it has enough context to be specific. Without that, it mostly produces clean-looking guesses.
-    context: PayeWaive, 2024-present
+    title: "The only AI workflows I trust are grounded ones"
+    summary: "The AI workflows that have actually helped me all had the same property: they were tied to a real ticket, a real event, or a real chunk of code."
+    context: "PayeWaive, 2024-present"
     published: "2026-03-10"
     tags:
       - ai
       - support
       - tooling
     body:
-      - "The support and debugging workflows that helped us were the ones grounded in the ticket, the Sentry event, and the relevant code. That is what made the output worth reading."
-      - "I have become more skeptical of generic AI features over time. If the system cannot see enough of the real problem, it should not pretend otherwise."
+      - "The useful cases were never the broad 'ask anything' ones. It was Freshdesk tickets, Sentry events with real stack traces, or repo context that narrowed the search enough for the model to say something specific instead of hand-wavy."
+      - "Without that, I mostly get tidy guesses. That is expensive in support or incident work. Sometimes I think that is the whole dividing line."
     links:
       - label: Read the support triage post
         href: /blog/codex-assisted-support-ticket-triage-freshdesk
 
-  - id: reliability-is-what-people-remember
-    title: Reliability is what people remember
-    summary: Users rarely care how elegant the internals were. They remember whether the system was available when they needed it.
-    context: Payments platforms
+  - id: payment-rails-are-different-products
+    title: "Payments is not one thing"
+    summary: "I still hear 'payments' talked about like it is one problem. It really is not."
+    context: "Payments platforms"
     published: "2026-03-10"
     tags:
-      - reliability
       - payments
       - operations
+      - architecture
     body:
-      - "A lot of engineering conversations drift toward architecture as an abstract exercise. In payment and compliance systems, the more practical question is what happens when something fails on a real deadline."
-      - "That is why I tend to care so much about recovery paths, auditability, deployment safety, and operational clarity. They decide whether the software feels trustworthy."
+      - "Checks, ACH, wires, virtual cards, RTP, FedNow, and credit cards all come with different timing, evidence, failure modes, and support work. If you flatten that too early, you end up with a generic payments model that does not really match any of the actual rails."
+      - "I am probably saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand."
+
+  - id: at-some-point-the-sync-stopped-being-glue-code
+    title: "At some point, the sync stopped being glue code"
+    summary: "The ERP sync stopped feeling like glue code once it had enough business rules and enough debugging pressure attached to it."
+    context: "PayeWaive, 2024-present"
+    published: "2026-03-10"
+    tags:
+      - integrations
+      - tooling
+      - architecture
+    body:
+      - "I do not have some ideological objection to Azure Data Factory or orchestration tools in general. They are fine for certain kinds of work. But this sync kept picking up more rules, more edge cases, and more moments where somebody needed an answer fast."
+      - "At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. Maybe that should have been obvious sooner than it was."
+
+  - id: bakery-floor-software
+    title: "Software changes when the bakery opens before sunrise"
+    summary: "At the bakery, the right feature was usually the one somebody could use half awake at 5am."
+    context: "Pearl Bakery, 2020-2023"
+    published: "2026-03-10"
+    tags:
+      - bakery
+      - operations
+      - erp
+    body:
+      - "That sounds a little dramatic if you have not worked in a production shop, but it was real. We had iPads on tables, people moving fast, and no quiet little gap where someone could stop and decode a clever screen. If one step was confusing, the whole morning got worse."
+      - "I still think about that when people talk about UX in abstract terms. Sometimes good UX is just making the next step obvious enough that a tired person can do it without getting lost."
+    links:
+      - label: Read the bakery ERP write-up
+        href: /blog/pearl-bakery-custom-erp-for-production
+
+  - id: owning-the-p-and-l-changed-how-i-think-about-software
+    title: "Owning the P-and-L changed how I think about software"
+    summary: "Running the bakery changed my tolerance for internal tools that look clever but do not actually remove a real constraint."
+    context: "Pearl Bakery, 2020-2023"
+    published: "2026-03-10"
+    tags:
+      - bakery
+      - operations
+      - architecture
+    body:
+      - "Once labor, waste, pricing, ingredient costs, and manual re-entry all land on the same sheet, weak tooling stops feeling theoretical. You can see the cost of it. You can feel it in overtime, throwaway product, and extra admin work at the end of the day."
+      - "I do not think that made me less technical. If anything it made me more practical. I have a lot less patience now for software that sounds interesting but does not pay rent."
+
+  - id: single-big-machine-bias
+    title: "A single big machine can take you pretty far"
+    summary: "I am not against Kubernetes. I just think a lot of teams start paying a complexity bill long before they are getting anything back for it."
+    context: "Architecture and operations"
+    published: "2026-03-10"
+    tags:
+      - architecture
+      - operations
+      - tooling
+    body:
+      - "I keep coming back to this because I have seen how fast infrastructure sprawl becomes a staffing problem. A solid machine, or a small redundant set of them, can take you a long way if the application is designed sanely."
+      - "Most systems do not fail because the first version was too simple. They fail because nobody can reason about the moving parts when something breaks. I know that sounds a little old-fashioned, but I have not really seen reality argue with it."
     links:
       - label: Read the engineering principles post
         href: /blog/how-i-build-software-that-survives-reality
