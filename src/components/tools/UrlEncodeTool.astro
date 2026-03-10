@@ -1,0 +1,53 @@
+<div class="space-y-3" data-tool="url-encode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-input">Input</label>
+    <textarea
+      id="url-encode-input"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text to encode"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="url-encode-output">Encoded</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#url-encode-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="url-encode-output"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="url-encode"]');
+    if (root) {
+      const input = root.querySelector("#url-encode-input");
+      const output = root.querySelector("#url-encode-output");
+      const update = () => {
+        if (!input || !output) return;
+        output.value = input.value ? encodeURIComponent(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+<div class="space-y-3" data-tool="json-format">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="json-format-input">JSON</label>
+    <textarea
+      id="json-format-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder='{"key":"value"}'
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="json-format-output">Formatted</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#json-format-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="json-format-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="json-format"]');
+    if (root) {
+      const input = root.querySelector("#json-format-input");
+      const output = root.querySelector("#json-format-output");
+      const error = root.querySelector("[data-error]");
+      const update = () => {
+        if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        try {
+          const value = JSON.parse(input.value);
+          output.value = JSON.stringify(value, null, 2);
+          error.textContent = "";
+        } catch (err) {
+          output.value = "";
+          error.textContent = "Invalid JSON.";
+        }
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

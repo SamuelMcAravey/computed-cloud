@@ -1,0 +1,113 @@
+<div class="space-y-3" data-tool="hmac">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="hmac-key">Key</label>
+      <input
+        id="hmac-key"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        placeholder="Secret key"
+      />
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="hmac-algo">Algorithm</label>
+      <select
+        id="hmac-algo"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="SHA-256">SHA-256</option>
+        <option value="SHA-1">SHA-1</option>
+      </select>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="hmac-message">Message</label>
+    <textarea
+      id="hmac-message"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Message to sign"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="hmac-output">Output (hex)</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#hmac-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="hmac-output"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="hmac"]');
+    if (root) {
+      const keyInput = root.querySelector("#hmac-key");
+      const algoSelect = root.querySelector("#hmac-algo");
+      const msgInput = root.querySelector("#hmac-message");
+      const output = root.querySelector("#hmac-output");
+      const error = root.querySelector("[data-error]");
+      const toHex = (buffer) =>
+        Array.from(new Uint8Array(buffer))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      let runId = 0;
+      const update = async () => {
+        if (!keyInput || !msgInput || !output || !algoSelect || !error) return;
+        const keyRaw = keyInput.value;
+        const msgRaw = msgInput.value;
+        if (!keyRaw.trim() && !msgRaw.trim()) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const currentRun = ++runId;
+        try {
+          const keyData = new TextEncoder().encode(keyRaw);
+          const msgData = new TextEncoder().encode(msgRaw);
+          const key = await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            { name: "HMAC", hash: { name: algoSelect.value } },
+            false,
+            ["sign"]
+          );
+          const signature = await crypto.subtle.sign("HMAC", key, msgData);
+          if (currentRun !== runId) return;
+          output.value = toHex(signature);
+          error.textContent = "";
+        } catch {
+          if (currentRun !== runId) return;
+          output.value = "";
+          error.textContent = "Unable to generate HMAC.";
+        }
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          void update();
+        });
+      };
+      keyInput?.addEventListener("input", scheduleUpdate);
+      msgInput?.addEventListener("input", scheduleUpdate);
+      algoSelect?.addEventListener("change", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

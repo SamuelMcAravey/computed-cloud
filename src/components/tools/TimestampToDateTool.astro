@@ -1,0 +1,76 @@
+<div class="space-y-3" data-tool="timestamp-to-date">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="timestamp-input">Timestamp</label>
+    <input
+      id="timestamp-input"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      placeholder="1690000000 or 1690000000000"
+    />
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="timestamp-output">Date</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#timestamp-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="timestamp-output"
+      class="min-h-[80px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="timestamp-to-date"]');
+    if (root) {
+      const input = root.querySelector("#timestamp-input");
+      const output = root.querySelector("#timestamp-output");
+      const error = root.querySelector("[data-error]");
+      const update = () => {
+        if (!input || !output || !error) return;
+        const value = input.value.trim();
+        if (!value) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const num = Number(value);
+        if (Number.isNaN(num)) {
+          output.value = "";
+          error.textContent = "Invalid number.";
+          return;
+        }
+        const ms = value.length <= 10 ? num * 1000 : num;
+        const date = new Date(ms);
+        if (Number.isNaN(date.valueOf())) {
+          output.value = "";
+          error.textContent = "Invalid timestamp.";
+          return;
+        }
+        output.value = `ISO: ${date.toISOString()}\nLocal: ${date.toString()}`;
+        error.textContent = "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

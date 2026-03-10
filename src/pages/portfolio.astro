@@ -1,0 +1,318 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getPostSlug } from "../utils/blog";
+import {
+  portfolioCaseStudies,
+  portfolioFocusAreas,
+  portfolioLinks,
+  portfolioOpenSourceProjects,
+  portfolioQuickFacts,
+  portfolioTimeline,
+  portfolioWritingSlugs,
+} from "../data/portfolio";
+
+const posts = await getCollection("blog");
+const postsBySlug = new Map(posts.map((post) => [getPostSlug(post), post]));
+const featuredPosts = portfolioWritingSlugs
+  .map((slug) => postsBySlug.get(slug))
+  .filter(Boolean);
+
+const cardClass =
+  "rounded-3xl border border-border bg-surface/90 p-6 shadow-sm";
+const mutedCardClass =
+  "rounded-3xl border border-border/80 bg-surface/70 p-6 shadow-sm";
+---
+
+<BaseLayout
+  title="Portfolio"
+  description="Selected systems, public work, writing, and resume material for Samuel McAravey."
+>
+  <section class="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.9fr)]">
+    <div class="relative overflow-hidden rounded-[2rem] border border-border bg-surface/90 p-8 shadow-sm">
+      <div aria-hidden="true" class="absolute -right-10 top-2 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
+      <div aria-hidden="true" class="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-accent/10 blur-3xl"></div>
+      <div class="relative">
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Portfolio</p>
+        <h1 class="mt-4 max-w-4xl font-heading text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+          Selected systems, public projects, and writing.
+        </h1>
+        <p class="mt-6 max-w-3xl text-lg leading-8 text-muted">
+          I build software for payments, compliance, and operational workflows where
+          reliability matters and bad data gets expensive. Most of the systems I have
+          led are private, so this page focuses on the work I can show: outcomes,
+          public repositories, technical writing, and resume material.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            class="inline-flex items-center rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primaryHover hover:border-primaryHover"
+            href={portfolioLinks.resume}
+            style="color: #fff"
+          >
+            Download resume
+          </a>
+          <a
+            class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+            href={portfolioLinks.brief}
+          >
+            Download brief
+          </a>
+          <a
+            class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+            href={portfolioLinks.linkedin}
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+          <a
+            class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+            href={portfolioLinks.github}
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <aside class="space-y-6">
+      <div class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Best fit</p>
+        <ul class="mt-4 space-y-3 text-sm leading-6 text-muted">
+          <li>Staff, principal, director, and head of engineering roles.</li>
+          <li>B2B SaaS, platform, infrastructure, fintech, and integration-heavy teams.</li>
+          <li>Work that needs reliability, delivery discipline, and clear technical judgment.</li>
+        </ul>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Links</p>
+        <ul class="mt-4 space-y-3 text-sm text-muted">
+          <li>
+            <a class="underline decoration-accent/50 underline-offset-4" href={portfolioLinks.email}>
+              samuel@mcaravey.pro
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline decoration-accent/50 underline-offset-4"
+              href={portfolioLinks.github}
+              target="_blank"
+              rel="noreferrer"
+            >
+              github.com/SamuelMcAravey
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline decoration-accent/50 underline-offset-4"
+              href={portfolioLinks.githubOrg}
+              target="_blank"
+              rel="noreferrer"
+            >
+              github.com/incursa
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <section class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    {portfolioQuickFacts.map((fact) => (
+      <article class={mutedCardClass}>
+        <p class="font-heading text-3xl font-semibold text-text">{fact.value}</p>
+        <p class="mt-2 text-sm font-medium text-text">{fact.label}</p>
+        <p class="mt-3 text-sm leading-6 text-muted">{fact.detail}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="mt-14">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">What I bring</p>
+      <h2 class="mt-3 font-heading text-3xl font-semibold text-text">
+        A few examples of the kind of work I do.
+      </h2>
+    </div>
+    <div class="mt-6 grid gap-6 lg:grid-cols-3">
+      {portfolioFocusAreas.map((item) => (
+        <article class={cardClass}>
+          <h3 class="font-heading text-xl font-semibold text-text">{item.title}</h3>
+          <p class="mt-4 text-sm leading-7 text-muted">{item.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-14">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Selected work</p>
+      <h2 class="mt-3 font-heading text-3xl font-semibold text-text">
+        Selected systems and outcomes
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        Most of the work that best represents me lives in private codebases. These
+        are the systems I would start with because they show the mix of architecture,
+        delivery, operations, and business context I tend to work in.
+      </p>
+    </div>
+    <div class="mt-6 space-y-6">
+      {portfolioCaseStudies.map((study) => (
+        <article class={cardClass}>
+          <div class="flex flex-col gap-4 border-b border-border/80 pb-5 md:flex-row md:items-start md:justify-between">
+            <div>
+              <h3 class="font-heading text-2xl font-semibold text-text">{study.name}</h3>
+              <p class="mt-2 text-sm font-medium text-text">{study.role}</p>
+            </div>
+            <p class="text-sm text-muted">{study.period}</p>
+          </div>
+          <p class="mt-5 text-base leading-7 text-muted">{study.summary}</p>
+          <ul class="mt-5 space-y-3 pl-5 text-sm leading-7 text-muted">
+            {study.highlights.map((highlight) => (
+              <li>{highlight}</li>
+            ))}
+          </ul>
+          {study.links && study.links.length > 0 && (
+            <div class="mt-6 flex flex-wrap gap-3">
+              {study.links.map((link) => (
+                <a
+                  class="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm font-medium text-text hover:border-primary"
+                  href={link.href}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-14">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Public work</p>
+      <h2 class="mt-3 font-heading text-3xl font-semibold text-text">
+        Public repositories and packages
+      </h2>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-muted">
+        These repos are a good sample of the problems I like working on: platform
+        capabilities, developer tooling, infrastructure automation, reusable types,
+        and operator-facing product work.
+      </p>
+    </div>
+    <div class="mt-6 grid gap-6 xl:grid-cols-2">
+      {portfolioOpenSourceProjects.map((project) => (
+        <article class={cardClass}>
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="font-heading text-xl font-semibold text-text">{project.name}</h3>
+            <a
+              class="shrink-0 text-sm font-medium text-text underline decoration-accent/50 underline-offset-4"
+              href={project.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View repo
+            </a>
+          </div>
+          <p class="mt-4 text-sm leading-7 text-muted">{project.summary}</p>
+          <ul class="mt-4 space-y-3 pl-5 text-sm leading-7 text-muted">
+            {project.details.map((detail) => (
+              <li>{detail}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-14">
+    <div class={cardClass}>
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Writing</p>
+      <h2 class="mt-3 font-heading text-3xl font-semibold text-text">
+        A few posts worth reading
+      </h2>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-muted">
+        These are the posts I would send first. They cover tradeoffs, failure modes,
+        and the kind of practical constraints I care about.
+      </p>
+      <div class="mt-6 space-y-4">
+        {featuredPosts.map((post) => (
+          <article class="rounded-2xl border border-border/80 bg-bg/60 p-5">
+            <a class="block" href={`/blog/${getPostSlug(post)}`}>
+              <h3 class="font-heading text-xl font-semibold text-text">{post.data.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-muted">{post.data.description}</p>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-14">
+    <div class="rounded-[2rem] border border-border bg-surface/90 p-8 shadow-sm">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Contact</p>
+      <h2 class="mt-3 font-heading text-3xl font-semibold text-text">
+        If this is close to what your team needs, reach out.
+      </h2>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-muted">
+        I am usually most useful on reliability-heavy, integration-heavy, or
+        operationally messy systems where the technical choices need to hold up in
+        production.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          class="inline-flex items-center rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primaryHover hover:border-primaryHover"
+          href={portfolioLinks.email}
+          style="color: #fff"
+        >
+          Email Samuel
+        </a>
+        <a
+          class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+          href={portfolioLinks.linkedin}
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </a>
+        <a
+          class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+          href={portfolioLinks.github}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Personal GitHub
+        </a>
+        <a
+          class="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-text hover:border-primary"
+          href={portfolioLinks.githubOrg}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Incursa GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-14">
+    <div class={cardClass}>
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Experience timeline</p>
+      <ol class="mt-5 space-y-5 lg:max-w-4xl">
+        {portfolioTimeline.map((entry) => (
+          <li class="border-l border-border pl-4">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">{entry.period}</p>
+            <p class="mt-2 font-medium text-text">
+              {entry.title}
+              <span class="text-muted"> at {entry.company}</span>
+            </p>
+            <p class="mt-2 text-sm leading-6 text-muted">{entry.summary}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

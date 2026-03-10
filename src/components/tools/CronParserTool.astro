@@ -1,0 +1,101 @@
+<div class="space-y-3" data-tool="cron">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="cron-input">Cron (min hour day month dow)</label>
+    <input
+      id="cron-input"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      placeholder="*/15 9-17 * * 1-5"
+    />
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="cron-output">Next 5</label>
+    <textarea
+      id="cron-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="cron"]');
+      if (!root) return;
+      const input = root.querySelector("#cron-input");
+      const output = root.querySelector("#cron-output");
+      const error = root.querySelector("[data-error]");
+      const parseField = (value, min, max) => {
+        const set = new Set();
+        const parts = value.split(",");
+        for (const part of parts) {
+          const [rangePart, stepPart] = part.split("/");
+          const step = stepPart ? Number(stepPart) : 1;
+          if (Number.isNaN(step) || step <= 0) return null;
+          if (rangePart === "*") {
+            for (let i = min; i <= max; i += step) set.add(i);
+            continue;
+          }
+          const [startStr, endStr] = rangePart.split("-");
+          const start = Number(startStr);
+          const end = endStr ? Number(endStr) : start;
+          if (Number.isNaN(start) || Number.isNaN(end)) return null;
+          for (let i = start; i <= end; i += step) {
+            if (i >= min && i <= max) set.add(i);
+          }
+        }
+        return set;
+      };
+      const getNextRuns = (expr) => {
+        const fields = expr.trim().split(/\s+/);
+        if (fields.length !== 5) return null;
+        const [minField, hourField, dayField, monthField, dowField] = fields;
+        const minutes = parseField(minField, 0, 59);
+        const hours = parseField(hourField, 0, 23);
+        const days = parseField(dayField, 1, 31);
+        const months = parseField(monthField, 1, 12);
+        const dows = parseField(dowField.replace("7", "0"), 0, 6);
+        if (!minutes || !hours || !days || !months || !dows) return null;
+        const results = [];
+        const start = new Date();
+        const cursor = new Date(start.getTime() + 60000);
+        for (let i = 0; i < 525600 && results.length < 5; i += 1) {
+          if (
+            months.has(cursor.getMonth() + 1) &&
+            days.has(cursor.getDate()) &&
+            hours.has(cursor.getHours()) &&
+            minutes.has(cursor.getMinutes()) &&
+            dows.has(cursor.getDay())
+          ) {
+            results.push(new Date(cursor));
+          }
+          cursor.setMinutes(cursor.getMinutes() + 1);
+        }
+        return results;
+      };
+      const update = () => {
+        if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        const runs = getNextRuns(raw);
+        if (!runs) {
+          output.value = "";
+          error.textContent = "Invalid cron expression.";
+          return;
+        }
+        output.value = runs.map((d) => `${d.toISOString()} | ${d.toString()}`).join("\n");
+        error.textContent = "";
+      };
+      let timer = 0;
+      const scheduleUpdate = () => {
+        clearTimeout(timer);
+        timer = setTimeout(update, 150);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    })();
+  </script>
+</div>

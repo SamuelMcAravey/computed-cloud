@@ -1,0 +1,58 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostCard from "@components/PostCard.astro";
+import StartHereCallout from "@components/StartHereCallout.astro";
+import { getCollection } from "astro:content";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { byNewest, getPostSlug, includeDrafts } from "../utils/blog";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => includeDrafts || !post.data.draft)
+  .sort(byNewest)
+  .slice(0, 5);
+---
+
+<BaseLayout title="Home" description={SITE_DESCRIPTION} data-pagefind-ignore="all">
+  <section class="space-y-6">
+    <h1 class="font-heading text-4xl font-semibold text-text">{SITE_TITLE}</h1>
+    <p class="text-lg text-muted">
+      A quiet space for notes, essays, and ideas worth revisiting. Posts are
+      written in Markdown and kept intentionally small.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a
+        class="inline-flex items-center rounded-full border border-primary bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primaryHover hover:border-primaryHover"
+        href="/portfolio"
+        style="color: #fff"
+      >
+        View portfolio
+      </a>
+      <a
+        class="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm font-medium text-text hover:border-primary"
+        href="/blog"
+      >
+        Read the blog
+      </a>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <StartHereCallout />
+  </section>
+
+  <section class="mt-12 space-y-6">
+    <h2 class="font-heading text-2xl font-semibold text-text">Latest posts</h2>
+    {posts.length > 0 ? (
+      <div class="space-y-6">
+        {posts.map((post) => (
+          <PostCard post={post} slug={getPostSlug(post)} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted">No posts yet. Check back soon.</p>
+    )}
+    <a class="text-sm font-medium text-text" href="/blog">
+      View all posts →
+    </a>
+  </section>
+</BaseLayout>

@@ -1,0 +1,173 @@
+<div class="space-y-3" data-tool="yaml-json">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="yaml-json-mode">Mode</label>
+      <select
+        id="yaml-json-mode"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="yaml-to-json">YAML -> JSON</option>
+        <option value="json-to-yaml">JSON -> YAML</option>
+      </select>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="yaml-json-input">Input</label>
+    <textarea
+      id="yaml-json-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Paste YAML or JSON"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="yaml-json-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#yaml-json-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="yaml-json-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted">Supports basic YAML (no anchors, tags, or multiline blocks).</p>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="yaml-json"]');
+      if (!root) return;
+      const modeSelect = root.querySelector("#yaml-json-mode");
+      const input = root.querySelector("#yaml-json-input");
+      const output = root.querySelector("#yaml-json-output");
+      const error = root.querySelector("[data-error]");
+
+      const parseScalar = (value) => {
+        if (value === "null") return null;
+        if (value === "true") return true;
+        if (value === "false") return false;
+        if (/^[-+]?\d+(\.\d+)?$/.test(value)) return Number(value);
+        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+          return value.slice(1, -1);
+        }
+        return value;
+      };
+
+      const parseYaml = (text) => {
+        const rawLines = text.replace(/\t/g, "  ").split(/\r?\n/);
+        const lines = rawLines
+          .map((line) => line.replace(/\s+#.*$/, ""))
+          .filter((line) => line.trim().length > 0);
+        const parsed = lines.map((line) => {
+          const match = line.match(/^(\s*)(.*)$/);
+          return { indent: match[1].length, content: match[2] };
+        });
+        const rootObj = {};
+        const stack = [{ indent: -1, value: rootObj, type: "object" }];
+        const peekNext = (idx) => {
+          for (let i = idx + 1; i < parsed.length; i += 1) {
+            return parsed[i];
+          }
+          return null;
+        };
+
+        parsed.forEach((line, idx) => {
+          const { indent, content } = line;
+          while (stack.length && indent <= stack[stack.length - 1].indent) {
+            stack.pop();
+          }
+          const current = stack[stack.length - 1];
+          if (content.startsWith("- ")) {
+            if (current.type !== "array") {
+              throw new Error("Invalid YAML array indentation.");
+            }
+            const item = content.slice(2).trim();
+            if (!item) {
+              const obj = {};
+              current.value.push(obj);
+              stack.push({ indent, value: obj, type: "object" });
+            } else {
+              current.value.push(parseScalar(item));
+            }
+            return;
+          }
+          const parts = content.split(":");
+          const key = parts.shift().trim();
+          const rest = parts.join(":").trim();
+          if (!key) return;
+          if (rest === "") {
+            const next = peekNext(idx);
+            const isArray = next && next.indent > indent && next.content.trim().startsWith("- ");
+            const child = isArray ? [] : {};
+            current.value[key] = child;
+            stack.push({ indent, value: child, type: isArray ? "array" : "object" });
+          } else {
+            current.value[key] = parseScalar(rest);
+          }
+        });
+        return rootObj;
+      };
+
+      const toYaml = (value, indent = 0) => {
+        const pad = "  ".repeat(indent);
+        if (Array.isArray(value)) {
+          return value
+            .map((item) => {
+              if (item && typeof item === "object") {
+                return `${pad}-\n${toYaml(item, indent + 1)}`;
+              }
+              return `${pad}- ${String(item)}`;
+            })
+            .join("\n");
+        }
+        if (value && typeof value === "object") {
+          return Object.entries(value)
+            .map(([key, val]) => {
+              if (val && typeof val === "object") {
+                return `${pad}${key}:\n${toYaml(val, indent + 1)}`;
+              }
+              return `${pad}${key}: ${String(val)}`;
+            })
+            .join("\n");
+        }
+        return `${pad}${String(value)}`;
+      };
+
+      const update = () => {
+        if (!input || !output || !error || !modeSelect) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        try {
+          if (modeSelect.value === "json-to-yaml") {
+            const json = JSON.parse(raw);
+            output.value = toYaml(json);
+          } else {
+            const yaml = parseYaml(raw);
+            output.value = JSON.stringify(yaml, null, 2);
+          }
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Unable to convert input.";
+        }
+      };
+      let raf = 0;
+      const schedule = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", schedule);
+      modeSelect?.addEventListener("change", schedule);
+      schedule();
+    })();
+  </script>
+</div>

@@ -1,0 +1,79 @@
+<div class="space-y-3" data-tool="http-ping">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="ping-url">URL</label>
+    <input
+      id="ping-url"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      placeholder="https://computedcloud.com"
+    />
+  </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <button
+      class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      type="button"
+      data-ping
+    >
+      Ping (HTTP)
+    </button>
+    <span class="text-xs text-muted">Uses a HEAD request when possible.</span>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="ping-output">Result</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#ping-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="ping-output"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="http-ping"]');
+      if (!root) return;
+      const input = root.querySelector("#ping-url");
+      const output = root.querySelector("#ping-output");
+      const button = root.querySelector("[data-ping]");
+      const error = root.querySelector("[data-error]");
+      const ping = async () => {
+        if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "Enter a URL.";
+          return;
+        }
+        const url = raw.includes("://") ? raw : `https://${raw}`;
+        const start = performance.now();
+        try {
+          const res = await fetch(url, { method: "HEAD", mode: "cors" });
+          const elapsed = Math.round(performance.now() - start);
+          output.value = `Status: ${res.status}\nTime: ${elapsed} ms`;
+          error.textContent = "";
+        } catch {
+          try {
+            const res = await fetch(url, { method: "GET", mode: "cors" });
+            const elapsed = Math.round(performance.now() - start);
+            output.value = `Status: ${res.status}\nTime: ${elapsed} ms`;
+            error.textContent = "";
+          } catch {
+            output.value = "";
+            error.textContent = "Request failed (CORS or network).";
+          }
+        }
+      };
+      button?.addEventListener("click", () => {
+        void ping();
+      });
+    })();
+  </script>
+</div>

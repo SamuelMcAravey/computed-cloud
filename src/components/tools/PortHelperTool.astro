@@ -1,0 +1,113 @@
+<div class="space-y-3" data-tool="port-helper">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="port-search">Filter ports</label>
+    <input
+      id="port-search"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      placeholder="e.g. http, ssh, 5432"
+    />
+  </div>
+  <div class="rounded-xl border border-border bg-bg/60">
+    <div class="grid grid-cols-[80px_1fr] gap-2 border-b border-border px-3 py-2 text-xs uppercase tracking-wide text-muted">
+      <span>Port</span>
+      <span>Service</span>
+    </div>
+    <div id="port-list" class="max-h-[220px] overflow-auto text-sm text-text"></div>
+  </div>
+  <div class="flex items-center justify-between text-xs text-muted">
+    <span id="port-count">0 ports</span>
+    <button
+      class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+      type="button"
+      data-copy-target="#port-copy"
+    >
+      Copy list
+    </button>
+  </div>
+  <textarea id="port-copy" class="sr-only" readonly></textarea>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="port-helper"]');
+      if (!root) return;
+      const search = root.querySelector("#port-search");
+      const list = root.querySelector("#port-list");
+      const count = root.querySelector("#port-count");
+      const copy = root.querySelector("#port-copy");
+      const ports = [
+        { port: "20/21", service: "FTP" },
+        { port: "22", service: "SSH" },
+        { port: "23", service: "Telnet" },
+        { port: "25", service: "SMTP" },
+        { port: "53", service: "DNS" },
+        { port: "67/68", service: "DHCP" },
+        { port: "69", service: "TFTP" },
+        { port: "80", service: "HTTP" },
+        { port: "110", service: "POP3" },
+        { port: "123", service: "NTP" },
+        { port: "143", service: "IMAP" },
+        { port: "161/162", service: "SNMP" },
+        { port: "389", service: "LDAP" },
+        { port: "443", service: "HTTPS" },
+        { port: "445", service: "SMB/CIFS" },
+        { port: "465", service: "SMTPS" },
+        { port: "587", service: "SMTP (submission)" },
+        { port: "636", service: "LDAPS" },
+        { port: "993", service: "IMAPS" },
+        { port: "995", service: "POP3S" },
+        { port: "1433", service: "Microsoft SQL Server" },
+        { port: "1521", service: "Oracle DB" },
+        { port: "2049", service: "NFS" },
+        { port: "2375/2376", service: "Docker" },
+        { port: "27017", service: "MongoDB" },
+        { port: "3000", service: "Node/Dev server (common)" },
+        { port: "3306", service: "MySQL/MariaDB" },
+        { port: "3389", service: "RDP" },
+        { port: "4222", service: "NATS" },
+        { port: "5000", service: "Local dev (common)" },
+        { port: "5432", service: "PostgreSQL" },
+        { port: "5601", service: "Kibana" },
+        { port: "5672", service: "RabbitMQ" },
+        { port: "5900", service: "VNC" },
+        { port: "6379", service: "Redis" },
+        { port: "6443", service: "Kubernetes API" },
+        { port: "8080", service: "HTTP alt / proxy" },
+        { port: "8443", service: "HTTPS alt" },
+        { port: "9000", service: "Prometheus / MinIO (common)" },
+        { port: "9090", service: "Prometheus / OpenTelemetry (common)" },
+        { port: "9200", service: "Elasticsearch" },
+        { port: "9300", service: "Elasticsearch transport" },
+        { port: "9411", service: "Zipkin" },
+        { port: "11211", service: "Memcached" },
+      ];
+
+      const render = (filterText) => {
+        const q = (filterText || "").trim().toLowerCase();
+        const rows = ports.filter((entry) => {
+          if (!q) return true;
+          return entry.port.toLowerCase().includes(q) || entry.service.toLowerCase().includes(q);
+        });
+        if (list) {
+          list.innerHTML = rows
+            .map(
+              (entry) =>
+                `<div class="grid grid-cols-[80px_1fr] gap-2 border-b border-border/70 px-3 py-2">
+  <span class="text-text">${entry.port}</span>
+  <span class="text-muted">${entry.service}</span>
+</div>`
+            )
+            .join("");
+        }
+        if (count) {
+          count.textContent = `${rows.length} port${rows.length === 1 ? "" : "s"}`;
+        }
+        if (copy) {
+          copy.value = rows.map((entry) => `${entry.port} - ${entry.service}`).join("\n");
+        }
+      };
+
+      search?.addEventListener("input", () => render(search.value));
+      render("");
+    })();
+  </script>
+</div>

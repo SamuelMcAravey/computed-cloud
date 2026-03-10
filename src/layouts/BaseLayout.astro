@@ -1,0 +1,241 @@
+---
+import "../styles/global.css";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+}
+
+const { title, description, ogImage, ogType = "website", frontmatter } =
+  Astro.props;
+const pagefindIgnore = Astro.props["data-pagefind-ignore"];
+const resolvedTitle = title ?? frontmatter?.title;
+const resolvedDescription = description ?? frontmatter?.description;
+if (import.meta.env.DEV) {
+  if (!resolvedTitle || !resolvedDescription) {
+    throw new Error(
+      `BaseLayout requires title and description in development. Missing: ${[
+        !resolvedTitle ? "title" : null,
+        !resolvedDescription ? "description" : null,
+      ]
+        .filter(Boolean)
+        .join(", ")}`
+    );
+  }
+}
+const pageTitle = resolvedTitle ? `${resolvedTitle} | ${SITE_TITLE}` : SITE_TITLE;
+const metaDescription = resolvedDescription ?? SITE_DESCRIPTION;
+const canonicalUrl = SITE_URL
+  ? new URL(Astro.url.pathname, SITE_URL).toString()
+  : undefined;
+const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() : ogImage;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W6SX7F5T');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={metaDescription} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:type" content={ogType} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content={ogImageUrl ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    <script is:inline>
+      {`(() => {
+  const storageKey = "cc-theme";
+  const stored = localStorage.getItem(storageKey);
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = stored ?? (prefersDark ? "dark" : "light");
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.dataset.theme = theme;
+})();`}
+    </script>
+  </head>
+  <body
+    class="flex min-h-screen flex-col bg-bg text-text font-sans"
+    data-pagefind-ignore={pagefindIgnore}
+  >
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6SX7F5T"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 cc-bg-pattern opacity-60"></div>
+    <!-- Replace with Storyblocks asset -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 -z-10 opacity-40 bg-[url('/assets/bg-placeholder.svg')] bg-cover bg-center"
+    ></div>
+    <a
+      class="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:text-text focus:shadow-lg"
+      href="#main"
+    >
+      Skip to main content
+    </a>
+    <Header />
+    <main id="main" tabindex="-1" class="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-10">
+      <slot />
+    </main>
+    <Footer />
+    <div
+      id="cc-lightbox"
+      class="cc-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <button class="cc-lightbox-close" type="button" aria-label="Close image">×</button>
+      <img class="cc-lightbox-image" alt="" />
+    </div>
+    <script is:inline>
+      (() => {
+  const toggle = document.querySelector("[data-theme-toggle]");
+  if (toggle) {
+    const storageKey = "cc-theme";
+    const setTheme = (theme) => {
+      document.documentElement.classList.toggle("dark", theme === "dark");      
+      document.documentElement.dataset.theme = theme;
+    };
+    const update = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+    };
+    toggle.addEventListener("click", () => {
+      const isDark = !document.documentElement.classList.contains("dark");
+      const next = isDark ? "dark" : "light";
+      setTheme(next);
+      localStorage.setItem(storageKey, next);
+      update();
+    });
+    update();
+  }
+
+  const lightbox = document.getElementById("cc-lightbox");
+  const lightboxImage = lightbox?.querySelector(".cc-lightbox-image");
+  const closeButton = lightbox?.querySelector(".cc-lightbox-close");
+  if (!lightbox || !lightboxImage || !closeButton) return;
+
+  let lastFocused = null;
+  const openLightbox = (src, alt) => {
+    lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    lightboxImage.src = src;
+    lightboxImage.alt = alt || "";
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    closeButton.focus();
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImage.src = "";
+    if (lastFocused) {
+      lastFocused.focus();
+      lastFocused = null;
+    }
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const link = target.closest(".cc-lightbox-link");
+    if (link) {
+      event.preventDefault();
+      const img = link.querySelector("img");
+      openLightbox(link.getAttribute("href"), img?.getAttribute("alt"));
+      return;
+    }
+    if (target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  closeButton.addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+
+  const setCopied = (button) => {
+    if (!button) return;
+    button.setAttribute("data-copied", "true");
+    setTimeout(() => button.removeAttribute("data-copied"), 1200);
+  };
+
+  document.addEventListener("click", async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const linkButton = target.closest("[data-copy-link]");
+    if (linkButton instanceof HTMLElement) {
+      const hash = linkButton.getAttribute("data-copy-link") ?? "";
+      const url = window.location.origin + window.location.pathname + hash;
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(linkButton);
+      } catch {
+        window.prompt("Copy link:", url);
+        setCopied(linkButton);
+      }
+      return;
+    }
+
+    const button = target.closest("[data-copy-target]");
+    if (!(button instanceof HTMLElement)) return;
+    const selector = button.getAttribute("data-copy-target");
+    if (!selector) return;
+    const field = document.querySelector(selector);
+    if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) {
+      return;
+    }
+    const value = field.value ?? "";
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(button);
+    } catch {
+      field.select();
+      document.execCommand("copy");
+      setCopied(button);
+    }
+  });
+})();
+    </script>
+  </body>
+</html>

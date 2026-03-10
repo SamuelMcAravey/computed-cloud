@@ -1,0 +1,85 @@
+<div class="space-y-3" data-tool="json-diff">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="json-diff-left">Left JSON</label>
+      <textarea
+        id="json-diff-left"
+        class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        placeholder='{"a":1}'
+      ></textarea>
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="json-diff-right">Right JSON</label>
+      <textarea
+        id="json-diff-right"
+        class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        placeholder='{"a":2}'
+      ></textarea>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="json-diff-output">Changes</label>
+    <textarea
+      id="json-diff-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="json-diff"]');
+      if (!root) return;
+      const leftInput = root.querySelector("#json-diff-left");
+      const rightInput = root.querySelector("#json-diff-right");
+      const output = root.querySelector("#json-diff-output");
+      const error = root.querySelector("[data-error]");
+      const diff = (left, right, path = "") => {
+        const changes = [];
+        if (left === right) return changes;
+        if (typeof left !== "object" || left === null || typeof right !== "object" || right === null) {
+          changes.push({ path, left, right });
+          return changes;
+        }
+        const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
+        keys.forEach((key) => {
+          const nextPath = path ? `${path}.${key}` : key;
+          if (!(key in left)) changes.push({ path: nextPath, left: undefined, right: right[key] });
+          else if (!(key in right)) changes.push({ path: nextPath, left: left[key], right: undefined });
+          else changes.push(...diff(left[key], right[key], nextPath));
+        });
+        return changes;
+      };
+      const update = () => {
+        if (!leftInput || !rightInput || !output || !error) return;
+        const leftRaw = leftInput.value.trim();
+        const rightRaw = rightInput.value.trim();
+        if (!leftRaw && !rightRaw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        try {
+          const left = JSON.parse(leftInput.value);
+          const right = JSON.parse(rightInput.value);
+          const changes = diff(left, right);
+          output.value = changes.length
+            ? changes.map((c) => `${c.path}: ${JSON.stringify(c.left)} -> ${JSON.stringify(c.right)}`).join("\n")
+            : "No differences.";
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid JSON input.";
+        }
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      leftInput?.addEventListener("input", scheduleUpdate);
+      rightInput?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    })();
+  </script>
+</div>

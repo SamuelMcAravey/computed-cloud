@@ -1,0 +1,20 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The requested page does not exist. Return to the homepage to continue."
+  data-pagefind-ignore="all"
+>
+  <section class="space-y-4">
+    <p class="text-xs uppercase tracking-wide text-muted">404</p>
+    <h1 class="font-heading text-3xl font-semibold text-text">Page not found</h1>
+    <p class="text-lg text-muted">
+      That page does not exist yet. Head back to the home page to start over.
+    </p>
+    <a class="text-sm font-medium text-text" href="/">
+      Return home
+    </a>
+  </section>
+</BaseLayout>

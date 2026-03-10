@@ -1,0 +1,63 @@
+<div class="space-y-3" data-tool="html-format">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-format-input">HTML</label>
+    <textarea
+      id="html-format-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="<div><span>Example</span></div>"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="html-format-output">Formatted</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#html-format-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="html-format-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="html-format"]');
+      if (!root) return;
+      const input = root.querySelector("#html-format-input");
+      const output = root.querySelector("#html-format-output");
+      const formatHtml = (value) => {
+        const spaced = value
+          .replace(/>\s*</g, "><")
+          .replace(/</g, "\n<")
+          .replace(/\n\s*\n/g, "\n")
+          .trim();
+        const lines = spaced.split("\n");
+        let indent = 0;
+        return lines
+          .map((line) => {
+            if (line.match(/^<\//)) indent = Math.max(indent - 1, 0);
+            const out = `${"  ".repeat(indent)}${line}`;
+            if (line.match(/^<[^/!].*[^/]>$/)) indent += 1;
+            return out;
+          })
+          .join("\n");
+      };
+      const update = () => {
+        if (!input || !output) return;
+        output.value = input.value.trim() ? formatHtml(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    })();
+  </script>
+</div>

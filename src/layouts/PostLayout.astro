@@ -1,0 +1,232 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import TagChip from "@components/TagChip.astro";
+import { normalizeTag } from "../utils/blog";
+import { SHOW_POST_DATES, SITE_TITLE, SITE_URL } from "../consts";
+import {
+  ARTICLE_CONTENT_CARD,
+  SHOW_START_HERE_PROMPT,
+  START_HERE_PROMPT_EXCLUDE,
+} from "../consts";
+import type { MarkdownHeading } from "astro";
+
+type PostNavItem = {
+  title: string;
+  slug: string;
+};
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  heroImage?: string;
+  headings?: MarkdownHeading[];
+  newer?: PostNavItem;
+  older?: PostNavItem;
+  slug?: string;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags,
+  heroImage,
+  headings,
+  newer,
+  older,
+  slug,
+} = Astro.props;
+const published = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const updated =
+  updatedDate &&
+  updatedDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+const authorName = "Samuel McAravey";
+const postUrl =
+  SITE_URL && slug ? new URL(`/blog/${slug}`, SITE_URL).toString() : undefined;
+const postImage =
+  heroImage && SITE_URL ? new URL(heroImage, SITE_URL).toString() : heroImage;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: updatedDate ? updatedDate.toISOString() : undefined,
+  author: {
+    "@type": "Person",
+    name: authorName,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE_TITLE,
+  },
+  url: postUrl,
+  image: postImage,
+};
+const tocHeadings = headings?.filter((heading) => heading.depth === 2) ?? [];
+const hasToc = tocHeadings.length > 0;
+const showStartHerePrompt =
+  SHOW_START_HERE_PROMPT &&
+  typeof Astro.props.slug === "string" &&
+  !START_HERE_PROMPT_EXCLUDE.includes(Astro.props.slug);
+---
+
+<BaseLayout title={title} description={description} ogType="article" ogImage={heroImage}>
+  <script type="application/ld+json" is:inline>
+    {JSON.stringify(jsonLd)}
+  </script>
+  <article>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <a class="cc-backlink text-xs uppercase tracking-wide text-muted no-underline" href="/blog">
+      ← Back to blog
+      </a>
+      <button
+        type="button"
+        class="cc-print-button rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text"
+        onClick="window.print()"
+      >
+        Print
+      </button>
+    </div>
+    <h1 class="mt-5 font-heading text-4xl text-text">{title}</h1>
+    {SHOW_POST_DATES && (
+      <p class="text-sm text-muted">
+        {published}
+        {updated && ` · Updated ${updated}`}
+      </p>
+    )}
+    {tags.length > 0 && (
+      <div class="mt-4 flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <TagChip label={tag} href={`/tags/${normalizeTag(tag)}`} />
+        ))}
+      </div>
+    )}
+    {heroImage && (
+      <img
+        class="mt-8 w-full rounded-xl border border-border"
+        src={heroImage}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+    {hasToc && (
+      <details class="mt-6 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text xl:hidden">
+        <summary class="cursor-pointer font-semibold text-text">On this page</summary>
+        <ol class="cc-scrollbox mt-3 max-h-[60vh] space-y-1 overflow-auto text-muted">
+          {tocHeadings.map((heading) => (
+            <li>
+              <a
+                class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                href={`#${heading.slug}`}
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
+    )}
+    <div class="mt-10 xl:grid xl:grid-cols-[minmax(0,1fr)_240px] xl:gap-10">
+      {ARTICLE_CONTENT_CARD ? (
+        <div class="cc-article-card rounded-2xl border border-border bg-surface/90 p-6 shadow-sm">
+          <div class="prose max-w-none">
+            {showStartHerePrompt && (
+              <p class="mt-0 text-sm text-muted">
+                If you're new here, start with{" "}
+                <a class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent" href="/blog/start-here">
+                  Start Here
+                </a>{" "}
+                or{" "}
+                <a
+                  class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                  href="/blog/how-i-build-software-that-survives-reality"
+                >
+                  How I Build Software That Survives Reality
+                </a>
+                .
+              </p>
+            )}
+            <slot />
+          </div>
+        </div>
+      ) : (
+        <div class="prose max-w-none">
+          {showStartHerePrompt && (
+            <p class="mt-0 text-sm text-muted">
+              If you're new here, start with{" "}
+              <a class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent" href="/blog/start-here">
+                Start Here
+              </a>{" "}
+              or{" "}
+              <a
+                class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                href="/blog/how-i-build-software-that-survives-reality"
+              >
+                How I Build Software That Survives Reality
+              </a>
+              .
+            </p>
+          )}
+          <slot />
+        </div>
+      )}
+      {hasToc && (
+        <aside class="hidden xl:block">
+          <div class="cc-scrollbox sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
+            <p class="font-semibold text-text">On this page</p>
+            <ol class="mt-3 space-y-2">
+              {tocHeadings.map((heading) => (
+                <li>
+                  <a
+                    class="text-text underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                    href={`#${heading.slug}`}
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </aside>
+      )}
+    </div>
+    {(newer || older) && (
+      <nav class="cc-post-nav mt-10 grid gap-3 sm:grid-cols-2">
+        {newer ? (
+          <a
+            class="rounded-2xl border border-border bg-surface/90 px-5 py-4 text-sm text-text no-underline shadow-sm hover:border-primary"
+            href={`/blog/${newer.slug}`}
+          >
+            <div class="text-xs uppercase tracking-wide text-muted">Newer</div>
+            <div class="mt-1 font-medium">{newer.title}</div>
+          </a>
+        ) : (
+          <div />
+        )}
+        {older && (
+          <a
+            class="rounded-2xl border border-border bg-surface/90 px-5 py-4 text-sm text-text no-underline shadow-sm hover:border-primary sm:text-right"
+            href={`/blog/${older.slug}`}
+          >
+            <div class="text-xs uppercase tracking-wide text-muted">Older</div>
+            <div class="mt-1 font-medium">{older.title}</div>
+          </a>
+        )}
+      </nav>
+    )}
+  </article>
+</BaseLayout>

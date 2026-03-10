@@ -1,0 +1,55 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import "@pagefind/default-ui/css/ui.css";
+---
+
+<BaseLayout
+  title="Search"
+  description="Search the blog archive by title, description, or tags."
+  data-pagefind-ignore="all"
+>
+  <section class="space-y-3">
+    <p class="text-xs uppercase tracking-wide text-muted">Search</p>
+    <h1 class="font-heading text-3xl font-semibold text-text">Search posts</h1>
+    <p class="text-sm text-muted">
+      Search across titles, descriptions, and tags. Results update as you type.
+    </p>
+  </section>
+
+  <section class="mt-8">
+    <div id="pagefind" class="cc-search"></div>
+  </section>
+
+  <script type="module" src="/pagefind/pagefind-ui.js"></script>
+  <script type="module">
+    const applyInitialQuery = () => {
+      const params = new URLSearchParams(window.location.search);
+      const initial = params.get("q");
+      if (!initial) return;
+      const input = document.querySelector(".pagefind-ui__search-input");
+      if (!(input instanceof HTMLInputElement)) return;
+      input.value = initial;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      const headerInput = document.getElementById("site-search");
+      if (headerInput instanceof HTMLInputElement) {
+        headerInput.value = initial;
+      }
+    };
+
+    const init = () => {
+      if (!window.PagefindUI) return;
+      new window.PagefindUI({
+        element: "#pagefind",
+        showImages: false,
+        resetStyles: false,
+      });
+      requestAnimationFrame(applyInitialQuery);
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  </script>
+</BaseLayout>

@@ -1,0 +1,264 @@
+# Blog backlog for Codex batch drafting.
+# Status values: todo | drafting | drafted | published | skipped
+# Shape values: manifesto | case-study | pattern-guide | project-deep-dive | how-to
+#
+# Notes:
+# - Provide "seed_links" when you have them. Optional, but improves accuracy.
+# - Use placeholders like "[ADD: ...]" for details only you can provide.
+#
+# The batch skill writes:
+# - draft_path: src/content/blog/<id>.md
+# - research_path: notes/research/<YYYY-MM-DD>-<id>.md
+
+items:
+  # NOW (Next 3)
+  - id: configuration-as-a-first-class-system
+    status: published
+    shape: pattern-guide
+    working_title: "Configuration as a First-Class System"
+    audience: "Senior engineers and founders"
+    one_liner: "How to make config boring: typed, validated, and safe across environments."
+    constraint: "Config changes happen under pressure, and deploys are the riskiest way to change a value."
+    decision: "Treat configuration as data with a schema: typed parsing + validation + clear environment boundaries."
+    outcome: "[ADD: what improved (incident rate, deploy frequency, fewer support tickets, etc.)]"
+    scar: "Production pointed at a sandbox endpoint -> fail-fast validation + explicit boundaries -> rule of thumb"
+    draft_path: "src/content/blog/configuration-as-a-first-class-system.md"
+    research_path: "notes/research/2026-03-04-configuration-as-a-first-class-system.md"
+    must_include:
+      - "Examples: feature flags / endpoint URLs / timeouts / tenant overrides."
+      - "A boundary section: secrets are not config."
+      - "A small checklist for introducing a new config value safely."
+    must_avoid:
+      - "No invented metrics."
+      - "No proprietary customer or internal system names."
+    seed_links: []
+    tags_hint: ["patterns", "architecture", "reliability"]
+    notes:
+      - "Include tradeoffs: too much config becomes a second programming language."
+      - "Scar (sanitized): production pointed at a sandbox endpoint."
+      - "After the incident: fail-fast validation at startup plus explicit environment boundaries."
+      - "Reality: in Kubernetes we distribute config via an operator today; before Kubernetes, services fetched what they needed using service accounts."
+      - "Some non-secret values live in Kubernetes config (for example ConfigMaps); trivial values may live in appsettings.json."
+
+  - id: schema-drift-erp-integrations
+    status: drafted
+    shape: how-to
+    working_title: "Schema Drift in ERP Integrations: Detect It Before It Pages You"
+    audience: "Engineers integrating with ERPs or external databases"
+    one_liner: "A defensive checklist for surviving vendor schema drift across sandbox and prod."
+    constraint: "The sandbox is not a contract; production can change without your deploy."
+    decision: "Be tolerant on reads, strict on writes, and add drift detection for the few tables that matter."
+    outcome: "[ADD: what you changed after the incident]"
+    scar: "Production changed schema; sandbox didn't; strict mapping threw; hotfix mapping; new rule: detect drift and choose failure modes."
+    draft_path: "src/content/blog/schema-drift-erp-integrations.md"
+    research_path: "notes/research/2026-03-04-schema-drift-erp-integrations.md"
+    must_include:
+      - "Concrete drift signals to log (table/column/type/length)."
+      - "A pragmatic monitoring strategy that fits small teams."
+      - "A section on choosing failure modes (block writes, degrade reads, alert-only)."
+    must_avoid:
+      - "Don't over-rotate into 'build a platform' scope."
+    seed_links: []
+    tags_hint: ["integrations", "erp", "reliability", "how-to"]
+    notes:
+      - "Cross-reference relevant earlier post(s), but do not repeat the whole story."
+
+  - id: idempotency-in-payments-workflows
+    status: drafted
+    shape: case-study
+    working_title: "Idempotency in Payments Workflows (When Money Moves Twice)"
+    audience: "Engineers building workflows with external systems"
+    one_liner: "A practical approach to idempotency, reconciliation, and human-safe recovery."
+    constraint: "Retries are unavoidable, and external providers can deliver duplicates or partial results."
+    decision: "Model the workflow as explicit states and enforce idempotency at the boundary with durable keys."
+    outcome: "[ADD: what changed operationally after adopting this]"
+    scar: "External record wrote successfully but required attachments did not -> verified completion + reconciliation -> rule of thumb"
+    draft_path: "src/content/blog/idempotency-in-payments-workflows.md"
+    must_include:
+      - "A state model (mermaid) with retry and reconciliation states."
+      - "A section on what you log to prove what happened."
+      - "A recovery path that is human-safe (part of the product)."
+    must_avoid:
+      - "No claims about compliance requirements unless you cite a primary source."
+      - "Redact company/customer/provider names unless explicitly provided."
+    seed_links: []
+    tags_hint: ["payments", "reliability", "operations", "architecture"]
+    notes:
+      - "Make the recovery path feel like part of the product."
+
+  # NEXT (Next 6-9)
+  - id: secrets-and-credential-boundaries
+    status: todo
+    shape: pattern-guide
+    working_title: "Secrets and Credential Boundaries"
+    audience: "Senior engineers and founders"
+    one_liner: "A practical boundary: what is config, what is a secret, and how to rotate without drama."
+    constraint: "Credentials leak and expire, and the worst time to fix auth is during an incident."
+    decision: "Treat secrets as a distinct system: least privilege, clear ownership, and rotation as a first-class workflow."
+    outcome: "[ADD: what improved after getting this right]"
+    scar: "[ADD: credential boundary failure -> change made -> rule of thumb]"
+    must_include:
+      - "Where secrets live vs where config lives."
+      - "Rotation playbook (who, what, when)."
+      - "Local dev story: how to keep dev usable without dumping secrets everywhere."
+    must_avoid:
+      - "No proprietary internal names or endpoints."
+      - "Do not encourage unsafe secret sharing."
+    seed_links: []
+    tags_hint: ["reliability", "security", "architecture"]
+    notes:
+      - "Make the boundary explicit: secrets are not config."
+
+  - id: background-jobs-retries-and-poison-messages
+    status: todo
+    shape: pattern-guide
+    working_title: "Background Jobs: Retries, Poison Messages, and Evidence"
+    audience: "Engineers shipping workflows that touch external systems"
+    one_liner: "Retries are required. The trick is preventing retries from becoming outages."
+    constraint: "External dependencies fail, rate limit, and return partial results."
+    decision: "Design retries, poison handling, and observability up front so job failures are boring."
+    outcome: "[ADD: what improved after adopting these patterns]"
+    scar: "[ADD: job retry storm or poison message -> fix -> rule of thumb]"
+    must_include:
+      - "Retry strategy (backoff, caps, jitter)."
+      - "Poison handling (dead-letter, quarantine, manual replay)."
+      - "The minimal observability signals (what you log, what you alert on)."
+    must_avoid:
+      - "No invented reliability claims."
+    seed_links: []
+    tags_hint: ["reliability", "operations", "architecture"]
+
+  - id: logging-traces-and-correlation-ids-you-actually-use
+    status: todo
+    shape: pattern-guide
+    working_title: "Logs, Traces, and Correlation IDs That You Actually Use"
+    audience: "Engineers responsible for production support"
+    one_liner: "If a ticket lands, what do you look up first, and how do you prove what happened?"
+    constraint: "The ticket thread is noisy, and the incident clock is real."
+    decision: "Design for investigation: stable correlation IDs, structured logs, and a minimal evidence trail."
+    outcome: "[ADD: what changed operationally after improving observability]"
+    scar: "[ADD: investigation failure -> change made -> rule of thumb]"
+    must_include:
+      - "Correlation ID propagation across boundaries."
+      - "What you log (and what you never log)."
+      - "A short checklist for 'prove what happened'."
+    must_avoid:
+      - "Do not include sensitive identifiers."
+    seed_links: []
+    tags_hint: ["operations", "reliability", "observability"]
+
+  - id: feature-flags-with-kill-switches
+    status: todo
+    shape: pattern-guide
+    working_title: "Feature Flags and Kill Switches Without Chaos"
+    audience: "Senior engineers and engineering leaders"
+    one_liner: "Flags are operational tools. Without lifecycle rules they become debt."
+    constraint: "You need fast rollback without redeploying, but you cannot live in a permanent experiment."
+    decision: "Flags have owners, lifetimes, and audit trails. Kill switches are separate and explicit."
+    outcome: "[ADD: what improved after treating flags as a system]"
+    scar: "[ADD: flag drift or forgotten flag -> fix -> rule of thumb]"
+    must_include:
+      - "Flag lifecycle (create, ramp, retire)."
+      - "Kill switches and incident use."
+      - "Auditability (who changed what and when)."
+    must_avoid:
+      - "No invented metrics."
+    seed_links: []
+    tags_hint: ["reliability", "operations", "patterns"]
+
+  - id: forward-only-database-migrations-in-multi-tenant-systems
+    status: todo
+    shape: how-to
+    working_title: "Forward-Only Database Migrations in Multi-Tenant Systems"
+    audience: "Engineers operating multi-tenant SaaS"
+    one_liner: "A practical rollout strategy that avoids downtime and avoids surprise schema breaks."
+    constraint: "You cannot assume every environment and tenant updates at once."
+    decision: "Forward-only migrations with compatibility windows and verification steps."
+    outcome: "[ADD: what improved after adopting this approach]"
+    scar: "[ADD: migration incident -> change made -> rule of thumb]"
+    must_include:
+      - "Compatibility strategy (old code with new schema, new code with old schema)."
+      - "Rollout checklist."
+      - "Verification queries or checks."
+    must_avoid:
+      - "No invented metrics."
+    seed_links: []
+    tags_hint: ["data", "architecture", "reliability", "how-to"]
+
+  - id: modernizing-delivery-without-a-rewrite
+    status: todo
+    shape: case-study
+    working_title: "Modernizing Delivery Without a Rewrite"
+    audience: "CTOs and engineering leaders"
+    one_liner: "What actually moved the needle: Git, CI/CD, and release discipline, without a rewrite."
+    constraint: "You cannot stop shipping while you modernize."
+    decision: "Modernize the delivery system and habits first. Make releases boring. Then refactor."
+    outcome: "[ADD: what changed (velocity, rollback rate, incident rate) in your words]"
+    scar: "[ADD: a release or rollback incident -> change -> rule of thumb]"
+    must_include:
+      - "What you changed in practice (not slogans)."
+      - "How adoption worked (training, enforcement, incentives)."
+      - "Tradeoffs: what got worse temporarily."
+    must_avoid:
+      - "No invented numbers."
+    seed_links: []
+    tags_hint: ["leadership", "operations", "delivery"]
+
+  - id: ai-assisted-engineering-workflows-with-guardrails
+    status: todo
+    shape: case-study
+    working_title: "AI-Assisted Engineering Workflows With Guardrails"
+    audience: "Engineering leaders and senior engineers"
+    one_liner: "Use AI for speed and cognitive load reduction without outsourcing truth or responsibility."
+    constraint: "A wrong answer in production support or incident response costs more than a slow answer."
+    decision: "Use AI as a first-pass assistant with explicit guardrails and human gates."
+    outcome: "[ADD: what changed operationally after adopting these workflows]"
+    scar: "[ADD: one failure mode (hallucination, tone, identity) -> change made -> rule of thumb]"
+    must_include:
+      - "Where it works well (summaries, drafts, code search)."
+      - "Where it fails and how you gate it."
+      - "A checklist of guardrails."
+    must_avoid:
+      - "Do not imply the model is a source of truth."
+      - "No internal secrets or credentials."
+    seed_links: []
+    tags_hint: ["ai", "operations", "workflows", "leadership"]
+
+  - id: rebuilding-erp-sync-from-data-factory-into-code
+    status: todo
+    shape: case-study
+    working_title: "When Integration Glue Becomes Product Logic"
+    audience: "Engineers responsible for ERP integrations"
+    one_liner: "Why we moved ERP sync from orchestration glue into code: tests, observability, and real ownership."
+    constraint: "Integration logic changes frequently and must be debugged under pressure."
+    decision: "Put core sync logic in the codebase with tests and observability, not in orchestration-only tools."
+    outcome: "[ADD: what improved after the move]"
+    scar: "[ADD: integration failure -> change made -> rule of thumb]"
+    must_include:
+      - "Why orchestration-only was insufficient."
+      - "What moved into code (high level)."
+      - "How you tested and deployed safely."
+    must_avoid:
+      - "No proprietary details."
+    seed_links: []
+    tags_hint: ["integrations", "erp", "architecture", "case-study"]
+
+  - id: ocr-compliance-workflows-outbox-and-llm-validation
+    status: todo
+    shape: case-study
+    working_title: "Accuracy-First OCR Compliance Workflows"
+    audience: "Engineers building document workflows"
+    one_liner: "Outbox, retries, and validation layers when accuracy matters more than speed."
+    constraint: "Document inputs are messy and external services rate limit."
+    decision: "Asynchronous outbox execution with retries and validation layers, plus offline evaluation."
+    outcome: "[ADD: what improved after building validation and evaluation]"
+    scar: "[ADD: failure mode -> change made -> rule of thumb]"
+    must_include:
+      - "Outbox model + retries for rate limits."
+      - "Validation approach (what you validate, how you fail safely)."
+      - "Offline evaluation approach (mention FATURA only if you are comfortable)."
+    must_avoid:
+      - "No invented accuracy metrics."
+      - "No claims about compliance requirements unless you cite a primary source."
+    seed_links: []
+    tags_hint: ["compliance", "reliability", "architecture", "ai"]

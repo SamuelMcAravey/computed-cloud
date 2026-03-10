@@ -1,0 +1,246 @@
+identity:
+  name: Samuel McAravey
+  location: Billings, MT
+  links:
+    email: samuel@mcaravey.pro
+    phone: "(503) 803-2290"
+    linkedin: linkedin.com/in/samuel-mcaravey
+    github: github.com/samuelmcaravey
+
+summary_raw:
+  - Strategic engineering leader with over 16 years of experience building and scaling engineering organizations from the ground up.
+  - Deep expertise in delivering secure, data-intensive B2B SaaS platforms for the AI-driven FinTech space.
+  - Proven success in setting technical vision, building high-performing teams in fast-paced startup environments, and partnering with founders to align technology with product and business goals.
+
+skills:
+  languages:
+    - C#
+    - .NET (Modern & Framework)
+  cloud:
+    - Cloud Architecture (Azure/AWS/GCP)
+    - "Azure: IaaS & PaaS services (Web Apps, AKS, Functions, Azure SQL, Cosmos DB, Storage)"
+    - Azure AD
+    - Azure Key Vault
+    - "AWS: Foundational Services"
+    - "On-Premise: Windows Server, Hyper-V, Proxmox, Veeam, Bare Metal Hosting"
+    - Networking: production network segmentation, VLANs
+  data:
+    - Data-Intensive Systems
+    - "Databases: SQL Server, SQL Azure"
+    - Azure SQL
+    - Cosmos DB
+    - "ETL: Azure Data Factory"
+  architecture:
+    - Microservices & Distributed Systems
+    - Microservices
+    - High-Availability & Disaster Recovery Design
+    - Modular, multi-tenant architecture
+    - Service Fabric application
+  devops:
+    - Azure DevOps (YAML Pipelines)
+    - GitHub Actions
+    - CI/CD automation
+    - "Infrastructure-as-Code (IaC): Pulumi, Bicep, ARM Templates, Terraform"
+    - "Source Control: Git, TFS, SVN"
+    - Agile methodologies
+    - Kubernetes
+    - "Scripting: PowerShell"
+    - "Scripting: Bash"
+  payments_fintech:
+    - FinTech & Payment Platforms
+    - Mission-critical payment and compliance workflows
+    - High-volume B2B payments platform
+    - International payments initiatives
+  other:
+    - Leadership & Strategy
+    - Technical Vision & Roadmapping
+    - Founder-Level Business Acumen
+    - Product & GTM Partnership
+    - Venture & Investor Relations
+    - High-Growth Team Scaling
+    - AI/ML System Integration
+    - Rapid Prototyping & Delivery
+    - Engineering Best Practices
+    - AI-First Culture Adoption
+    - AI-Powered SDLC
+    - Agentic AI
+    - Prompt Engineering
+    - GitHub Copilot
+    - Cursor
+    - Networking fundamentals: IP, TCP/UDP, TLS
+    - Networking tools: Wireshark, iperf3, curl, OpenSSL, traceroute, netsh
+
+experience:
+  - company: PayeWaive
+    title: Chief Technology Officer | Head of Engineering
+    dates: Dec 2017 - Present
+    location: Billings, MT
+    scope_summary: Led the scaling of all technology, product, and engineering for a B2B SaaS platform in the construction technology sector. Grew the organization by establishing a high-performing, metrics-driven engineering culture and implementing a modern, scalable technology stack. Seeking a new leadership challenge after successfully transitioning the company to its next phase of growth.
+    achievements:
+      - impact: boosted productivity by 25%
+        action: Recruited, scaled, and mentored a high-performing, globally distributed engineering team across the US and Brazil, fostering a metrics-driven culture of execution.
+        tech: null
+        metrics: 25%
+      - impact: achieving 99.99% uptime for mission-critical payment and compliance workflows
+        action: Architected and delivered a highly scalable, secure, and geo-redundant B2B SaaS platform.
+        tech: Azure
+        metrics: 99.99% uptime
+      - impact: decreased time-to-market for new client requirements by 60%
+        action: Directed the design of a modular, multi-tenant architecture.
+        tech: Modular, multi-tenant architecture
+        metrics: 60%
+      - impact: reducing client processing time by 50%
+        action: Defined and executed a multi-year technology roadmap to solve critical operational challenges, integrating with major ERP systems (Viewpoint Vista, Spectrum).
+        tech: Viewpoint Vista; Spectrum
+        metrics: 50%
+      - impact: expanding market reach by 40%
+        action: Forged and managed strategic GTM partnerships with industry leaders including Trimble and Corpay.
+        tech: Trimble; Corpay
+        metrics: 40%
+      - impact: reducing code defects by 30% and increasing developer velocity by 20%
+        action: Operationalized an AI-powered Software Development Lifecycle (SDLC).
+        tech: AI-powered SDLC
+        metrics: "30%; 20%"
+      - impact: supported live site operations and incident response for production services
+        action: Supported live site operations and incident response for production services supporting mission-critical payment and compliance workflows.
+        tech: null
+        metrics: null
+
+  - company: Nvoicepay (Acquired by Corpay)
+    title: Development Team Lead / DevOps (Payments Platform)
+    dates: Jun 2015 - Jun 2020
+    location: Beaverton, OR
+    scope_summary: Led development teams for a high-volume B2B payments platform, delivering enterprise features, integrations, and critical infrastructure modernization.
+    achievements:
+      - impact: increased release velocity by 20% and reduced production rollback incidents by 75%
+        action: Spearheaded the technical and cultural modernization of a 50+ person engineering organization by driving adoption of Git, Agile methodologies, and CI/CD automation.
+        tech: Git; Agile methodologies; CI/CD automation
+        metrics: "20%; 75%; 50+ person engineering organization"
+      - impact: deliver on-time releases for a platform processing billions in annual payments
+        action: Directed a team of 5+ engineers, collaborating across QA, DevOps, and Product.
+        tech: null
+        metrics: "5+ engineers; billions in annual payments"
+      - impact: eliminated single points of failure and improved system resilience
+        action: Designed and implemented a high-availability, geo-redundant Azure infrastructure, including automated CI/CD pipelines.
+        tech: Azure; CI/CD pipelines
+        metrics: null
+      - impact: expand the company's serviceable market
+        action: Architected and led the development of key international payments initiatives, integrating with global financial partners.
+        tech: International payments
+        metrics: null
+      - impact: improved processing efficiency for complex customer requirements
+        action: Developed scalable, enterprise-grade features for the core payments platform, including a Service Fabric application.
+        tech: Service Fabric
+        metrics: null
+      - impact: significant system performance improvements and enhanced platform stability
+        action: Optimized critical algorithms and refactored legacy code.
+        tech: null
+        metrics: null
+      - impact: led initial rollout and testing of Kubernetes
+        action: Led initial rollout and testing of Kubernetes, including cluster setup, day-one operations, ongoing management, and CI/CD deployments.
+        tech: Kubernetes; CI/CD
+        metrics: null
+
+  - company: EasyPower
+    title: Senior Software Engineer
+    dates: Mar 2012 - Oct 2012
+    location: Beaverton, OR
+    scope_summary: null
+    achievements:
+      - impact: enhanced usability and efficiency for field engineers
+        action: Modernized electrical power system analysis software for Fortune 500 clients, developing advanced graphical tools and field survey applications.
+        tech: null
+        metrics: null
+
+  - company: SoftSource Consulting Inc
+    title: Junior Programmer
+    dates: May 2008 - Feb 2010
+    location: Portland, OR
+    scope_summary: null
+    achievements:
+      - impact: contributing to early-stage Azure platform initiatives
+        action: Developed custom enterprise software solutions for high-visibility clients including Microsoft, Nike, and Intel.
+        tech: Azure (early-stage initiatives)
+        metrics: null
+
+  - company: Pearl Bakery
+    title: Founding Partner
+    dates: Jan 2020 - Feb 2023
+    location: Wilsonville, OR
+    scope_summary: Co-founded and scaled a wholesale CPG bakery, achieving roughly 100% year-over-year revenue growth while producing around 1,000 units daily across approximately 20 SKUs (primarily wholesale). Managed hiring, evaluation, training, scheduling, shift coverage, and operating procedures for a team of 20+ people (peaking at about 22 to 23). Built an internal ERP system to manage orders, generate daily production plans (including bill of materials and ingredient amounts), create packing sheets, and create invoices in the accounting system; integrated with logistics and accounting software and deployed iPad-based workflows on the production floor. Supported the acquisition transition by maintaining day-to-day operations and providing training, documentation, and handoff support to incoming owners.
+    achievements:
+      - impact: roughly 100% year-over-year revenue growth
+        action: Co-founded and scaled a wholesale CPG bakery focused primarily on wholesale.
+        tech: null
+        metrics: "roughly 100% YoY revenue growth"
+      - impact: produced around 1,000 units daily across approximately 20 SKUs
+        action: Scaled daily production and fulfillment to support wholesale operations.
+        tech: null
+        metrics: "around 1,000 units daily; approximately 20 SKUs"
+      - impact: managed hiring, evaluation, training, scheduling, shift coverage, and operating procedures for a team of 20+ people
+        action: Led day-to-day people operations and standard operating procedures for the bakery.
+        tech: null
+        metrics: "20+ people; peaking at about 22 to 23"
+      - impact: automated order-to-production planning and invoicing workflows
+        action: Built an internal ERP system to manage orders, generate daily production plans (including bill of materials and ingredient amounts), create packing sheets, and create invoices in the accounting system.
+        tech: Internal ERP system
+        metrics: null
+      - impact: supported production floor execution and business integrations
+        action: Integrated the internal system with logistics and accounting software and deployed iPad-based workflows on the production floor for managing the production process.
+        tech: Internal ERP system; logistics software; accounting system; iPads
+        metrics: null
+      - impact: enabled non-technical staff to enter orders that flowed automatically to the production floor systems
+        action: Enabled non-technical staff to enter customer orders that flowed automatically to the production floor systems.
+        tech: Internal ERP system
+        metrics: null
+      - impact: supported delivery for a customer requiring distribution to more than a dozen stores
+        action: Supported delivery for a customer requiring distribution to more than a dozen stores and implemented operating procedures and quality checks to meet requirements.
+        tech: null
+        metrics: "more than a dozen stores"
+      - impact: successful business acquisition in 2023
+        action: Supported the acquisition transition by maintaining day-to-day operations and providing training, documentation, and handoff support to incoming owners.
+        tech: null
+        metrics: "acquisition in 2023"
+
+leadership_evidence:
+  direct_people_management:
+    - Recruited, scaled, and mentored a globally distributed engineering team across the US and Brazil.
+    - Directed a team of 5+ engineers.
+    - Managed all operations for a team of 20+ people (peaking at about 22 to 23) (Pearl Bakery).
+  cross_functional_leadership:
+    - Collaborated across QA, DevOps, and Product.
+    - Partnered with founders to align technology with product and business goals.
+    - Forged and managed strategic GTM partnerships with Trimble and Corpay.
+  organizational_scale:
+    - 50+ person engineering organization modernization (Nvoicepay).
+    - Platform processing billions in annual payments (Nvoicepay).
+    - 99.99% uptime for mission-critical payment and compliance workflows (PayeWaive).
+    - Globally distributed team across the US and Brazil (PayeWaive).
+  hiring_mentoring:
+    - Recruited, scaled, and mentored a high-performing engineering team (PayeWaive).
+
+projects: []
+
+education:
+  - institution: Brigham Young University - Idaho
+    location: Rexburg, ID
+    degree: Bachelor of Science, Computer Science
+  - institution: Portland Community College
+    location: Portland, OR
+    degree: Associate of Science, Computer Science
+
+certifications:
+  - name: Project Management Professional (PMP)
+    status: In Progress
+    notes: Anticipated Completion: Q1 2026
+  - name: Harvard Business School Online, Credential of Readiness (CORe)
+    status: Enrolled
+
+unknowns:
+  - Specific Azure services used in the PayeWaive and Nvoicepay achievements beyond those listed in "Technical Proficiencies".
+  - Specific AWS services included in "AWS: Foundational Services".
+  - Specific GCP services included in "Cloud Architecture (Azure/AWS/GCP)".
+  - Details of the "AI/ML System Integration" work (models, tooling, scope).
+  - Details of the "AI-powered SDLC" implementation (tools/process specifics).
+  - Exact size of the PayeWaive engineering organization (number of engineers).
+  - Exact dates (month/year) for degrees and graduation.

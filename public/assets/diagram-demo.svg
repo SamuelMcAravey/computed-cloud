@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600" role="img" aria-label="Diagram demo placeholder">
+  <rect width="900" height="600" rx="28" fill="#F8FAFC" />
+  <rect x="80" y="80" width="240" height="140" rx="16" fill="#E2E8F0" stroke="#CBD5F5" />
+  <rect x="560" y="80" width="240" height="140" rx="16" fill="#E2E8F0" stroke="#CBD5F5" />
+  <rect x="320" y="360" width="260" height="140" rx="16" fill="#E2E8F0" stroke="#CBD5F5" />
+  <path d="M320 150h240" stroke="#94A3B8" stroke-width="4" />
+  <path d="M450 220v140" stroke="#94A3B8" stroke-width="4" />
+  <text x="120" y="160" font-family="Inter, Segoe UI, sans-serif" font-size="20" fill="#0F172A">Source</text>
+  <text x="610" y="160" font-family="Inter, Segoe UI, sans-serif" font-size="20" fill="#0F172A">Transform</text>
+  <text x="390" y="440" font-family="Inter, Segoe UI, sans-serif" font-size="20" fill="#0F172A">Output</text>
+</svg>

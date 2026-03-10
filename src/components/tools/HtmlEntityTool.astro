@@ -1,0 +1,90 @@
+<div class="space-y-3" data-tool="html-entity">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="html-entity-mode">Mode</label>
+      <select
+        id="html-entity-mode"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="encode">Encode</option>
+        <option value="decode">Decode</option>
+      </select>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-entity-input">Input</label>
+    <textarea
+      id="html-entity-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text or HTML entities"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="html-entity-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#html-entity-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="html-entity-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="html-entity"]');
+      if (!root) return;
+      const modeSelect = root.querySelector("#html-entity-mode");
+      const input = root.querySelector("#html-entity-input");
+      const output = root.querySelector("#html-entity-output");
+      const error = root.querySelector("[data-error]");
+      const encode = (value) =>
+        value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      const decode = (value) =>
+        value
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;|&apos;/g, "'")
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&amp;/g, "&")
+          .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+          .replace(/&#([0-9]+);/g, (_, num) => String.fromCodePoint(parseInt(num, 10)));
+      const update = () => {
+        if (!input || !output || !error || !modeSelect) return;
+        const raw = input.value;
+        if (!raw.trim()) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        try {
+          output.value = modeSelect.value === "encode" ? encode(raw) : decode(raw);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Unable to convert input.";
+        }
+      };
+      let raf = 0;
+      const schedule = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", schedule);
+      modeSelect?.addEventListener("change", schedule);
+      schedule();
+    })();
+  </script>
+</div>

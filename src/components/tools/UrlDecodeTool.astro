@@ -1,0 +1,67 @@
+<div class="space-y-3" data-tool="url-decode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="url-decode-input">Encoded</label>
+    <textarea
+      id="url-decode-input"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Encoded string"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="url-decode-output">Decoded</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#url-decode-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="url-decode-output"
+      class="min-h-[90px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="url-decode"]');
+    if (root) {
+      const input = root.querySelector("#url-decode-input");
+      const output = root.querySelector("#url-decode-output");
+      const error = root.querySelector("[data-error]");
+      const update = () => {
+        if (!input || !output || !error) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.value = "";
+          error.textContent = "";
+          return;
+        }
+        try {
+          output.value = decodeURIComponent(raw);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Invalid URL encoding.";
+        }
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

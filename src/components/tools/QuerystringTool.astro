@@ -1,0 +1,94 @@
+<div class="space-y-3" data-tool="querystring">
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="qs-input">Querystring or URL</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#qs-input"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="qs-input"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="foo=1&bar=two or https://example.com?foo=1"
+    ></textarea>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-parse>
+      Parse
+    </button>
+    <button class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary" type="button" data-build>
+      Build from JSON
+    </button>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="qs-output">JSON</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#qs-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="qs-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="querystring"]');
+      if (!root) return;
+      const input = root.querySelector("#qs-input");
+      const output = root.querySelector("#qs-output");
+      const parseBtn = root.querySelector("[data-parse]");
+      const buildBtn = root.querySelector("[data-build]");
+      const error = root.querySelector("[data-error]");
+      const parseQuery = (value) => {
+        const query = value.includes("?") ? value.split("?")[1] : value;
+        const params = new URLSearchParams(query);
+        const obj = {};
+        for (const [key, val] of params.entries()) {
+          if (obj[key] === undefined) obj[key] = val;
+          else if (Array.isArray(obj[key])) obj[key].push(val);
+          else obj[key] = [obj[key], val];
+        }
+        return obj;
+      };
+      parseBtn?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          const obj = parseQuery(input.value.trim());
+          output.value = JSON.stringify(obj, null, 2);
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Unable to parse querystring.";
+        }
+      });
+      buildBtn?.addEventListener("click", () => {
+        if (!input || !output || !error) return;
+        try {
+          const obj = JSON.parse(input.value);
+          const params = new URLSearchParams();
+          Object.entries(obj || {}).forEach(([key, val]) => {
+            if (Array.isArray(val)) val.forEach((v) => params.append(key, String(v)));
+            else params.append(key, String(val));
+          });
+          output.value = params.toString();
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Input must be JSON for build.";
+        }
+      });
+    })();
+  </script>
+</div>

@@ -1,0 +1,51 @@
+<div class="space-y-3" data-tool="html-minify">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="html-minify-input">HTML</label>
+    <textarea
+      id="html-minify-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="<div><span>Example</span></div>"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="html-minify-output">Minified</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#html-minify-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="html-minify-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="html-minify"]');
+      if (!root) return;
+      const input = root.querySelector("#html-minify-input");
+      const output = root.querySelector("#html-minify-output");
+      const minify = (value) =>
+        value
+          .replace(/>\s+</g, "><")
+          .replace(/\s{2,}/g, " ")
+          .trim();
+      const update = () => {
+        if (!input || !output) return;
+        output.value = input.value.trim() ? minify(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    })();
+  </script>
+</div>

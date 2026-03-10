@@ -1,0 +1,440 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ToolCard from "@components/ToolCard.astro";
+import GuidTool from "@components/tools/GuidTool.astro";
+import Base64EncodeTool from "@components/tools/Base64EncodeTool.astro";
+import Base64DecodeTool from "@components/tools/Base64DecodeTool.astro";
+import Base32Tool from "@components/tools/Base32Tool.astro";
+import UrlEncodeTool from "@components/tools/UrlEncodeTool.astro";
+import UrlDecodeTool from "@components/tools/UrlDecodeTool.astro";
+import JsonFormatterTool from "@components/tools/JsonFormatterTool.astro";
+import JsonMinifierTool from "@components/tools/JsonMinifierTool.astro";
+import JsonValidatorTool from "@components/tools/JsonValidatorTool.astro";
+import JwtDecodeTool from "@components/tools/JwtDecodeTool.astro";
+import JwtVerifyTool from "@components/tools/JwtVerifyTool.astro";
+import HmacGeneratorTool from "@components/tools/HmacGeneratorTool.astro";
+import HashGeneratorTool from "@components/tools/HashGeneratorTool.astro";
+import TimestampToDateTool from "@components/tools/TimestampToDateTool.astro";
+import DateToTimestampTool from "@components/tools/DateToTimestampTool.astro";
+import UlidTool from "@components/tools/UlidTool.astro";
+import UuidV7Tool from "@components/tools/UuidV7Tool.astro";
+import SlugifyTool from "@components/tools/SlugifyTool.astro";
+import CaseConverterTool from "@components/tools/CaseConverterTool.astro";
+import WhitespaceCleanerTool from "@components/tools/WhitespaceCleanerTool.astro";
+import DiffViewerTool from "@components/tools/DiffViewerTool.astro";
+import CsvToJsonTool from "@components/tools/CsvToJsonTool.astro";
+import JsonToCsvTool from "@components/tools/JsonToCsvTool.astro";
+import HexRgbTool from "@components/tools/HexRgbTool.astro";
+import EscapeUnescapeTool from "@components/tools/EscapeUnescapeTool.astro";    
+import QuerystringTool from "@components/tools/QuerystringTool.astro";
+import HtmlFormatterTool from "@components/tools/HtmlFormatterTool.astro";      
+import HtmlMinifierTool from "@components/tools/HtmlMinifierTool.astro";        
+import CronParserTool from "@components/tools/CronParserTool.astro";
+import JsonDiffTool from "@components/tools/JsonDiffTool.astro";
+import XmlFormatterTool from "@components/tools/XmlFormatterTool.astro";        
+import UrlPartsTool from "@components/tools/UrlPartsTool.astro";
+import HexBase64Tool from "@components/tools/HexBase64Tool.astro";
+import YamlJsonTool from "@components/tools/YamlJsonTool.astro";
+import HtmlEntityTool from "@components/tools/HtmlEntityTool.astro";
+import UnixPermissionsTool from "@components/tools/UnixPermissionsTool.astro";
+import LogViewerLinkTool from "@components/tools/LogViewerLinkTool.astro";
+import CloudInitTool from "@components/tools/CloudInitTool.astro";
+import SortLinesTool from "@components/tools/SortLinesTool.astro";
+import IpifyTool from "@components/tools/IpifyTool.astro";
+import DnsLookupTool from "@components/tools/DnsLookupTool.astro";
+import HttpPingTool from "@components/tools/HttpPingTool.astro";
+import PortHelperTool from "@components/tools/PortHelperTool.astro";
+
+const tools = [
+  {
+    id: "guid",
+    title: "GUID / UUID v4 generator",
+    description: "Generate a UUID v4, plus the common GUID variant.",
+    Component: GuidTool,
+  },
+  {
+    id: "ulid",
+    title: "ULID generator",
+    description: "Sortable IDs based on time.",
+    Component: UlidTool,
+  },
+  {
+    id: "uuid-v7",
+    title: "UUID v7 generator",
+    description: "Time-ordered UUIDs.",
+    Component: UuidV7Tool,
+  },
+  {
+    id: "base32",
+    title: "Base32 encode/decode",
+    description: "RFC 4648 Base32.",
+    Component: Base32Tool,
+  },
+  {
+    id: "base64-encode",
+    title: "Base64 encode",
+    description: "Encode text as base64.",
+    Component: Base64EncodeTool,
+  },
+  {
+    id: "base64-decode",
+    title: "Base64 decode",
+    description: "Decode base64 to text.",
+    Component: Base64DecodeTool,
+  },
+  {
+    id: "url-encode",
+    title: "URL encode",
+    description: "Encode text for URLs.",
+    Component: UrlEncodeTool,
+  },
+  {
+    id: "url-decode",
+    title: "URL decode",
+    description: "Decode URL-encoded text.",
+    Component: UrlDecodeTool,
+  },
+  {
+    id: "json-formatter",
+    title: "JSON formatter",
+    description: "Pretty-print JSON with indentation.",
+    Component: JsonFormatterTool,
+  },
+  {
+    id: "json-minifier",
+    title: "JSON minifier",
+    description: "Minify JSON to a single line.",
+    Component: JsonMinifierTool,
+  },
+  {
+    id: "json-validator",
+    title: "JSON validator",
+    description: "Check JSON validity.",
+    Component: JsonValidatorTool,
+  },
+  {
+    id: "jwt-decode",
+    title: "JWT decode",
+    description: "Decode header and payload (no verification).",
+    Component: JwtDecodeTool,
+  },
+  {
+    id: "jwt-verify",
+    title: "JWT verify",
+    description: "Verify HMAC signatures (HS256/384/512).",
+    Component: JwtVerifyTool,
+  },
+  {
+    id: "hmac-generator",
+    title: "HMAC generator",
+    description: "Generate an HMAC signature.",
+    Component: HmacGeneratorTool,
+  },
+  {
+    id: "hash-generator",
+    title: "Hash generator",
+    description: "SHA-256, SHA-1, or MD5.",
+    Component: HashGeneratorTool,
+  },
+  {
+    id: "timestamp-to-date",
+    title: "Timestamp to date",
+    description: "Convert epoch timestamps to dates.",
+    Component: TimestampToDateTool,
+  },
+  {
+    id: "date-to-timestamp",
+    title: "Date to timestamp",
+    description: "Convert dates to epoch timestamps.",
+    Component: DateToTimestampTool,
+  },
+  {
+    id: "slugify",
+    title: "Slugify",
+    description: "Create URL-friendly slugs.",
+    Component: SlugifyTool,
+  },
+  {
+    id: "case-converter",
+    title: "Case converter",
+    description: "Snake, camel, pascal, kebab.",
+    Component: CaseConverterTool,
+  },
+  {
+    id: "whitespace-cleaner",
+    title: "Whitespace cleaner",
+    description: "Trim and normalize spacing.",
+    Component: WhitespaceCleanerTool,
+  },
+  {
+    id: "diff-viewer",
+    title: "Diff viewer",
+    description: "Simple line-based diff.",
+    Component: DiffViewerTool,
+  },
+  {
+    id: "csv-to-json",
+    title: "CSV to JSON",
+    description: "Convert CSV rows to JSON objects.",
+    Component: CsvToJsonTool,
+  },
+  {
+    id: "json-to-csv",
+    title: "JSON to CSV",
+    description: "Convert JSON arrays to CSV.",
+    Component: JsonToCsvTool,
+  },
+  {
+    id: "yaml-json",
+    title: "YAML and JSON",
+    description: "Convert YAML <-> JSON (basic).",
+    Component: YamlJsonTool,
+  },
+  {
+    id: "hex-rgb",
+    title: "Hex and RGB",
+    description: "Convert between hex and RGB.",
+    Component: HexRgbTool,
+  },
+  {
+    id: "html-entities",
+    title: "HTML entities",
+    description: "Encode or decode HTML entities.",
+    Component: HtmlEntityTool,
+  },
+  {
+    id: "escape-unescape",
+    title: "Escape and unescape",
+    description: "HTML, JSON, or regex escaping.",
+    Component: EscapeUnescapeTool,
+  },
+  {
+    id: "querystring",
+    title: "Querystring parser/builder",
+    description: "Parse or build querystrings from JSON.",
+    Component: QuerystringTool,
+  },
+  {
+    id: "html-formatter",
+    title: "HTML formatter",
+    description: "Pretty-print HTML for readability.",
+    Component: HtmlFormatterTool,
+  },
+  {
+    id: "html-minifier",
+    title: "HTML minifier",
+    description: "Minify HTML by removing extra whitespace.",
+    Component: HtmlMinifierTool,
+  },
+  {
+    id: "cron-parser",
+    title: "Cron parser",
+    description: "Show the next five runs for a cron expression.",
+    Component: CronParserTool,
+  },
+  {
+    id: "json-diff",
+    title: "JSON diff",
+    description: "Compare two JSON blobs and list changes.",
+    Component: JsonDiffTool,
+  },
+  {
+    id: "xml-formatter",
+    title: "XML formatter/validator",
+    description: "Validate and pretty-print XML.",
+    Component: XmlFormatterTool,
+  },
+  {
+    id: "url-parts",
+    title: "URL parts",
+    description: "Break down a URL into components.",
+    Component: UrlPartsTool,
+  },
+  {
+    id: "unix-permissions",
+    title: "Unix permissions",
+    description: "Convert rwx <-> octal.",
+    Component: UnixPermissionsTool,
+  },
+  {
+    id: "sort-lines",
+    title: "Sort lines",
+    description: "Sort or dedupe text lines.",
+    Component: SortLinesTool,
+  },
+  {
+    id: "ipify",
+    title: "What's my IP",
+    description: "Fetch your public IP.",
+    Component: IpifyTool,
+  },
+  {
+    id: "dns-lookup",
+    title: "DNS lookup",
+    description: "Resolve common record types.",
+    Component: DnsLookupTool,
+  },
+  {
+    id: "http-ping",
+    title: "Ping (HTTP)",
+    description: "Measure HTTP response time.",
+    Component: HttpPingTool,
+  },
+  {
+    id: "port-helper",
+    title: "Port helper",
+    description: "Quick reference for common ports.",
+    Component: PortHelperTool,
+  },
+  {
+    id: "hex-base64",
+    title: "Hex/Base64 converter",
+    description: "Convert hex bytes to base64 and back.",
+    Component: HexBase64Tool,
+  },
+  {
+    id: "log-viewer-page",
+    title: "Log viewer",
+    description: "Filter and highlight logs in a full page tool.",
+    Component: LogViewerLinkTool,
+  },
+  {
+    id: "cloud-init",
+    title: "Cloud-init generator",
+    description: "Build cloud-init YAML with users, packages, and commands.",
+    Component: CloudInitTool,
+  },
+];
+
+const toolById = new Map(tools.map((tool) => [tool.id, tool]));
+const categories = [
+  {
+    id: "identifiers",
+    title: "Identifiers",
+    toolIds: ["guid", "ulid", "uuid-v7"],
+  },
+  {
+    id: "encoding",
+    title: "Encoding & Escaping",
+    toolIds: ["base32", "base64-encode", "base64-decode", "url-encode", "url-decode", "escape-unescape", "hex-base64", "html-entities"],
+  },
+  {
+    id: "formats",
+    title: "Format & Validate",
+    toolIds: ["json-formatter", "json-minifier", "json-validator", "html-formatter", "html-minifier", "xml-formatter", "yaml-json"],
+  },
+  {
+    id: "data-conversion",
+    title: "Data Conversion",
+    toolIds: ["csv-to-json", "json-to-csv", "hex-rgb", "querystring", "url-parts", "unix-permissions"],
+  },
+  {
+    id: "compare",
+    title: "Compare",
+    toolIds: ["diff-viewer", "json-diff"],
+  },
+  {
+    id: "security",
+    title: "Hashing & Tokens",
+    toolIds: ["hash-generator", "hmac-generator", "jwt-decode", "jwt-verify"],
+  },
+  {
+    id: "time",
+    title: "Time & Scheduling",
+    toolIds: ["timestamp-to-date", "date-to-timestamp", "cron-parser"],
+  },
+  {
+    id: "text",
+    title: "Text Cleanup",
+    toolIds: ["slugify", "case-converter", "whitespace-cleaner", "sort-lines"],
+  },
+  {
+    id: "networking",
+    title: "Networking",
+    toolIds: ["ipify", "dns-lookup", "http-ping", "port-helper"],
+  },
+  {
+    id: "full-page",
+    title: "Full-page tools",
+    toolIds: ["log-viewer-page", "cloud-init"],
+  },
+];
+
+const categoriesWithTools = categories.map((category) => ({
+  ...category,
+  tools: category.toolIds.map((toolId) => toolById.get(toolId)).filter(Boolean),
+}));
+---
+
+<BaseLayout title="Tools" description="Small in-browser tools for day-to-day engineering work." data-pagefind-ignore="all">
+  <section class="space-y-6">
+    <p class="text-xs uppercase tracking-wide text-muted">Tools</p>
+    <h1 class="font-heading text-4xl font-semibold text-text">Tools</h1>
+    <p class="text-lg text-muted">
+      A catalog of small, in-browser tools I use often. Each tool is isolated, runs locally,
+      and avoids external dependencies. Use the sidebar to jump to a tool or section.
+    </p>
+  </section>
+
+  <details class="mt-6 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text lg:hidden">
+    <summary class="cursor-pointer font-semibold text-text">On this page</summary>
+    <ol class="cc-scrollbox mt-3 max-h-[60vh] space-y-1 overflow-auto text-muted">
+      {categoriesWithTools.map((category) => (
+        <li>
+          <a class="no-underline hover:text-text" href={`#${category.id}`}>
+            {category.title}
+          </a>
+          <ol class="mt-2 space-y-1 pl-4 text-xs">
+            {category.tools.map((tool) => (
+              <li>
+                <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+                  {tool.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </li>
+      ))}
+    </ol>
+  </details>
+
+  <section class="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
+    <div class="space-y-6">
+      {categoriesWithTools.map((category) => (
+        <section id={category.id} data-tool-section class="space-y-6">
+          <h2 class="font-heading text-2xl font-semibold text-text">
+            {category.title}
+          </h2>
+          {category.tools.map((tool) => (
+            <ToolCard id={tool.id} title={tool.title} description={tool.description}>
+              <tool.Component />
+            </ToolCard>
+          ))}
+        </section>
+      ))}
+    </div>
+    <aside class="hidden lg:block">
+      <div class="cc-scrollbox sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto rounded-2xl border border-border bg-surface px-4 py-4 text-sm text-muted">
+        <p class="font-semibold text-text">On this page</p>
+        <ol class="mt-3 space-y-2">
+          {categoriesWithTools.map((category) => (
+            <li>
+              <a class="no-underline hover:text-text" href={`#${category.id}`}>
+                {category.title}
+              </a>
+              <ol class="mt-2 space-y-1 pl-4 text-xs">
+                {category.tools.map((tool) => (
+                  <li>
+                    <a class="no-underline hover:text-text" href={`#${tool.id}`}>
+                      {tool.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

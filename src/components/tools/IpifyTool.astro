@@ -1,0 +1,56 @@
+<div class="space-y-3" data-tool="ipify">
+  <div class="flex flex-wrap items-center gap-2">
+    <button
+      class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+      type="button"
+      data-fetch
+    >
+      Fetch IP
+    </button>
+    <span class="text-xs text-muted">Uses ipify.org</span>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="ipify-output">Public IP</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#ipify-output"
+      >
+        Copy
+      </button>
+    </div>
+    <input
+      id="ipify-output"
+      class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      type="text"
+      readonly
+    />
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="ipify"]');
+      if (!root) return;
+      const output = root.querySelector("#ipify-output");
+      const button = root.querySelector("[data-fetch]");
+      const error = root.querySelector("[data-error]");
+      const fetchIp = async () => {
+        if (!output || !error) return;
+        try {
+          const res = await fetch("https://api.ipify.org?format=json");
+          if (!res.ok) throw new Error("Request failed");
+          const data = await res.json();
+          output.value = data.ip || "";
+          error.textContent = "";
+        } catch {
+          output.value = "";
+          error.textContent = "Unable to fetch IP.";
+        }
+      };
+      button?.addEventListener("click", () => {
+        void fetchIp();
+      });
+    })();
+  </script>
+</div>

@@ -1,0 +1,59 @@
+<div class="space-y-3" data-tool="base64-encode">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="b64-encode-input">Input</label>
+    <textarea
+      id="b64-encode-input"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text to encode"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="b64-encode-output">Base64</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#b64-encode-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="b64-encode-output"
+      class="min-h-[120px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="base64-encode"]');       
+    if (root) {
+      const input = root.querySelector("#b64-encode-input");
+      const output = root.querySelector("#b64-encode-output");
+      const encode = (value) => {
+        const bytes = new TextEncoder().encode(value);
+        let binary = "";
+        bytes.forEach((b) => (binary += String.fromCharCode(b)));
+        return btoa(binary);
+      };
+      const update = () => {
+        if (!input || !output) return;
+        output.value = input.value ? encode(input.value) : "";
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+

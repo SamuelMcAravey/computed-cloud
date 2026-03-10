@@ -1,0 +1,119 @@
+<div class="space-y-3" data-tool="sort-lines">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="sort-mode">Mode</label>
+      <select
+        id="sort-mode"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      >
+        <option value="alpha-asc">Alphabetical A-Z</option>
+        <option value="alpha-desc">Alphabetical Z-A</option>
+        <option value="num-asc">Numeric ascending</option>
+        <option value="num-desc">Numeric descending</option>
+      </select>
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="sort-options">Options</label>
+      <div class="grid gap-2 text-sm text-muted">
+        <label class="flex items-center gap-2">
+          <input id="sort-trim" type="checkbox" checked /> Trim lines
+        </label>
+        <label class="flex items-center gap-2">
+          <input id="sort-unique" type="checkbox" /> Unique only
+        </label>
+        <label class="flex items-center gap-2">
+          <input id="sort-ignore-case" type="checkbox" checked /> Ignore case
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="sort-input">Input</label>
+    <textarea
+      id="sort-input"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="One line per entry"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="sort-output">Output</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#sort-output"
+      >
+        Copy
+      </button>
+    </div>
+    <textarea
+      id="sort-output"
+      class="min-h-[140px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      readonly
+    ></textarea>
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="sort-lines"]');
+      if (!root) return;
+      const mode = root.querySelector("#sort-mode");
+      const trim = root.querySelector("#sort-trim");
+      const unique = root.querySelector("#sort-unique");
+      const ignoreCase = root.querySelector("#sort-ignore-case");
+      const input = root.querySelector("#sort-input");
+      const output = root.querySelector("#sort-output");
+      const getLines = (raw) => {
+        let lines = raw.split(/\r?\n/);
+        if (trim?.checked) {
+          lines = lines.map((line) => line.trim());
+        }
+        lines = lines.filter((line) => line.length > 0);
+        if (unique?.checked) {
+          const seen = new Set();
+          lines = lines.filter((line) => {
+            const key = ignoreCase?.checked ? line.toLowerCase() : line;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        }
+        return lines;
+      };
+      const update = () => {
+        if (!input || !output || !mode) return;
+        const raw = input.value;
+        if (!raw.trim()) {
+          output.value = "";
+          return;
+        }
+        const lines = getLines(raw);
+        const isNumeric = mode.value.startsWith("num");
+        const dir = mode.value.endsWith("desc") ? -1 : 1;
+        const compare = (a, b) => {
+          if (isNumeric) {
+            const na = Number(a);
+            const nb = Number(b);
+            if (Number.isNaN(na) || Number.isNaN(nb)) return a.localeCompare(b) * dir;
+            return (na - nb) * dir;
+          }
+          const aa = ignoreCase?.checked ? a.toLowerCase() : a;
+          const bb = ignoreCase?.checked ? b.toLowerCase() : b;
+          return aa.localeCompare(bb) * dir;
+        };
+        lines.sort(compare);
+        output.value = lines.join("\n");
+      };
+      let raf = 0;
+      const schedule = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      input?.addEventListener("input", schedule);
+      mode?.addEventListener("change", schedule);
+      trim?.addEventListener("change", schedule);
+      unique?.addEventListener("change", schedule);
+      ignoreCase?.addEventListener("change", schedule);
+      schedule();
+    })();
+  </script>
+</div>

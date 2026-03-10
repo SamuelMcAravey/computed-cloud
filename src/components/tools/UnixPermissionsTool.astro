@@ -1,0 +1,123 @@
+<div class="space-y-3" data-tool="unix-permissions">
+  <div class="grid gap-3 md:grid-cols-2">
+    <div class="space-y-2">
+      <div class="flex items-center justify-between gap-2">
+        <label class="text-xs uppercase tracking-wide text-muted" for="perm-octal">Octal (e.g. 755)</label>
+        <button
+          class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+          type="button"
+          data-copy-target="#perm-octal"
+        >
+          Copy
+        </button>
+      </div>
+      <input
+        id="perm-octal"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        placeholder="644"
+      />
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center justify-between gap-2">
+        <label class="text-xs uppercase tracking-wide text-muted" for="perm-symbolic">Symbolic (e.g. rw-r--r--)</label>
+        <button
+          class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+          type="button"
+          data-copy-target="#perm-symbolic"
+        >
+          Copy
+        </button>
+      </div>
+      <input
+        id="perm-symbolic"
+        class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+        type="text"
+        placeholder="rwxr-xr-x"
+      />
+    </div>
+  </div>
+  <p class="text-xs text-muted" data-error></p>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="unix-permissions"]');
+      if (!root) return;
+      const octalInput = root.querySelector("#perm-octal");
+      const symbolicInput = root.querySelector("#perm-symbolic");
+      const error = root.querySelector("[data-error]");
+      const permMap = [
+        "---",
+        "--x",
+        "-w-",
+        "-wx",
+        "r--",
+        "r-x",
+        "rw-",
+        "rwx",
+      ];
+      const toSymbolic = (octal) => {
+        const clean = octal.replace(/[^0-7]/g, "");
+        if (clean.length < 3) return null;
+        const digits = clean.slice(-3).split("").map((d) => Number(d));
+        return digits.map((d) => permMap[d]).join("");
+      };
+      const toOctal = (symbolic) => {
+        let clean = symbolic.trim();
+        if (clean.length === 10) clean = clean.slice(1);
+        clean = clean.replace(/\s+/g, "");
+        if (clean.length !== 9) return null;
+        const triples = [clean.slice(0, 3), clean.slice(3, 6), clean.slice(6, 9)];
+        const digits = triples.map((trip) => {
+          let value = 0;
+          if (trip[0] === "r") value += 4;
+          if (trip[1] === "w") value += 2;
+          if (trip[2] === "x") value += 1;
+          return value;
+        });
+        return digits.join("");
+      };
+      let lastEdited = "octal";
+      const updateFromOctal = () => {
+        if (!octalInput || !symbolicInput || !error) return;
+        const value = octalInput.value.trim();
+        if (!value) {
+          symbolicInput.value = "";
+          error.textContent = "";
+          return;
+        }
+        const symbolic = toSymbolic(value);
+        if (!symbolic) {
+          error.textContent = "Invalid octal value.";
+          return;
+        }
+        symbolicInput.value = symbolic;
+        error.textContent = "";
+      };
+      const updateFromSymbolic = () => {
+        if (!octalInput || !symbolicInput || !error) return;
+        const value = symbolicInput.value.trim();
+        if (!value) {
+          octalInput.value = "";
+          error.textContent = "";
+          return;
+        }
+        const octal = toOctal(value);
+        if (!octal) {
+          error.textContent = "Invalid symbolic value.";
+          return;
+        }
+        octalInput.value = octal;
+        error.textContent = "";
+      };
+      octalInput?.addEventListener("input", () => {
+        lastEdited = "octal";
+        updateFromOctal();
+      });
+      symbolicInput?.addEventListener("input", () => {
+        lastEdited = "symbolic";
+        updateFromSymbolic();
+      });
+      if (lastEdited === "octal") updateFromOctal();
+    })();
+  </script>
+</div>

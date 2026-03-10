@@ -1,0 +1,123 @@
+<div class="space-y-3" data-tool="case-convert">
+  <div class="space-y-2">
+    <label class="text-xs uppercase tracking-wide text-muted" for="case-input">Text</label>
+    <textarea
+      id="case-input"
+      class="min-h-[100px] w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+      placeholder="Text to convert"
+    ></textarea>
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="case-camel">camelCase</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#case-camel"
+      >
+        Copy
+      </button>
+    </div>
+    <input id="case-camel" class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text" type="text" readonly />
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="case-pascal">PascalCase</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#case-pascal"
+      >
+        Copy
+      </button>
+    </div>
+    <input id="case-pascal" class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text" type="text" readonly />
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="case-snake">snake_case</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#case-snake"
+      >
+        Copy
+      </button>
+    </div>
+    <input id="case-snake" class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text" type="text" readonly />
+  </div>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <label class="text-xs uppercase tracking-wide text-muted" for="case-kebab">kebab-case</label>
+      <button
+        class="cc-tool-button rounded-lg border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-text"
+        type="button"
+        data-copy-target="#case-kebab"
+      >
+        Copy
+      </button>
+    </div>
+    <input id="case-kebab" class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text" type="text" readonly />
+  </div>
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-tool="case-convert"]');
+    if (root) {
+      const input = root.querySelector("#case-input");
+      const camel = root.querySelector("#case-camel");
+      const pascal = root.querySelector("#case-pascal");
+      const snake = root.querySelector("#case-snake");
+      const kebab = root.querySelector("#case-kebab");
+      const update = () => {
+        if (!input || !camel || !pascal || !snake || !kebab) return;
+        if (!input.value.trim()) {
+          camel.value = "";
+          pascal.value = "";
+          snake.value = "";
+          kebab.value = "";
+          return;
+        }
+        const words = splitWords(input.value);
+        camel.value = toCamel(words);
+        pascal.value = toPascal(words);
+        snake.value = toSnake(words);
+        kebab.value = toKebab(words);
+      };
+      let raf = 0;
+      const scheduleUpdate = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      };
+      const splitWords = (value) =>
+        value
+          .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+          .replace(/[_\-]+/g, " ")
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
+      const toCamel = (words) =>
+        words
+          .map((word, index) =>
+            index === 0
+              ? word.toLowerCase()
+              : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          )
+          .join("");
+      const toPascal = (words) =>
+        words
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join("");
+      const toSnake = (words) => words.map((word) => word.toLowerCase()).join("_");
+      const toKebab = (words) => words.map((word) => word.toLowerCase()).join("-");
+      input?.addEventListener("input", scheduleUpdate);
+      scheduleUpdate();
+    }
+    })();
+  </script>
+</div>
+
+
+
+
+
+
