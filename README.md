@@ -123,4 +123,10 @@ The site is built with `npm run build` and deployed through Cloudflare using the
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+This repository uses a split license.
+
+- Source code, configuration, and automation scripts are licensed under [Apache-2.0](LICENSE).
+- Blog posts, notes, outlines, research files, docs, and other editorial prose are licensed under [CC BY-NC-ND 4.0](LICENSE-CONTENT).
+- Personal documents, trademarks, logos, and third-party assets are excluded from the default licenses unless a file or directory says otherwise.
+
+See [NOTICE](NOTICE) for the repo-level summary.

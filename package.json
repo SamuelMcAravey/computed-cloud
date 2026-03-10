@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "description": "Public source for computedcloud.com: blog, portfolio, and small engineering tools.",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "dev": "astro dev",
