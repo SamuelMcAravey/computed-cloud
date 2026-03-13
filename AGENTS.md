@@ -73,17 +73,22 @@ How we avoid common AI writing tells:
 
 ## Notes workflow
 
-Use `notes/` for internal reference material, working notes, and short writeups that are not blog posts.
+By default, when the user asks to "make a note," assume they mean a published site note in `src/content/notes/*.yml`.
+
+Use `notes/` only for internal reference material, working notes, research scratchpads, and repo-only writeups that are not meant to be published.
 
 ### Where notes go
 
+- Put published site notes in `src/content/notes/*.yml`.
 - Put general reference notes directly under `notes/`.
 - Put post research notes under `notes/research/`.
 - Put post outlines under `notes/outlines/`.
 - Do not put internal notes in `src/content/blog/`. That folder is only for actual blog posts.
+- If the user does not explicitly say "internal", "private", "repo note", or similar, prefer a published site note over an internal file in `notes/`.
 
 ### Naming and organization
 
+- For published site notes, add a new entry to the current monthly file in `src/content/notes/`, for example `src/content/notes/2026-03.yml`.
 - Prefer lowercase kebab-case filenames.
 - For durable reference notes, use a plain descriptive name like `uri-schemes-quick-reference.md`.
 - For dated research or time-bound notes, prefix with `YYYY-MM-DD-`, for example `2026-03-12-api-observations.md`.
@@ -106,6 +111,7 @@ Use `notes/` for internal reference material, working notes, and short writeups 
 - Do not add unsupported metadata or turn notes into pseudo-database records.
 - Published site notes in `src/content/notes/*.yml` should include a short opaque `permalink` value for the direct note URL.
 - Treat note permalinks as stable identifiers. Do not derive them from the title.
+- Published site notes should also include `id`, `title`, `summary`, `body`, `tags`, `published`, and optional `context` and `links`.
 
 ### Limits and scope
 

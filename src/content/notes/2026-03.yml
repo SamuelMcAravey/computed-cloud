@@ -126,3 +126,21 @@ entries:
     links:
       - label: Read the engineering principles post
         href: /blog/how-i-build-software-that-survives-reality
+
+  - id: uri-schemes-i-actually-need
+    permalink: u7r2m9kx
+    title: "The URI schemes I actually need to remember"
+    summary: "When I only need the practical subset, I mostly care about https, mailto, tel, sms, file, data, ws or wss, geo, and sometimes urn."
+    context: "Web apps and documents"
+    published: "2026-03-12"
+    tags:
+      - tooling
+      - architecture
+    body:
+      - "The distinction I usually want to remember is simple: `mailto:` starts an email draft, and `tel:` hands a number to the phone app or dialer. For normal user-facing links, `https:` is still the default, and `mailto:` and `tel:` are the two other ones I am most likely to actually use."
+      - "After that, the useful short list is `sms:` for text messages, `file:` for local or network files, `data:` for inline payloads, `ws:` or `wss:` for WebSockets, `geo:` for map locations, and `urn:` when something is a name rather than a fetchable location. I do not usually bother listing `blob:` unless I am talking about browser code, and I treat `javascript:` and most old schemes as things to avoid unless there is a specific reason."
+    links:
+      - label: MDN URI schemes reference
+        href: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes
+      - label: IANA URI schemes registry
+        href: https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
