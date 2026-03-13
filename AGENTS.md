@@ -104,6 +104,8 @@ Use `notes/` for internal reference material, working notes, and short writeups 
 - If lightweight categorization helps, add a short `Tags:` line near the top instead of YAML frontmatter.
 - Keep tags sparse and practical, for example: `Tags: reference, uri, links`.
 - Do not add unsupported metadata or turn notes into pseudo-database records.
+- Published site notes in `src/content/notes/*.yml` should include a short opaque `permalink` value for the direct note URL.
+- Treat note permalinks as stable identifiers. Do not derive them from the title.
 
 ### Limits and scope
 
@@ -116,6 +118,7 @@ Use `notes/` for internal reference material, working notes, and short writeups 
 - When note work is complete, check `git status`.
 - For note-only changes, the default finish state is to commit and push unless the user says not to.
 - Use a clear commit message that says what note was added or updated.
+- If a site note was added under `src/content/notes/`, verify it has a direct `/notes/<permalink>` URL before finishing.
 
 ## Primary objective
 

@@ -23,6 +23,7 @@ const noteLink = z.object({
 
 const noteEntry = z.object({
   id: z.string(),
+  permalink: z.string().optional(),
   title: z.string(),
   summary: z.string(),
   body: z.array(z.string()).default([]),

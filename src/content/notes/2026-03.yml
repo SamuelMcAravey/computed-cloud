@@ -1,6 +1,7 @@
 month: "2026-03"
 entries:
   - id: recovery-paths-are-part-of-the-product
+    permalink: n7k2p4x9
     title: "Recovery paths are part of the product"
     summary: "I do not think a workflow is really done until the failure path makes sense to the user and to support."
     context: "Payments and integrations"
@@ -17,6 +18,7 @@ entries:
         href: /blog/idempotency-in-payments-workflows
 
   - id: if-one-person-does-the-daily-math-thats-a-problem
+    permalink: q4m8t2bz
     title: "If one person has to do the daily math, that's a problem"
     summary: "One of the clearest signs something had to change at the bakery was that the day depended on me finishing the planning math before everyone else could really get moving."
     context: "Pearl Bakery, 2020-2023"
@@ -33,6 +35,7 @@ entries:
         href: /blog/pearl-bakery-custom-erp-for-production
 
   - id: grounded-ai-workflows-are-the-only-ones-i-trust
+    permalink: h6v3r9kc
     title: "The only AI workflows I trust are grounded ones"
     summary: "The AI workflows that have actually helped me all had the same property: they were tied to a real ticket, a real event, or a real chunk of code."
     context: "PayeWaive, 2024-present"
@@ -49,6 +52,7 @@ entries:
         href: /blog/codex-assisted-support-ticket-triage-freshdesk
 
   - id: payment-rails-are-different-products
+    permalink: p8x5d1mw
     title: "Payments is not one thing"
     summary: "I still hear 'payments' talked about like it is one problem. It really is not."
     context: "Payments platforms"
@@ -62,6 +66,7 @@ entries:
       - "I am probably saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand."
 
   - id: at-some-point-the-sync-stopped-being-glue-code
+    permalink: c3j7n4qy
     title: "At some point, the sync stopped being glue code"
     summary: "The ERP sync stopped feeling like glue code once it had enough business rules and enough debugging pressure attached to it."
     context: "PayeWaive, 2024-present"
@@ -75,6 +80,7 @@ entries:
       - "At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. Maybe that should have been obvious sooner than it was."
 
   - id: bakery-floor-software
+    permalink: b9w2k6rt
     title: "Software changes when the bakery opens before sunrise"
     summary: "At the bakery, the right feature was usually the one somebody could use half awake at 5am."
     context: "Pearl Bakery, 2020-2023"
@@ -91,6 +97,7 @@ entries:
         href: /blog/pearl-bakery-custom-erp-for-production
 
   - id: owning-the-p-and-l-changed-how-i-think-about-software
+    permalink: f2z8m5hp
     title: "Owning the P-and-L changed how I think about software"
     summary: "Running the bakery changed my tolerance for internal tools that look clever but do not actually remove a real constraint."
     context: "Pearl Bakery, 2020-2023"
@@ -104,6 +111,7 @@ entries:
       - "I do not think that made me less technical. If anything it made me more practical. I have a lot less patience now for software that sounds interesting but does not pay rent."
 
   - id: single-big-machine-bias
+    permalink: d4s7v1lx
     title: "A single big machine can take you pretty far"
     summary: "I am not against Kubernetes. I just think a lot of teams start paying a complexity bill long before they are getting anything back for it."
     context: "Architecture and operations"

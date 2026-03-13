@@ -204,8 +204,10 @@ const ogImageUrl = ogImage && SITE_URL ? new URL(ogImage, SITE_URL).toString() :
 
     const linkButton = target.closest("[data-copy-link]");
     if (linkButton instanceof HTMLElement) {
-      const hash = linkButton.getAttribute("data-copy-link") ?? "";
-      const url = window.location.origin + window.location.pathname + hash;
+      const targetPath = linkButton.getAttribute("data-copy-link") ?? "";
+      const url = targetPath
+        ? new URL(targetPath, window.location.origin).toString()
+        : window.location.origin + window.location.pathname;
       try {
         await navigator.clipboard.writeText(url);
         setCopied(linkButton);

@@ -40,6 +40,7 @@ still worth keeping public.
 ## Fields
 
 - `id`: stable anchor for the note on `/notes`
+- `permalink`: short opaque token for the direct note URL, for example `n7k2p4x9`
 - `title`: short, specific, and spoken-sounding
 - `summary`: the one-paragraph version
 - `body`: 1-3 short paragraphs
@@ -48,6 +49,8 @@ still worth keeping public.
 - `published`: when the note was added to the site
 - `links`: optional related links
 - Keep links short and cap them at two per note
+- Direct note pages resolve to `/notes/<permalink>`
+- Keep permalinks short, opaque, and stable. Do not derive them from the title.
 
 ## Dates
 

@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import NoteCard from "@components/NoteCard.astro";
+import { flattenNotes, getNotePermalink, getNoteSlug } from "../../utils/notes";
+
+export async function getStaticPaths() {
+  const notes = flattenNotes(await getCollection("notes"));
+  return notes.map((note) => ({
+    params: { slug: getNoteSlug(note) },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const pageDescription = note.summary;
+const notePermalink = getNotePermalink(note);
+---
+
+<BaseLayout title={note.title} description={pageDescription}>
+  <section class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <a class="cc-backlink text-xs uppercase tracking-wide text-muted no-underline" href="/notes">
+        ← Back to notes
+      </a>
+      <button
+        type="button"
+        class="rounded-full border border-border px-3 py-2 text-xs font-medium text-muted hover:border-primary hover:text-text"
+        data-copy-link={notePermalink}
+      >
+        Copy note link
+      </button>
+    </div>
+    <p class="text-xs uppercase tracking-[0.2em] text-muted">Note</p>
+    <div class="max-w-3xl">
+      <NoteCard note={note} />
+    </div>
+  </section>
+</BaseLayout>
