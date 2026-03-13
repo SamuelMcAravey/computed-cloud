@@ -6,6 +6,7 @@ import {
   getNoteAnchor,
   getNotePermalink,
 } from "../utils/notes";
+import { renderNoteBody } from "../utils/render-note-markdown";
 
 export interface Props {
   note: SiteNote;
@@ -17,6 +18,7 @@ const publishedExact = formatNotePublishedExact(note.published);
 const publishedShort = formatNotePublished(note.published);
 const notePermalink = getNotePermalink(note);
 const visibleLinks = note.links.slice(0, 2);
+const noteBodyHtml = !compact ? await renderNoteBody(note.body) : "";
 ---
 
 <article
@@ -45,12 +47,8 @@ const visibleLinks = note.links.slice(0, 2);
   </h2>
   <p class="mt-3 text-sm leading-7 text-muted">{note.summary}</p>
 
-  {!compact && note.body.length > 0 && (
-    <div class="mt-4 space-y-4 text-sm leading-7 text-muted">
-      {note.body.map((paragraph) => (
-        <p>{paragraph}</p>
-      ))}
-    </div>
+  {!compact && noteBodyHtml && (
+    <div class="prose mt-4 max-w-none text-sm leading-7" set:html={noteBodyHtml} />
   )}
 
   <div class="mt-auto flex flex-wrap items-end justify-between gap-4 pt-6">
