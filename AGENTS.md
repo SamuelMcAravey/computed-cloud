@@ -71,6 +71,52 @@ How we draft and edit posts:
 How we avoid common AI writing tells:
 * `notes/ai-writing-tells.md`
 
+## Notes workflow
+
+Use `notes/` for internal reference material, working notes, and short writeups that are not blog posts.
+
+### Where notes go
+
+- Put general reference notes directly under `notes/`.
+- Put post research notes under `notes/research/`.
+- Put post outlines under `notes/outlines/`.
+- Do not put internal notes in `src/content/blog/`. That folder is only for actual blog posts.
+
+### Naming and organization
+
+- Prefer lowercase kebab-case filenames.
+- For durable reference notes, use a plain descriptive name like `uri-schemes-quick-reference.md`.
+- For dated research or time-bound notes, prefix with `YYYY-MM-DD-`, for example `2026-03-12-api-observations.md`.
+- Keep notes small and scannable. A note is usually a quick reference, checklist, research summary, or scratchpad that can be turned into something better later.
+
+### Note content rules
+
+- Use Markdown.
+- Use ASCII punctuation only, same as blog posts and skills.
+- Prefer short sections and bullets over long prose unless the note is clearly narrative.
+- Keep claims grounded. If something is uncertain, label it as an assumption or open question.
+- Include source links when the note summarizes external references.
+- Do not invent a heavy schema for every note. Only add structure that helps the next read.
+
+### Tags and metadata
+
+- Notes do not need blog-style frontmatter by default.
+- If lightweight categorization helps, add a short `Tags:` line near the top instead of YAML frontmatter.
+- Keep tags sparse and practical, for example: `Tags: reference, uri, links`.
+- Do not add unsupported metadata or turn notes into pseudo-database records.
+
+### Limits and scope
+
+- Ignore deprecated, obscure, or browser-internal details unless they help explain a practical decision.
+- Prefer the useful subset over exhaustive coverage.
+- If a note starts becoming a real article, move that work into the blog workflow instead of expanding the note indefinitely.
+
+### Finish state for note tasks
+
+- When note work is complete, check `git status`.
+- For note-only changes, the default finish state is to commit and push unless the user says not to.
+- Use a clear commit message that says what note was added or updated.
+
 ## Primary objective
 
 Generate **clear, practical engineering posts** about systems, integrations, reliability, and real-world constraints.
