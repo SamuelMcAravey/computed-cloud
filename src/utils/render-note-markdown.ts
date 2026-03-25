@@ -16,6 +16,7 @@ const expressiveCodeOptions = {
 };
 
 const noteMarkdownProcessor = createMarkdownProcessor({
+  syntaxHighlight: false,
   remarkPlugins: [remarkGfm, remarkDirective, remarkCallouts],
   rehypePlugins: [
     [rehypeExpressiveCode, expressiveCodeOptions],
