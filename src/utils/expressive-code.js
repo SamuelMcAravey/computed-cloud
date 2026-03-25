@@ -12,20 +12,20 @@ export const expressiveCodeOptions = {
   },
   styleOverrides: {
     frames: {
-      terminalTitlebarBackground: "var(--ec-frm-trmBg)",
-      terminalTitlebarBorderBottomColor: "transparent",
+      terminalTitlebarBackground: "transparent",
+      terminalTitlebarBorderBottomColor: "rgb(var(--cc-border) / 0.85)",
       terminalTitlebarDotsForeground: "rgb(var(--cc-text))",
       terminalTitlebarDotsOpacity: "1",
       terminalTitlebarForeground: "rgb(var(--cc-muted))",
       inlineButtonForeground: "rgb(var(--cc-text))",
-      inlineButtonBackgroundIdleOpacity: "0.16",
-      inlineButtonBackgroundHoverOrFocusOpacity: "0.24",
-      inlineButtonBackgroundActiveOpacity: "0.3",
-      inlineButtonBorderOpacity: "0.2",
+      inlineButtonBackgroundIdleOpacity: "0.22",
+      inlineButtonBackgroundHoverOrFocusOpacity: "0.32",
+      inlineButtonBackgroundActiveOpacity: "0.4",
+      inlineButtonBorderOpacity: "0.28",
     },
     lineNumbers: {
-      foreground: "rgb(var(--cc-muted) / 0.5)",
-      highlightForeground: "rgb(var(--cc-text) / 0.82)",
+      foreground: "rgb(var(--cc-muted) / 0.72)",
+      highlightForeground: "rgb(var(--cc-text) / 0.88)",
     },
   },
 };

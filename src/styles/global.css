@@ -210,29 +210,36 @@ a {
 }
 
 .expressive-code .frame.is-terminal .header::before {
+  top: 50%;
+  transform: translateY(-50%);
   background:
-    radial-gradient(circle at 0.36rem 50%, rgb(248 113 113 / 0.98) 0 0.24rem, transparent 0.245rem),
-    radial-gradient(circle at 1.06rem 50%, rgb(251 191 36 / 0.98) 0 0.24rem, transparent 0.245rem),
-    radial-gradient(circle at 1.76rem 50%, rgb(52 211 153 / 0.98) 0 0.24rem, transparent 0.245rem) !important;
+    radial-gradient(circle at 0.46rem 50%, rgb(248 113 113 / 0.98) 0 0.29rem, transparent 0.295rem),
+    radial-gradient(circle at 1.36rem 50%, rgb(251 191 36 / 0.98) 0 0.29rem, transparent 0.295rem),
+    radial-gradient(circle at 2.26rem 50%, rgb(52 211 153 / 0.98) 0 0.29rem, transparent 0.295rem) !important;
   background-color: transparent !important;
+  width: 3rem;
+  height: 0.78rem;
   -webkit-mask-image: none !important;
   mask-image: none !important;
   opacity: 1 !important;
-  filter: drop-shadow(0 0 0.35rem rgb(255 255 255 / 0.06));
+  filter: drop-shadow(0 0 0.3rem rgb(255 255 255 / 0.08));
 }
 
 .expressive-code .frame.is-terminal .header::after {
-  border-bottom-color: transparent !important;
+  border-bottom-color: rgb(var(--cc-border) / 0.85) !important;
 }
 
 .expressive-code .copy {
-  inset-block-start: calc(var(--ec-brdWd) + 0.18rem) !important;
-  inset-inline-end: calc(var(--ec-brdWd) + 0.75rem) !important;
+  inset-block-start: calc(var(--ec-brdWd) + 0.14rem) !important;
+  inset-inline-end: calc(var(--ec-brdWd) + 0.55rem) !important;
 }
 
 .expressive-code .copy button {
-  width: 1.75rem !important;
-  height: 1.75rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 0.35rem !important;
+  background: rgb(var(--cc-text) / 0.08) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
   opacity: 1 !important;
 }
 
@@ -242,10 +249,20 @@ a {
 }
 
 .expressive-code .gutter .ln {
+  display: flex !important;
+  width: 100% !important;
   min-width: 1.4ch !important;
-  padding-inline: 0.55ch 0.95ch !important;
+  justify-content: flex-end !important;
+  padding-inline: 0 0.75ch !important;
+  text-align: right !important;
   font-size: 0.69rem !important;
   line-height: 1.35 !important;
+  font-weight: 500;
+  color: rgb(var(--cc-muted) / 0.75) !important;
+}
+
+.expressive-code .ec-line.highlight .gutter .ln {
+  color: rgb(var(--cc-text) / 0.92) !important;
 }
 
 .cc-figure {
