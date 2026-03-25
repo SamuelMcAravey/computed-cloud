@@ -144,3 +144,22 @@ entries:
         href: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes
       - label: IANA URI schemes registry
         href: https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
+
+  - id: rdp-to-entra-needs-the-hostname-entra-knows
+    permalink: x4p7k2mn
+    title: "RDP to Entra needs the hostname Entra knows"
+    summary: "The fix was not a credential trick. I had to use the hostname Entra had for the target machine and turn on web account sign-in in the RDP file."
+    context: "Remote access setup"
+    published: "2026-03-25"
+    tags:
+      - support
+      - tooling
+    body:
+      - "The bug was the error `AADSTS293004` - the target device identifier was not found in the tenant. I kept treating it like a DNS problem, but the real issue was that the name in the connection had to line up with the device hostname Entra knew about."
+      - "My working file uses `enablerdsaadauth:i:1`, `full address:s:<hostname>`, and `username:s:<user@domain.com>`. That is the part I wanted to be able to find again later."
+      - "When I forget the setup, I run `dsregcmd /status` on the target machine, check `Device Name`, and make sure that exact name resolves on the network. If I try to skip that and use an IP or a random alias, I should expect it to fail."
+    links:
+      - label: Microsoft Entra VM sign-in troubleshooting
+        href: https://learn.microsoft.com/en-us/entra/identity/devices/howto-vm-sign-in-azure-ad-windows
+      - label: Remote PC sign-in with Microsoft Entra authentication
+        href: https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-connection-single-sign-on
