@@ -1,12 +1,24 @@
 import { createMarkdownProcessor } from "@astrojs/markdown-remark";
+import rehypeExpressiveCode from "rehype-expressive-code";
 import remarkGfm from "remark-gfm";
 import remarkDirective from "remark-directive";
 import { remarkCallouts } from "./remark-callouts.js";
 import { rehypeImageFigure } from "./rehype-figure.js";
 
+const expressiveCodeOptions = {
+  themes: ["github-dark"],
+  frames: {
+    showCopyToClipboardButton: true,
+  },
+  defaultProps: {
+    frame: "terminal",
+  },
+};
+
 const noteMarkdownProcessor = createMarkdownProcessor({
   remarkPlugins: [remarkGfm, remarkDirective, remarkCallouts],
   rehypePlugins: [
+    [rehypeExpressiveCode, expressiveCodeOptions],
     [
       rehypeImageFigure,
       {
