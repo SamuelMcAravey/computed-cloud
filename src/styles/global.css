@@ -209,13 +209,43 @@ a {
   border: 0 !important;
 }
 
-.expressive-code .copy-to-clipboard-button {
-  opacity: 1;
-  visibility: visible;
+.expressive-code .frame.is-terminal .header::before {
+  background:
+    radial-gradient(circle at 0.36rem 50%, rgb(248 113 113 / 0.98) 0 0.24rem, transparent 0.245rem),
+    radial-gradient(circle at 1.06rem 50%, rgb(251 191 36 / 0.98) 0 0.24rem, transparent 0.245rem),
+    radial-gradient(circle at 1.76rem 50%, rgb(52 211 153 / 0.98) 0 0.24rem, transparent 0.245rem) !important;
+  background-color: transparent !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 0.35rem rgb(255 255 255 / 0.06));
 }
 
-.expressive-code .copy-to-clipboard-button:hover {
-  filter: brightness(1.1);
+.expressive-code .frame.is-terminal .header::after {
+  border-bottom-color: transparent !important;
+}
+
+.expressive-code .copy {
+  inset-block-start: calc(var(--ec-brdWd) + 0.18rem) !important;
+  inset-inline-end: calc(var(--ec-brdWd) + 0.75rem) !important;
+}
+
+.expressive-code .copy button {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  opacity: 1 !important;
+}
+
+.expressive-code .copy button:hover,
+.expressive-code .copy button:focus-visible {
+  opacity: 1 !important;
+}
+
+.expressive-code .gutter .ln {
+  min-width: 1.4ch !important;
+  padding-inline: 0.55ch 0.95ch !important;
+  font-size: 0.69rem !important;
+  line-height: 1.35 !important;
 }
 
 .cc-figure {

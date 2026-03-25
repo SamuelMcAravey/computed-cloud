@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import remarkDirective from "remark-directive";
 import { remarkCallouts } from "./src/utils/remark-callouts.js";
 import { rehypeImageFigure } from "./src/utils/rehype-figure.js";
+import { expressiveCodeOptions } from "./src/utils/expressive-code.js";
 import pagefind from "astro-pagefind";
 
 // Content-first blog defaults:
@@ -55,15 +56,7 @@ export default defineConfig({
   integrations: [
     robotsTxt(),
     sitemap(),
-    expressiveCode({
-      themes: ["github-dark"],
-      frames: {
-        showCopyToClipboardButton: true,
-      },
-      defaultProps: {
-        frame: "terminal",
-      },
-    }),
+    expressiveCode(expressiveCodeOptions),
     mermaid({
       theme: "neutral",
       autoTheme: true,

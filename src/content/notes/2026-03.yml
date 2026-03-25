@@ -160,7 +160,7 @@ entries:
       - |-
         The file I ended up with, redacted:
 
-        ```text
+        ```text title="Redacted RDP profile"
         screen mode id:i:2
         use multimon:i:1
         desktopwidth:i:1920
