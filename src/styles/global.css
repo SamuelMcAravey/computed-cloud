@@ -235,14 +235,26 @@ a {
   width: 1.8rem !important;
   height: 1.8rem !important;
   border-radius: 0.33rem !important;
-  background: rgb(var(--cc-surface) / 1) !important;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: rgb(226 232 240 / 0.96) !important;
   opacity: 1 !important;
 }
 
 .expressive-code .copy button:hover,
 .expressive-code .copy button:focus-visible {
   opacity: 1 !important;
+}
+
+.expressive-code .copy button > div {
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+.expressive-code .copy button::before {
+  border: 0 !important;
+  opacity: 0 !important;
 }
 
 .expressive-code .gutter .ln {
