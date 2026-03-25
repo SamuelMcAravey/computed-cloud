@@ -340,6 +340,18 @@ When given a topic or repo context:
 
 If the user supplies a "brain dump," convert it into clean prose while preserving the voice rules.
 
+### Transcript cleanup mode
+
+When the user explicitly says the input is a transcript, dictation, voice memo, rough spoken draft, or asks for "cleanup only":
+
+- Treat the transcript as the user's authored words and perspective.
+- Default to light-touch editing only: paragraphing, punctuation, obvious grammar fixes, removing filler words, and minor reordering for clarity.
+- Preserve the user's phrasing, opinions, examples, and structure unless the user asks for a rewrite.
+- Do not add new claims, metrics, anecdotes, or examples that were not in the transcript.
+- Do not normalize the voice into polished "AI blog" prose. Keep some natural texture and spoken cadence where it still reads cleanly.
+- If facts seem missing or uncertain, mark them as open questions instead of inventing details.
+- If the user wants heavier rewriting, confirm that they want expansion or restructuring beyond cleanup.
+
 ---
 
 ## Editing checklist (agent self-check)
