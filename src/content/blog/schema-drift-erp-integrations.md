@@ -1,6 +1,6 @@
 ---
-title: "Schema Drift in ERP Integrations: Detect It Before It Pages You"
-description: "A practical, small-team approach to detecting database schema drift and choosing a controlled failure mode."
+title: "How I watch for schema drift in ERP integrations"
+description: "A small-team approach to catching database schema drift before it pages you."
 pubDate: 2026-03-04
 tags: ["integrations", "erp", "reliability", "how-to", "sql-server"]
 draft: true
@@ -17,23 +17,23 @@ draft: true
 ## On this page
 
 - [Context](#context)
-- [Define the Contract Surface](#define-the-contract-surface)
-- [Detect Drift (Snapshot and Diff)](#detect-drift-snapshot-and-diff)
-- [Choose a Failure Mode](#choose-a-failure-mode)
-- [Logging That Makes Drift Actionable](#logging-that-makes-drift-actionable)
+- [Pick the contract surface](#pick-the-contract-surface)
+- [Watch for drift](#watch-for-drift)
+- [Pick a failure mode](#pick-a-failure-mode)
+- [What to log](#what-to-log)
 - [Tradeoffs](#tradeoffs)
 - [Checklist](#checklist)
 - [References](#references)
 
 ## Context
 
-If you integrate with an ERP through its database, you are doing an integration where your "API" is a schema you do not own.
+If you integrate with an ERP through its database, your API is the schema.
 
-That is fine. It can be fast and effective. It also creates a failure mode that feels unfair the first time it happens: production can change and you can break without deploying anything.
+That can be fast. It can also break in a way that feels unfair the first time: production changes and you break without shipping anything.
 
 I wrote about one incident like this in [When the Sandbox Lies](/blog/when-the-sandbox-lies/). The point of this post is not the story. The point is the playbook: how to detect drift early enough to choose a controlled response.
 
-## Define the contract surface
+## Pick the contract surface
 
 Schema drift is a big category. Trying to "monitor the whole database" is how you end up building a platform you did not want.
 
@@ -50,13 +50,13 @@ For each contract column, define what you care about. In practice that is usuall
 - nullability
 - existence (add/drop)
 
-If you only pick one thing: write paths first. Reads can often degrade. Writes can corrupt.
+If you only do one thing, cover the write paths first. Reads can limp along. Bad writes are harder to unwind.
 
-## Detect drift (snapshot and diff)
+## Watch for drift
 
 The simplest drift detector is a scheduled job that snapshots schema metadata, diffs it against the previous snapshot, and alerts when a contract column changes.
 
-This can be a script. It can be a small job in your app. It can run daily. The point is that you stop learning about drift from runtime exceptions.
+This can be a script. It can be a small job in your app. It can run daily. The point is to find out from the check, not from a runtime exception.
 
 ### Two layers of metadata
 
@@ -90,7 +90,7 @@ JOIN sys.columns c ON c.object_id = t.object_id
 JOIN sys.types ty ON ty.user_type_id = c.user_type_id;
 ```
 
-Store the output (or a hash of the output) somewhere you control, and diff it on a schedule.
+Store the output, or a hash of it, somewhere you control, and diff it on a schedule.
 
 ### A real gotcha: metadata visibility and permissions
 
@@ -110,7 +110,7 @@ SQL Server can capture DDL events via DDL triggers and `EVENTDATA()`. [5] [6]
 
 In vendor-managed ERP databases, you usually cannot do this, or you should not. I mention it here because it is a real tool when you control the DB surface.
 
-## Choose a failure mode
+## Pick a failure mode
 
 Detection is half the work. The other half is deciding what you do when drift is detected.
 
@@ -142,7 +142,7 @@ What you do:
 - block the workflow steps that write
 - surface a clear error to operators (and ideally customers) that the system is in a controlled degraded state
 
-This aligns with "tolerant reads, strict writes." It is also aligned with the tolerant reader framing: accept what you can, reject what you must. [9]
+This is the tolerant-reader idea in practice: accept what you can, reject what you must. [9]
 
 If you want the read side to degrade instead of throwing, SQL Server has `TRY_CONVERT`, which returns `NULL` on conversion failure instead of raising an error. That is useful in ingestion paths for non-critical fields. [8]
 
@@ -164,7 +164,7 @@ Use this when:
 
 This is the most expensive option in uptime. It can still be the right one.
 
-## Logging that makes drift actionable
+## What to log
 
 Drift alerts only help if they tell you what changed, where, and what it affects.
 
@@ -183,10 +183,10 @@ If you keep a "contract surface" allowlist, include which contract entry fired. 
 
 - Drift detection is not free. It is more moving parts, more identities, and another thing to page on.
 - If you scope it well, it is not a platform. It is one job and one diff.
-- Alert-only is comfortable until the wrong drift hits a write path.
-- Blocking writes protects data, but it can turn into an operational tax if it triggers too often.
+- Alert-only feels fine until the wrong drift hits a write path.
+- Blocking writes protects data, but if it fires too often it becomes its own tax.
 
-My bias is to start small and iterate: build one detector, pick one failure mode, then adjust after the next incident instead of guessing upfront.
+I would start small: one detector, one failure mode, then adjust after the next incident instead of guessing upfront.
 
 ## Checklist
 

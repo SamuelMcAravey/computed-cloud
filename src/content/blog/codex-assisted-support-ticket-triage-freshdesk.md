@@ -1,6 +1,6 @@
 ---
-title: "Using Codex to Triage Support Tickets Without Trusting It"
-description: "A human-in-the-loop workflow: facts-only summaries, read-only investigation, and draft replies with guardrails."
+title: "How I use Codex on support tickets"
+description: "A human-reviewed workflow for ticket summaries, read-only investigation, and draft replies."
 pubDate: 2026-02-27
 tags: ["operations", "support", "workflows", "reliability", "ai"]
 draft: false
@@ -16,13 +16,13 @@ draft: false
 ## On this page
 
 - [Context](#context)
-- [Decision](#decision)
-- [Workflow](#workflow)
-- [The Scar: Forwarded Tickets](#the-scar-forwarded-tickets)
+- [Why I do it](#why-i-do-it)
+- [How it works](#how-it-works)
+- [Forwarded tickets](#forwarded-tickets)
 - [Guardrails](#guardrails)
-- [Internal Notes And Handoff](#internal-notes-and-handoff)
-- [Tradeoffs](#tradeoffs)
-- [Next Improvement](#next-improvement)
+- [Internal notes and handoff](#internal-notes-and-handoff)
+- [What it costs](#what-it-costs)
+- [What I want to fix next](#what-i-want-to-fix-next)
 - [Diagram](#diagram)
 - [Checklist](#checklist)
 
@@ -36,7 +36,7 @@ I also do not want an automated bot responding on my behalf. Support is easy to 
 
 So I optimize for a workflow that is fast, consistent, and boring: extract the facts, pick the next action, and draft a reply I can review.
 
-## Decision
+## Why I do it
 
 When a ticket arrives in Freshdesk, I run Codex manually as a first pass.
 
@@ -46,7 +46,7 @@ The constraint is non-negotiable: it cannot send anything without showing me the
 
 To keep it grounded, I give it a short repo map file (`llms.txt`) plus read-only access to the codebase on the same machine.
 
-## Workflow
+## How it works
 
 The workflow is intentionally repetitive. Repetition is the point.
 
@@ -65,9 +65,9 @@ The workflow is intentionally repetitive. Repetition is the point.
 9. If engineering work is needed, we create a GitHub Issue (Freshdesk is not the engineering backlog).
 10. We close the ticket when no action remains (either we finished our work, or the customer finished theirs).
 
-The value is not "AI wrote my email". The value is that I start from a clean summary and a draft that I can accept, edit, or reject.
+The point is simpler: I start from a clean summary and a draft I can accept, edit, or reject.
 
-## The scar: forwarded tickets
+## Forwarded tickets
 
 Forwarded tickets taught me that requester identity is part of the system.
 
@@ -104,7 +104,7 @@ Human review is the main gate, but I still keep an explicit "do not do this" lis
 - No secrets: do not ask for passwords, API keys, or private credentials in email.
 - Always show outbound text: the assistant must present the exact public reply for human approval before sending.
 
-This is not paranoia. It is an attempt to choose a failure mode I can live with.
+It is not paranoia. It is just the failure mode I want.
 
 ## Internal notes and handoff
 
@@ -123,7 +123,7 @@ Engineering work is tracked in GitHub Issues. Freshdesk is for customer communic
 
 We do not always add a hard link in the Freshdesk note immediately, because issue creation follows a separate process.
 
-## Tradeoffs
+## What it costs
 
 This workflow has real costs.
 
@@ -133,7 +133,7 @@ This workflow has real costs.
 
 Both are valid. I prefer this shape because the real constraint is not "can we answer". The constraint is "can we avoid making things worse".
 
-## Next improvement
+## What I want to fix next
 
 Today, I fix forwarding mostly at reply time (To/CC).
 

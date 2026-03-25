@@ -1,5 +1,5 @@
 ---
-title: "From Orders To Invoices: The Small ERP I Built For Pearl Bakery"
+title: "The small ERP I built for Pearl Bakery"
 description: "How I mapped a real production floor into software: orders to plan, plan to stations, stations to packing and invoicing."
 pubDate: 2026-02-27
 tags: ["case-study", "systems", "operations", "manufacturing", "architecture"]
@@ -18,19 +18,19 @@ draft: false
 - [TL;DR](#tldr)
 - [On this page](#on-this-page)
 - [Context](#context)
-- [Decision](#decision)
+- [Why I built it](#why-i-built-it)
 - [Diagram](#diagram)
-- [Implementation](#implementation)
+- [How I built it](#how-i-built-it)
   - [Phase 1: make the quantities computable](#phase-1-make-the-quantities-computable)
   - [Phase 2: put the plan where the work happens](#phase-2-put-the-plan-where-the-work-happens)
   - [Phase 3: close the loop (packing, then QuickBooks)](#phase-3-close-the-loop-packing-then-quickbooks)
   - [Implementation note: boring web tech, locked down access](#implementation-note-boring-web-tech-locked-down-access)
-- [What worked / What didn't](#what-worked--what-didnt)
+- [What worked and what didn't](#what-worked-and-what-didnt)
   - [What worked](#what-worked)
   - [What didn't](#what-didnt)
 - [Tradeoffs](#tradeoffs)
 - [How to use](#how-to-use)
-- [Wrap-up](#wrap-up)
+- [What I would do again](#what-i-would-do-again)
 - [Checklist](#checklist)
 
 ## Context
@@ -49,7 +49,7 @@ At our peak we were producing around 1,000 units per day across roughly 20 SKUs,
 
 I also did not want to cram our workflow into an old ERP that did not match how a real production floor runs. If the system fights the process, the process will win. People will route around it.
 
-## Decision
+## Why I built it
 
 The constraint was the workflow, so I started by mapping the workflow.
 
@@ -63,13 +63,13 @@ I broke the day into the parts that actually mattered:
 - what needs to be packed for each customer
 - how invoicing needs to reflect what actually shipped
 
-Now I had to make it real.
+Then I had to make it real.
 
-I did not try to boil the ocean. I started with the biggest daily pain: figuring out the quantities we needed to produce each day. Then I expanded outward. Once I could trust the plan, I could put the plan on the floor. Once the plan and execution were in the same system, packing slips were a natural next step. Once packing was in the system, sending invoice line items to QuickBooks was the last manual step to kill.
+I did not try to solve everything at once. I started with the biggest daily pain: figuring out the quantities we needed to produce each day. Then I expanded outward. Once I could trust the plan, I could put the plan on the floor. Once the plan and execution were in the same system, packing slips were a natural next step. Once packing was in the system, sending invoice line items to QuickBooks was the last manual step to kill.
 
-That is what the ERP became: not a grand redesign, but an incremental removal of daily bottlenecks.
+That is what the ERP became: one daily bottleneck at a time.
 
-The goal was not a pretty dashboard. The goal was a boring, repeatable pipeline:
+I wanted a boring, repeatable pipeline:
 
 orders -> plan -> execution -> packing -> invoicing
 
@@ -87,13 +87,13 @@ flowchart LR
   F --> B
 ```
 
-## Implementation
+## How I built it
 
-This is the part people get wrong when they hear "I built an ERP".
+This is the part people miss when they hear "I built an ERP".
 
 They imagine a database and a bunch of admin screens.
 
-What I actually needed was a plan that could survive contact with the floor. And I needed it to run without my brain being the scheduler.
+What I needed was a plan that could survive contact with the floor. It also had to run without my brain being the scheduler.
 
 So I built the system around the day, not around the data.
 
@@ -117,14 +117,14 @@ Planning is only half the battle. The plan has to be executable.
 
 We put iPads on tables around the bakery. Each station got a view that matched the work at that station.
 
-Instead of "ERP screens", it was closer to work instructions:
+Instead of ERP screens, it was closer to work instructions:
 
 - station-specific ingredient quantities
 - step verification checkpoints
 - temperature checks (water temp, dough temp, etc.)
 - confirmations that a mix happened and was split
 
-This was not about micromanaging people. It was about making the work easier to do correctly, and making the day easier to run.
+This was not about micromanaging people. It was about making the work easier to do right, and making the day easier to run.
 
 ### Phase 3: close the loop (packing, then QuickBooks)
 
@@ -144,11 +144,11 @@ If the work happened, the paperwork should not require a second round of manual 
 
 ### Implementation note: boring web tech, locked down access
 
-The stack was intentionally simple. The app was ASP.NET Core with server-side rendered Razor Pages, hosted on Azure Web Apps, with an Azure SQL database behind it.
+The stack was plain on purpose. The app was ASP.NET Core with server-side rendered Razor Pages, hosted on Azure Web Apps, with an Azure SQL database behind it.
 
 It also had to be locked down. This was not a public SaaS app. Access was primarily via an IP allow list because we had a static IP from our internet provider, and the iPads just opened a browser to the station page.
 
-## What worked / What didn't
+## What worked and what didn't
 
 ### What worked
 
@@ -164,15 +164,13 @@ Buffers and loss factors were also non-negotiable. A perfect plan on paper is no
 
 The first versions were not perfect. They never are.
 
-If I turn this into a series, I will write down the early mistakes and how we corrected them. For now, the honest version is: you build the first version, you watch it get used, then you revise it.
-
 One early mistake was batch sizing and buffer scaling. We would overproduce and throw away product, especially when buffer rules that made sense at small volumes scaled up linearly.
 
 A 10% buffer on 10 items is 1 extra. A 10% buffer on 1,000 rolls is 100 extra, and now you are throwing away a lot of food.
 
 We fixed that by tuning the planning rules so they respected real batch sizes and did not blindly scale buffers with volume. Underproducing still happened sometimes, but it was rarer. Overproducing was the bigger cost.
 
-Another reality: software does not remove leadership. People still need training. Processes still need reinforcement. The system can make the right thing easier, but it cannot make the right thing inevitable.
+Software did not remove leadership. People still needed training. Processes still needed reinforcement. The system could make the right thing easier, but it could not make the right thing inevitable.
 
 ## Tradeoffs
 
@@ -184,7 +182,7 @@ Building custom software for operations is a trade. You are not buying a tool. Y
 
 But there is a counterweight: forcing ops to bend around bad software is also a forever cost. It shows up as wasted time, workarounds, paper, and mistakes.
 
-Both are valid. In our case, the bottleneck was daily planning and execution, so the software paid its rent.
+Both are valid. In our case, the software paid its rent because it removed the daily planning bottleneck.
 
 ## How to use
 
@@ -200,11 +198,11 @@ Finally, automate the first thing that is both repetitive and business-critical.
 
 If you only remember one thing: make the plan something the team can run without you.
 
-## Wrap-up
+## What I would do again
 
 This was not a toy app. It was the operational backbone of a production business.
 
-I like building systems like this because they are honest. If the system is wrong, the day is wrong. And if it is right, the work gets calmer.
+I like systems like this because they tell on you fast. If the system is wrong, the day is wrong. If it is right, the work gets calmer.
 
 ## Checklist
 

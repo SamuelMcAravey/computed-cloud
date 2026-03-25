@@ -1,6 +1,6 @@
 ---
-title: "Configuration as a First-Class System"
-description: "A practical pattern for managing config across environments, with fail-fast validation and explicit boundaries."
+title: "Config is a dependency"
+description: "How I keep config sane across environments, with fail-fast validation and explicit boundaries."
 pubDate: 2026-03-04
 tags: ["configuration", "reliability", "operations", "architecture", "dotnet"]
 draft: false
@@ -17,32 +17,32 @@ draft: false
 ## On this page
 
 - [Context](#context)
-- [The Pattern](#the-pattern)
-- [The Scar: Production Hit Sandbox](#the-scar-production-hit-sandbox)
+- [What I do](#what-i-do)
+- [Production hit sandbox](#production-hit-sandbox)
 - [Implementation (With Small .NET Examples)](#implementation-with-small-net-examples)
 - [Tradeoffs](#tradeoffs)
 - [Checklist: Adding a New Config Value Safely](#checklist-adding-a-new-config-value-safely)
-- [Wrap-up](#wrap-up)
+- [What I keep in mind](#what-i-keep-in-mind)
 
 ## Context
 
-Most teams do not have "one configuration file". They have configuration surfaces.
+Most teams do not have one config file. They have a pile of config surfaces.
 
-In my world, that usually looks like:
+In my world, that usually means:
 
-- secrets and non-secrets injected via a Kubernetes operator
+- secrets and non-secrets coming in through a Kubernetes operator
 - some non-secret values in Kubernetes ConfigMaps
-- trivial defaults in `appsettings.json` so local dev is not miserable
+- `appsettings.json` defaults so local dev is not awful
 
-That setup is not automatically wrong. The problem is what comes next.
+That setup is fine. The problem is what comes after.
 
-Config values get copied between environments under time pressure. Endpoints look almost identical. A new key ships with no validation. A setting changes behavior without changing code, so the change is easy to miss in review.
+Values get copied between environments under pressure. Endpoints look almost the same. A new key ships without validation. A config change can alter behavior without touching code, so it is easy to miss in review.
 
-If you treat config as stringly typed glue, the system behaves that way.
+If you treat config like loose strings, it will act like loose strings.
 
-If you treat config as a first-class system, you can make it boring.
+If you treat config as a real dependency, you can make it boring.
 
-## The Pattern
+## What I do
 
 Configuration is a dependency. Dependencies need contracts.
 
@@ -60,7 +60,7 @@ Validate at startup, before the app takes traffic. Broken config should be a dep
 
 Make the boundary part of the contract. By default, production should not be able to talk to sandbox.
 
-### Boundary: secrets are not config
+### Secrets are not config
 
 In practice, secrets and non-secrets often ride the same delivery pipes. That does not make them the same thing.
 
@@ -68,7 +68,7 @@ Secrets have different access control, different audit requirements, and differe
 
 This post is about configuration guardrails. It is not a guide to secrets management. The key point is simple: do not treat "it is in the same tool" as "it has the same risk".
 
-## The Scar: Production Hit Sandbox
+## When production hit sandbox
 
 We had an outbound integration where the base URL was configuration. Both environments existed:
 
@@ -87,7 +87,11 @@ That is the most dangerous kind of misconfig. It works.
 >
 > **New rule of thumb:** if a value selects an environment (URLs, account IDs, tenant IDs), guard it with code.
 
-The first signal was both a support ticket and what we saw in logs and traces. The ticket is the worst one, because now you have egg on your face. As the product and process mature, I want logs and traces to catch it first.
+The first signal was a support ticket, plus logs and traces.
+
+That is the bad version. A customer found it first.
+
+I want the logs and traces to catch this before a ticket does.
 
 ## Implementation (With Small .NET Examples)
 
@@ -99,7 +103,7 @@ These examples use .NET Options because the mechanics are clean:
 
 Keep the contract. Swap out the wiring.
 
-### 1) Define a typed options object (schema)
+### Define a typed options object
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
@@ -120,7 +124,7 @@ public sealed class ExternalApiOptions
 }
 ```
 
-### 2) Bind and validate at startup (fail fast)
+### Bind and validate at startup
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -138,7 +142,7 @@ app.Run();
 
 This buys you a basic safety net: missing required values block startup.
 
-### 3) Make config and runtime environment agree (boundary check)
+### Make config and runtime environment agree
 
 The idea is not tied to a specific env var name. The idea is that your runtime environment and your config boundary must match.
 
@@ -161,7 +165,7 @@ if (!string.Equals(options.Boundary, expectedBoundary, StringComparison.Ordinal)
 }
 ```
 
-### 4) Block known-bad endpoint wiring (allowlist)
+### Block known-bad endpoint wiring
 
 Boundary markers are good, but endpoints still need guardrails. The most direct guardrail is an allowlist of allowed hosts per environment.
 
@@ -209,7 +213,7 @@ builder.Services.AddSingleton<IValidateOptions<ExternalApiOptions>, ExternalApiO
 
 Now the service refuses to start if production is configured to talk to the sandbox host.
 
-### 5) Be explicit about config distribution
+### Be explicit about config distribution
 
 Teams get opinionated here. That is fine. What matters is being explicit.
 
@@ -232,14 +236,14 @@ Two rules:
 
 ## Tradeoffs
 
-This pattern is a bias. It is not free.
+This is a bias. It costs something.
 
 - Fail-fast validation creates a new failure mode: the service will not start if your config distribution path is broken.
 - Allowlists need maintenance. When vendors add new hosts, someone has to update the contract on purpose.
 - If you over-validate, you can block legitimate changes until code ships.
 - You need good error messages. A generic "options validation failed" line is not enough at 2am.
 
-Also, the real-world fix path is usually not a refactor. It is a targeted patch.
+Usually you do not fix this with a broad refactor. You patch the config, then come back and tighten the guardrails.
 
 - stop the bleeding by updating the config
 - then dig in and remediate (validation, boundaries, better defaults, better visibility)
@@ -262,8 +266,8 @@ I still prefer strictness when the failure mode is cross-environment traffic. Th
 - Do not log secrets. If you log config, log hosts and identifiers, not tokens.
 - Have a rollback plan for when validation blocks startup.
 
-## Wrap-up
+## What I keep in mind
 
-Configuration changes behavior without changing code. That is why it deserves the same engineering attention as code.
+Configuration changes behavior without touching code. That is why it needs the same care as code.
 
 If you only remember one thing: treat environment-selecting values (URLs, tenant IDs, account IDs) as safety-critical. Put guardrails in code, and fail early when the boundary is wrong.

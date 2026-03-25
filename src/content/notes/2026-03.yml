@@ -2,8 +2,8 @@ month: "2026-03"
 entries:
   - id: recovery-paths-are-part-of-the-product
     permalink: n7k2p4x9
-    title: "Recovery paths are part of the product"
-    summary: "I do not think a workflow is really done until the failure path makes sense to the user and to support."
+    title: "Recovery is part of the product"
+    summary: "I do not think a workflow is really done until the failure path makes sense to the user and support."
     context: "Payments and integrations"
     published: "2026-03-10"
     tags:
@@ -12,7 +12,7 @@ entries:
       - payments
     body:
       - "I have seen too many workflows where the happy path is mapped out and the failure path is basically 'we'll sort it out if it happens.' That sounds fine until one external step succeeds, the next one does not, and now somebody wants to know whether the money moved or whether they need to do something again."
-      - "That is probably why I keep coming back to retries, reconciliation, and visible states. Maybe that is not glamorous enough to call product work, but I do not really know what else to call it."
+      - "That is why I keep coming back to retries, reconciliation, and visible states. Maybe that is not glamorous enough to call product work, but I do not really know what else to call it."
     links:
       - label: Read the idempotency post
         href: /blog/idempotency-in-payments-workflows
@@ -36,8 +36,8 @@ entries:
 
   - id: grounded-ai-workflows-are-the-only-ones-i-trust
     permalink: h6v3r9kc
-    title: "The only AI workflows I trust are grounded ones"
-    summary: "The AI workflows that have actually helped me all had the same property: they were tied to a real ticket, a real event, or a real chunk of code."
+    title: "AI needs real context"
+    summary: "The AI workflows that have actually helped me were tied to a real ticket, a real event, or a real chunk of code."
     context: "PayeWaive, 2024-present"
     published: "2026-03-10"
     tags:
@@ -46,7 +46,7 @@ entries:
       - tooling
     body:
       - "The useful cases were never the broad 'ask anything' ones. It was Freshdesk tickets, Sentry events with real stack traces, or repo context that narrowed the search enough for the model to say something specific instead of hand-wavy."
-      - "Without that, I mostly get tidy guesses. That is expensive in support or incident work. Sometimes I think that is the whole dividing line."
+      - "Without that, I mostly get tidy guesses. That is expensive in support or incident work. I think that is the dividing line."
     links:
       - label: Read the support triage post
         href: /blog/codex-assisted-support-ticket-triage-freshdesk
@@ -63,11 +63,11 @@ entries:
       - architecture
     body:
       - "Checks, ACH, wires, virtual cards, RTP, FedNow, and credit cards all come with different timing, evidence, failure modes, and support work. If you flatten that too early, you end up with a generic payments model that does not really match any of the actual rails."
-      - "I am probably saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand."
+      - "I am saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand."
 
   - id: at-some-point-the-sync-stopped-being-glue-code
     permalink: c3j7n4qy
-    title: "At some point, the sync stopped being glue code"
+    title: "The sync stopped being glue code"
     summary: "The ERP sync stopped feeling like glue code once it had enough business rules and enough debugging pressure attached to it."
     context: "PayeWaive, 2024-present"
     published: "2026-03-10"
@@ -77,11 +77,11 @@ entries:
       - architecture
     body:
       - "I do not have some ideological objection to Azure Data Factory or orchestration tools in general. They are fine for certain kinds of work. But this sync kept picking up more rules, more edge cases, and more moments where somebody needed an answer fast."
-      - "At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. Maybe that should have been obvious sooner than it was."
+      - "At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. That should have been obvious sooner than it was."
 
   - id: bakery-floor-software
     permalink: b9w2k6rt
-    title: "Software changes when the bakery opens before sunrise"
+    title: "The bakery floor changes the software"
     summary: "At the bakery, the right feature was usually the one somebody could use half awake at 5am."
     context: "Pearl Bakery, 2020-2023"
     published: "2026-03-10"
@@ -90,7 +90,7 @@ entries:
       - operations
       - erp
     body:
-      - "That sounds a little dramatic if you have not worked in a production shop, but it was real. We had iPads on tables, people moving fast, and no quiet little gap where someone could stop and decode a clever screen. If one step was confusing, the whole morning got worse."
+      - "That may sound dramatic if you have not worked in a production shop, but it was real. We had iPads on tables, people moving fast, and no quiet little gap where someone could stop and decode a clever screen. If one step was confusing, the whole morning got worse."
       - "I still think about that when people talk about UX in abstract terms. Sometimes good UX is just making the next step obvious enough that a tired person can do it without getting lost."
     links:
       - label: Read the bakery ERP write-up
@@ -98,8 +98,8 @@ entries:
 
   - id: owning-the-p-and-l-changed-how-i-think-about-software
     permalink: f2z8m5hp
-    title: "Owning the P-and-L changed how I think about software"
-    summary: "Running the bakery changed my tolerance for internal tools that look clever but do not actually remove a real constraint."
+    title: "Owning the P&L changed my taste in software"
+    summary: "Running the bakery changed how much patience I had for internal tools that looked clever but did not remove a real constraint."
     context: "Pearl Bakery, 2020-2023"
     published: "2026-03-10"
     tags:
@@ -112,8 +112,8 @@ entries:
 
   - id: single-big-machine-bias
     permalink: d4s7v1lx
-    title: "A single big machine can take you pretty far"
-    summary: "I am not against Kubernetes. I just think a lot of teams start paying a complexity bill long before they are getting anything back for it."
+    title: "One big machine can take you pretty far"
+    summary: "I am not against Kubernetes. I just think a lot of teams start paying the complexity bill long before they get anything back for it."
     context: "Architecture and operations"
     published: "2026-03-10"
     tags:
@@ -122,7 +122,7 @@ entries:
       - tooling
     body:
       - "I keep coming back to this because I have seen how fast infrastructure sprawl becomes a staffing problem. A solid machine, or a small redundant set of them, can take you a long way if the application is designed sanely."
-      - "Most systems do not fail because the first version was too simple. They fail because nobody can reason about the moving parts when something breaks. I know that sounds a little old-fashioned, but I have not really seen reality argue with it."
+      - "Most systems do not fail because the first version was too simple. They fail because nobody can reason about the moving parts when something breaks. I have not really seen reality argue with that."
     links:
       - label: Read the engineering principles post
         href: /blog/how-i-build-software-that-survives-reality

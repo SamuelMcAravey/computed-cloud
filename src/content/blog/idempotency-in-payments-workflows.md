@@ -1,6 +1,6 @@
 ---
-title: "Idempotency in Payments Workflows"
-description: "A practical pattern for partial success, reconciliation, and human-safe recovery when external payment workflows do not finish cleanly."
+title: "Idempotency is not a retry button"
+description: "What partial success, reconciliation, and human-safe recovery change about payment workflows."
 pubDate: 2026-03-09
 tags: ["payments", "reliability", "operations", "architecture"]
 draft: true
@@ -16,14 +16,14 @@ draft: true
 ## On this page
 
 - [Context](#context)
-- [The Failure Mode](#the-failure-mode)
-- [What Changed](#what-changed)
-- [A State Model That Survives Partial Success](#a-state-model-that-survives-partial-success)
-- [Reconciliation Is Part of the Product](#reconciliation-is-part-of-the-product)
-- [What I Log to Prove What Happened](#what-i-log-to-prove-what-happened)
+- [What broke](#what-broke)
+- [What changed](#what-changed)
+- [A state model for partial success](#a-state-model-for-partial-success)
+- [Reconciliation is part of the work](#reconciliation-is-part-of-the-work)
+- [What I log to prove what happened](#what-i-log-to-prove-what-happened)
 - [Tradeoffs](#tradeoffs)
 - [Checklist](#checklist)
-- [Wrap-up](#wrap-up)
+- [What I keep in mind](#what-i-keep-in-mind)
 
 ## Context
 
@@ -35,7 +35,7 @@ The pain shows up when an external workflow succeeds enough to matter, but not e
 
 That is worse than a clean failure, because now you have two bad options. You can pretend it succeeded and leave the record incomplete, or you can retry blindly and risk creating a second side effect in a system you do not control.
 
-## The Failure Mode
+## What broke
 
 The simplified version looked like this:
 
@@ -52,11 +52,11 @@ That is the kind of problem where "just retry it" stops being engineering and st
 >
 > **New rule of thumb:** if a workflow has multiple external side effects, completion means all required side effects are verified, not just the first successful write.
 
-The reason this gets tricky fast is that the external system usually does not hand you a clean idempotency contract for every step. Sometimes you have to build manual checks. Sometimes that means looking for existing records. Sometimes it means checking whether a binary-equivalent attachment is already there. Sometimes it means hashing. None of that is lightweight, but it is still better than creating duplicates or declaring success too early.
+The tricky part is that the external system usually does not give you a clean idempotency contract for every step. Sometimes you have to build manual checks. Sometimes that means looking for existing records. Sometimes it means checking whether a binary-equivalent attachment is already there. Sometimes it means hashing. None of that is lightweight, but it is still better than creating duplicates or calling it done too early.
 
-## What Changed
+## What changed
 
-The first fix was semantic. We changed what "complete" meant.
+The first fix was to change what "complete" meant.
 
 Before, it was too easy for the workflow to treat the core record write as the finish line. Afterward, the workflow was only complete when the record existed and every required attachment had been confirmed.
 
@@ -74,7 +74,7 @@ We needed code that could go back through records that failed outright, partiall
 
 That last question is the whole game. Reconciliation is not a batch job that sprays retries everywhere. It is a controlled comparison between what should exist and what actually exists, followed by the smallest safe repair.
 
-## A State Model That Survives Partial Success
+## A state model for partial success
 
 If you want idempotency to hold up in a workflow like this, you need explicit states. A boolean `IsComplete` is not enough.
 
@@ -102,7 +102,7 @@ The workflow also needs a durable key that represents the business action, not j
 
 Without that, you end up asking the database and the ERP ad hoc questions in the middle of an incident, which is a bad time to invent your contract.
 
-## Reconciliation Is Part of the Product
+## Reconciliation is part of the work
 
 This is the part I think people underbuild.
 
@@ -124,9 +124,9 @@ If the record exists and one attachment is missing, add the missing attachment. 
 
 That is also where the "manual idempotency" work shows up. If the external system does not give you a native idempotency key for attachments, then you have to approximate one. That might mean binary comparison. It might mean hashes. It might mean matching on stable metadata. The point is to avoid creating duplicate artifacts while still being able to repair the workflow.
 
-This is one of those places where perfect elegance usually loses to clear evidence and boring repair logic.
+This is one of those places where tidy elegance loses to plain evidence and boring repair logic.
 
-## What I Log to Prove What Happened
+## What I log to prove what happened
 
 When a workflow touches money and outside systems, logs are not for curiosity. They are evidence.
 
@@ -158,7 +158,7 @@ This pattern costs real complexity.
 - Explicit states mean more modeling and more operational reporting.
 - Sometimes the correct answer is manual review, which nobody enjoys.
 
-I still prefer this shape because the alternative is hidden partial success. That is how you get a system that looks fine until someone has to prove what happened.
+I still prefer this shape because the other path hides partial success. That is how you end up with a system that looks fine until somebody has to prove what happened.
 
 There is also a scale tradeoff here. If this failure mode is rare, you probably do not need an elaborate framework. You still need clear states and safe repair logic. You do not need a cathedral.
 
@@ -173,7 +173,7 @@ There is also a scale tradeoff here. If this failure mode is rare, you probably 
 - [ ] Log enough evidence to prove what happened without guesswork.
 - [ ] If the external system lacks native idempotency support, define the manual equivalence check up front.
 
-## Wrap-up
+## What I keep in mind
 
 Retries are cheap. Certainty is not.
 
