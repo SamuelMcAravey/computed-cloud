@@ -64,6 +64,10 @@ a {
   @apply text-muted leading-relaxed;
 }
 
+.note-prose {
+  max-width: none;
+}
+
 .prose h1,
 .prose h2,
 .prose h3,

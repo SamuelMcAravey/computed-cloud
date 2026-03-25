@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import { execSync } from "node:child_process";
 import tailwindcss from "@tailwindcss/vite";
 import cloudflare from "@astrojs/cloudflare";
 import robotsTxt from "astro-robots-txt";
@@ -18,6 +19,23 @@ import pagefind from "astro-pagefind";
 const USE_MISSING_IMAGE_PLACEHOLDER = true;
 const MISSING_IMAGE_PLACEHOLDER_SRC = "/assets/image-missing.svg";
 
+const buildSha = (() => {
+  const candidate =
+    process.env.WORKERS_CI_COMMIT_SHA ??
+    process.env.CF_PAGES_COMMIT_SHA ??
+    process.env.GITHUB_SHA;
+
+  if (candidate) {
+    return candidate.trim();
+  }
+
+  try {
+    return execSync("git rev-parse HEAD", { encoding: "utf8" }).trim();
+  } catch {
+    return "unknown";
+  }
+})();
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://computedcloud.com",
@@ -27,6 +45,12 @@ export default defineConfig({
     service: {
       entrypoint: "astro/assets/services/compile",
     },
+  },
+  vite: {
+    define: {
+      "import.meta.env.PUBLIC_BUILD_SHA": JSON.stringify(buildSha),
+    },
+    plugins: [tailwindcss()],
   },
   integrations: [
     robotsTxt(),
@@ -57,8 +81,5 @@ export default defineConfig({
         },
       ],
     ],
-  },
-  vite: {
-    plugins: [tailwindcss()],
   },
 });
