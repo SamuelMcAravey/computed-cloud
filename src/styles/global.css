@@ -189,7 +189,7 @@ a {
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid rgb(var(--cc-border));
-  background: #0f172a;
+  background: rgb(var(--cc-surface) / 0.96);
 }
 
 .expressive-code pre {
@@ -213,33 +213,30 @@ a {
   top: 50%;
   transform: translateY(-50%);
   background:
-    radial-gradient(circle at 0.46rem 50%, rgb(248 113 113 / 0.98) 0 0.29rem, transparent 0.295rem),
-    radial-gradient(circle at 1.36rem 50%, rgb(251 191 36 / 0.98) 0 0.29rem, transparent 0.295rem),
-    radial-gradient(circle at 2.26rem 50%, rgb(52 211 153 / 0.98) 0 0.29rem, transparent 0.295rem) !important;
-  background-color: transparent !important;
-  width: 3rem;
-  height: 0.78rem;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 18' fill='none'%3E%3Ccircle cx='10' cy='9' r='5' fill='%23fb7185'/%3E%3Ccircle cx='32' cy='9' r='5' fill='%23fbbf24'/%3E%3Ccircle cx='54' cy='9' r='5' fill='%2334d399'/%3E%3C/svg%3E")
+    no-repeat left center / contain !important;
   -webkit-mask-image: none !important;
   mask-image: none !important;
+  width: 3.5rem;
+  height: 0.95rem;
   opacity: 1 !important;
-  filter: drop-shadow(0 0 0.3rem rgb(255 255 255 / 0.08));
 }
 
 .expressive-code .frame.is-terminal .header::after {
-  border-bottom-color: rgb(var(--cc-border) / 0.85) !important;
+  border-bottom-color: rgb(var(--cc-border) / 0.78) !important;
 }
 
 .expressive-code .copy {
-  inset-block-start: calc(var(--ec-brdWd) + 0.14rem) !important;
-  inset-inline-end: calc(var(--ec-brdWd) + 0.55rem) !important;
+  inset-block-start: calc(var(--ec-brdWd) + 0.1rem) !important;
+  inset-inline-end: calc(var(--ec-brdWd) + 0.6rem) !important;
 }
 
 .expressive-code .copy button {
-  width: 2rem !important;
-  height: 2rem !important;
-  border-radius: 0.35rem !important;
-  background: rgb(var(--cc-text) / 0.08) !important;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+  width: 2.15rem !important;
+  height: 2.15rem !important;
+  border-radius: 0.4rem !important;
+  background: rgb(var(--cc-surface) / 1) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
   opacity: 1 !important;
 }
 
@@ -249,20 +246,14 @@ a {
 }
 
 .expressive-code .gutter .ln {
-  display: flex !important;
-  width: 100% !important;
-  min-width: 1.4ch !important;
-  justify-content: flex-end !important;
-  padding-inline: 0 0.75ch !important;
-  text-align: right !important;
   font-size: 0.69rem !important;
   line-height: 1.35 !important;
   font-weight: 500;
-  color: rgb(var(--cc-muted) / 0.75) !important;
+  color: rgb(var(--cc-muted) / 0.88) !important;
 }
 
 .expressive-code .ec-line.highlight .gutter .ln {
-  color: rgb(var(--cc-text) / 0.92) !important;
+  color: rgb(var(--cc-text) / 0.98) !important;
 }
 
 .cc-figure {

@@ -13,19 +13,19 @@ export const expressiveCodeOptions = {
   styleOverrides: {
     frames: {
       terminalTitlebarBackground: "transparent",
-      terminalTitlebarBorderBottomColor: "rgb(var(--cc-border) / 0.85)",
+      terminalTitlebarBorderBottomColor: "rgb(var(--cc-border) / 0.78)",
       terminalTitlebarDotsForeground: "rgb(var(--cc-text))",
       terminalTitlebarDotsOpacity: "1",
-      terminalTitlebarForeground: "rgb(var(--cc-muted))",
+      terminalTitlebarForeground: "rgb(var(--cc-text) / 0.96)",
       inlineButtonForeground: "rgb(var(--cc-text))",
-      inlineButtonBackgroundIdleOpacity: "0.22",
-      inlineButtonBackgroundHoverOrFocusOpacity: "0.32",
-      inlineButtonBackgroundActiveOpacity: "0.4",
-      inlineButtonBorderOpacity: "0.28",
+      inlineButtonBackgroundIdleOpacity: "0.34",
+      inlineButtonBackgroundHoverOrFocusOpacity: "0.5",
+      inlineButtonBackgroundActiveOpacity: "0.62",
+      inlineButtonBorderOpacity: "0.42",
     },
     lineNumbers: {
-      foreground: "rgb(var(--cc-muted) / 0.72)",
-      highlightForeground: "rgb(var(--cc-text) / 0.88)",
+      foreground: "rgb(var(--cc-muted) / 0.88)",
+      highlightForeground: "rgb(var(--cc-text) / 0.98)",
     },
   },
 };
