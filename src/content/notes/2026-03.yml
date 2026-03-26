@@ -187,12 +187,16 @@ entries:
 
   - id: git-commands-i-keep-forgetting
     permalink: m6q8t2rv
-    title: "The Git commands I keep forgetting"
-    summary: "When I need to see whether the worktree is dirty, save the work, or switch branches, this is the small set I keep reaching for."
+    title: "Git commands I keep handy"
+    summary: "A tiny reminder for the Git commands I reach for when I need to check the worktree, save the work, or switch branches."
     published: "2026-03-25"
     tags:
       - tooling
     body:
-      - "When I want to know whether the worktree is dirty, I use `git status -sb`. It shows the branch and the short file state, which is the part I usually need."
-      - "When the work is ready, I do `git add -A`, `git commit -m \"...\"`, and `git push`. The scar here is that I used to treat commit and push like the same thing. They are not."
-      - "For branch changes, `git switch <branch>` changes branches, `git switch -c <branch>` creates one and moves to it, and `git switch -` takes me back to the previous branch. That is the whole cheat sheet I keep wanting."
+      - "I do not use Git on the command line every day, so I keep this note around as a quick reminder."
+      - |-
+        - `git status -sb` - shows whether the worktree is dirty and which branch I am on.
+        - `git add -A && git commit -m "..." && git push` - saves the current work and sends it.
+        - `git switch <branch>` - changes branches.
+        - `git switch -c <branch>` - creates a branch and moves to it.
+        - `git switch -` - goes back to the previous branch.

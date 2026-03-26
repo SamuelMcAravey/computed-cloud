@@ -8,6 +8,7 @@ still worth keeping public.
 ## Voice
 
 - Write these like notes, not mini essays.
+- Treat notes like quick reference cards first. A short problem sentence plus bullets is often better than polished prose.
 - First person is good. "I keep seeing...", "I used to think...", "What changed for me..."
 - A little rough is better than over-polished.
 - A note can be slightly messy if it still has one clear center of gravity.
@@ -26,16 +27,18 @@ still worth keeping public.
 
 - Do not sound like a consultant memo.
 - Do not use TL;DRs, formal sectioning, or heavy scaffolding inside a note.
+- Do not force a blog-post shape onto a note.
 - Do not pad the note just to make it feel complete.
 - Do not turn every thought into a universal lesson.
 - Do not sand off all personality. Some opinion is good if it is grounded.
+- Do not use "scar" language or other blog-style cleanup cues in note copy.
 - If the title sounds like a conference talk or strategy deck, rewrite it.
 
 ## Format
 
 - Add notes in monthly YAML files such as `2026-03.yml`.
 - Each file has a `month` field and an `entries` array.
-- Keep notes short. Most should land somewhere around 100-400 words.
+- Keep notes short. Most should fit on one screen. A tiny reminder can be just a few bullets.
 
 ## Fields
 
@@ -102,7 +105,8 @@ Use one of these patterns when you are not sure where to start.
 - "I keep seeing..."
 - "The thing that surprised me was..."
 - "I used to think..."
-- "The scar here was..."
+- "The thing I keep reaching for is..."
+- "The fix is..."
 - "What changed for me was..."
 - "I still come back to..."
 

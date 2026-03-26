@@ -93,6 +93,8 @@ Use `notes/` only for internal reference material, working notes, research scrat
 - For durable reference notes, use a plain descriptive name like `uri-schemes-quick-reference.md`.
 - For dated research or time-bound notes, prefix with `YYYY-MM-DD-`, for example `2026-03-12-api-observations.md`.
 - Keep notes small and scannable. A note is usually a quick reference, checklist, research summary, or scratchpad that can be turned into something better later.
+- Treat published notes like quick reference cards. Start with a short problem or use-case sentence, then use bullets or a brief checklist for commands, steps, or reminders.
+- Keep the tone direct and plain. Avoid blog-style sections, TL;DRs, or "scar" framing in notes.
 
 ### Note content rules
 

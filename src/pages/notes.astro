@@ -15,15 +15,15 @@ const notes = flattenNotes(await getCollection("notes"));
     <p class="text-xs uppercase tracking-[0.2em] text-muted">Notes</p>
     <h1 class="font-heading text-4xl font-semibold text-text">Notes</h1>
     <p class="max-w-3xl text-lg leading-8 text-muted">
-      Shorter entries on systems, integrations, operations, and things I want to
-      keep. Some are current. Some come from older work that is still worth writing
-      down.
+      Short reference notes on systems, integrations, operations, and things I want
+      to remember. Some are current. Some come from older work that is still worth
+      writing down.
     </p>
   </section>
 
-  <section class="mt-10 grid gap-6 xl:grid-cols-2">
+  <section class="mt-10 max-w-4xl space-y-6">
     {notes.map((note) => (
-      <NoteCard note={note} />
+      <NoteCard note={note} compact />
     ))}
   </section>
 </BaseLayout>
