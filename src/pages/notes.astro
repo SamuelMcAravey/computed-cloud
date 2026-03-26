@@ -21,11 +21,9 @@ const notes = flattenNotes(await getCollection("notes"));
     </p>
   </section>
 
-  <section class="mt-10 columns-1 gap-x-6 xl:columns-2">
+  <section class="mt-10 grid items-start gap-6 xl:grid-cols-2">
     {notes.map((note) => (
-      <div class="mb-6 break-inside-avoid">
-        <NoteCard note={note} compact />
-      </div>
+      <NoteCard note={note} compact />
     ))}
   </section>
 </BaseLayout>
