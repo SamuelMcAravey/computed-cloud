@@ -184,3 +184,15 @@ entries:
         href: https://learn.microsoft.com/en-us/entra/identity/devices/howto-vm-sign-in-azure-ad-windows
       - label: Remote PC sign-in with Microsoft Entra authentication
         href: https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-connection-single-sign-on
+
+  - id: git-commands-i-keep-forgetting
+    permalink: m6q8t2rv
+    title: "The Git commands I keep forgetting"
+    summary: "When I need to see whether the worktree is dirty, save the work, or switch branches, this is the small set I keep reaching for."
+    published: "2026-03-25"
+    tags:
+      - tooling
+    body:
+      - "When I want to know whether the worktree is dirty, I use `git status -sb`. It shows the branch and the short file state, which is the part I usually need."
+      - "When the work is ready, I do `git add -A`, `git commit -m \"...\"`, and `git push`. The scar here is that I used to treat commit and push like the same thing. They are not."
+      - "For branch changes, `git switch <branch>` changes branches, `git switch -c <branch>` creates one and moves to it, and `git switch -` takes me back to the previous branch. That is the whole cheat sheet I keep wanting."
