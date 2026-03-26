@@ -24,6 +24,7 @@
     "astro-mermaid": "^1.2.0",
     "astro-pagefind": "^1.8.2",
     "astro-robots-txt": "^1.0.0",
+    "magic-grid": "^3.4.7",
     "mermaid": "^11.12.2",
     "remark-directive": "^3.0.1",
     "remark-gfm": "^4.0.0",
