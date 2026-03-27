@@ -190,3 +190,19 @@ entries:
         - `git switch <branch>` - changes branches.
         - `git switch -c <branch>` - creates a branch and moves to it.
         - `git switch -` - goes back to the previous branch.
+
+  - id: use-the-generic-debian-cloud-image-in-proxmox
+    permalink: g9fz0i3u
+    title: Use the generic Debian cloud image in Proxmox
+    summary: Debian's nocloud and generic cloud images are not interchangeable in Proxmox, and the generic one is the one I need for cloud-init to work.
+    context: Proxmox VM setup
+    published: '2026-03-27'
+    tags:
+      - tooling
+      - operations
+    body:
+      - "I couldn't figure out why cloud-init wasn't running. Debian publishes both nocloud and generic cloud images, but the generic one is the one that actually works with cloud-init for me. The image I keep using is the generic amd64 qcow2."
+      - After import, expand the hard disk. Then check ide2. The cloud-init drive needs to be there, and Proxmox sometimes puts a CD drive there instead.
+    links:
+      - label: Debian 13 generic cloud image
+        href: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2
