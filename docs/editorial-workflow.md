@@ -80,8 +80,11 @@ The repo includes reusable Codex skills under `.codex/skills/` for:
 - normalizing frontmatter
 - adding or removing tags
 - checking links and metadata sections
+- capturing short published notes from rough input
 
 Those skills exist to reduce churn, not to replace judgment. Facts still need to be verified. Claims still need to be earned.
+
+For routine note capture, use `.codex/skills/make-note` and the `scripts/new-note.mjs` helper instead of the blog backlog. That keeps the note flow separate from post planning and avoids hand-editing monthly YAML.
 
 ## Rule of thumb
 

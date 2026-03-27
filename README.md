@@ -71,9 +71,9 @@ npm run dev
 - `src/utils/`
   Draft filtering, tag normalization, Markdown transforms, and figure/callout helpers
 - `notes/`
-  Editorial roadmap, per-post backlog, outlines, and research notes
+  Editorial roadmap, per-post backlog, note capture templates, outlines, and research notes
 - `.codex/skills/`
-  Reusable Codex instructions for drafting, polishing, and checking blog posts
+  Reusable Codex instructions for drafting, polishing, checking blog posts, and capturing notes
 - `public/assets/`
   Blog and portfolio assets
 - `scripts/`
@@ -88,7 +88,9 @@ The repo keeps both published content and the editorial process close together:
 - `notes/blog-backlog.yml` is the per-post source of truth
 - `notes/plan.md` is the high-level roadmap
 - `notes/how-to.md` documents the drafting workflow
+- `notes/note-brief-template.md` is the quick capture template for notes
 - `notes/research/` and `notes/outlines/` hold supporting material for upcoming posts
+- `.codex/skills/make-note` is the fast path for short published notes
 
 For publishable posts:
 

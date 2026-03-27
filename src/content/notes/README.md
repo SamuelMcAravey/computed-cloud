@@ -40,6 +40,13 @@ still worth keeping public.
 - Each file has a `month` field and an `entries` array.
 - Keep notes short. Most should fit on one screen. A tiny reminder can be just a few bullets.
 
+## Fast path
+
+- Start from `notes/note-brief-template.md` when the idea is still messy.
+- Use `.codex/skills/make-note` as the default Codex entrypoint for published notes.
+- Use `scripts/new-note.mjs` to validate and append the normalized entry.
+- Default to published notes unless you explicitly say internal/private.
+
 ## Fields
 
 - `id`: stable anchor for the note on `/notes`

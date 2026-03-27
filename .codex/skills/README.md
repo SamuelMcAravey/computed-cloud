@@ -11,6 +11,7 @@ If the request matches one of these skills, prefer using it over ad-hoc promptin
 
 ## Skills in this repo
 - `draft-new-post`: Draft a new post from notes using the output contract in `AGENTS.md`.
+- `make-note`: Draft and append short published notes from rough input.
 - `promote-draft`: Tighten an existing draft without inventing facts.
 - `normalize-frontmatter`: Normalize supported frontmatter keys/order for `src/content/blog/*`.
 - `refresh-toc`: Add/refresh a mini "On this page" list (when medium/long).

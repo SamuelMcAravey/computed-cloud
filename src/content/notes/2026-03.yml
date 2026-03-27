@@ -1,162 +1,153 @@
-month: "2026-03"
+month: 2026-03
 entries:
   - id: recovery-paths-are-part-of-the-product
     permalink: n7k2p4x9
-    title: "Recovery is part of the product"
-    summary: "I do not think a workflow is really done until the failure path makes sense to the user and support."
-    context: "Payments and integrations"
-    published: "2026-03-10"
+    title: Recovery is part of the product
+    summary: I do not think a workflow is really done until the failure path makes sense to the user and support.
+    context: Payments and integrations
+    published: '2026-03-10'
     tags:
       - reliability
       - operations
       - payments
     body:
-      - "I have seen too many workflows where the happy path is mapped out and the failure path is basically 'we'll sort it out if it happens.' That sounds fine until one external step succeeds, the next one does not, and now somebody wants to know whether the money moved or whether they need to do something again."
-      - "That is why I keep coming back to retries, reconciliation, and visible states. Maybe that is not glamorous enough to call product work, but I do not really know what else to call it."
+      - I have seen too many workflows where the happy path is mapped out and the failure path is basically 'we'll sort it out if it happens.' That sounds fine until one external step succeeds, the next one does not, and now somebody wants to know whether the money moved or whether they need to do something again.
+      - That is why I keep coming back to retries, reconciliation, and visible states. Maybe that is not glamorous enough to call product work, but I do not really know what else to call it.
     links:
       - label: Read the idempotency post
         href: /blog/idempotency-in-payments-workflows
-
   - id: if-one-person-does-the-daily-math-thats-a-problem
     permalink: q4m8t2bz
-    title: "If one person has to do the daily math, that's a problem"
-    summary: "One of the clearest signs something had to change at the bakery was that the day depended on me finishing the planning math before everyone else could really get moving."
-    context: "Pearl Bakery, 2020-2023"
-    published: "2026-03-10"
+    title: If one person has to do the daily math, that's a problem
+    summary: One of the clearest signs something had to change at the bakery was that the day depended on me finishing the planning math before everyone else could really get moving.
+    context: Pearl Bakery, 2020-2023
+    published: '2026-03-10'
     tags:
       - bakery
       - operations
       - erp
     body:
-      - "For a while the spreadsheet worked. Then volume went up, the SKU count went up, and the plan for the day was half in my head and half in a pile of calculations I had to get right before sunrise. That is not a great feeling when a full crew is about to start and the whole day is leaning on you."
-      - "That was the real reason I built the planning system. Not because I wanted to build ERP software. Because I could feel the business depending way too hard on one tired person not making a mistake."
+      - For a while the spreadsheet worked. Then volume went up, the SKU count went up, and the plan for the day was half in my head and half in a pile of calculations I had to get right before sunrise. That is not a great feeling when a full crew is about to start and the whole day is leaning on you.
+      - That was the real reason I built the planning system. Not because I wanted to build ERP software. Because I could feel the business depending way too hard on one tired person not making a mistake.
     links:
       - label: Read the bakery ERP write-up
         href: /blog/pearl-bakery-custom-erp-for-production
-
   - id: grounded-ai-workflows-are-the-only-ones-i-trust
     permalink: h6v3r9kc
-    title: "AI needs real context"
-    summary: "The AI workflows that have actually helped me were tied to a real ticket, a real event, or a real chunk of code."
-    context: "PayeWaive, 2024-present"
-    published: "2026-03-10"
+    title: AI needs real context
+    summary: The AI workflows that have actually helped me were tied to a real ticket, a real event, or a real chunk of code.
+    context: PayeWaive, 2024-present
+    published: '2026-03-10'
     tags:
       - ai
       - support
       - tooling
     body:
-      - "The useful cases were never the broad 'ask anything' ones. It was Freshdesk tickets, Sentry events with real stack traces, or repo context that narrowed the search enough for the model to say something specific instead of hand-wavy."
-      - "Without that, I mostly get tidy guesses. That is expensive in support or incident work. I think that is the dividing line."
+      - The useful cases were never the broad 'ask anything' ones. It was Freshdesk tickets, Sentry events with real stack traces, or repo context that narrowed the search enough for the model to say something specific instead of hand-wavy.
+      - Without that, I mostly get tidy guesses. That is expensive in support or incident work. I think that is the dividing line.
     links:
       - label: Read the support triage post
         href: /blog/codex-assisted-support-ticket-triage-freshdesk
-
   - id: payment-rails-are-different-products
     permalink: p8x5d1mw
-    title: "Payments is not one thing"
-    summary: "I still hear 'payments' talked about like it is one problem. It really is not."
-    context: "Payments platforms"
-    published: "2026-03-10"
+    title: Payments is not one thing
+    summary: I still hear 'payments' talked about like it is one problem. It really is not.
+    context: Payments platforms
+    published: '2026-03-10'
     tags:
       - payments
       - operations
       - architecture
     body:
-      - "Checks, ACH, wires, virtual cards, RTP, FedNow, and credit cards all come with different timing, evidence, failure modes, and support work. If you flatten that too early, you end up with a generic payments model that does not really match any of the actual rails."
-      - "I am saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand."
-
+      - Checks, ACH, wires, virtual cards, RTP, FedNow, and credit cards all come with different timing, evidence, failure modes, and support work. If you flatten that too early, you end up with a generic payments model that does not really match any of the actual rails.
+      - I am saying this because I have seen how much confusion that one label creates. 'We support payments' sounds simple until you are the one figuring out what happened, what can be retried, and what has to be reconciled by hand.
   - id: at-some-point-the-sync-stopped-being-glue-code
     permalink: c3j7n4qy
-    title: "The sync stopped being glue code"
-    summary: "The ERP sync stopped feeling like glue code once it had enough business rules and enough debugging pressure attached to it."
-    context: "PayeWaive, 2024-present"
-    published: "2026-03-10"
+    title: The sync stopped being glue code
+    summary: The ERP sync stopped feeling like glue code once it had enough business rules and enough debugging pressure attached to it.
+    context: PayeWaive, 2024-present
+    published: '2026-03-10'
     tags:
       - integrations
       - tooling
       - architecture
     body:
-      - "I do not have some ideological objection to Azure Data Factory or orchestration tools in general. They are fine for certain kinds of work. But this sync kept picking up more rules, more edge cases, and more moments where somebody needed an answer fast."
-      - "At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. That should have been obvious sooner than it was."
-
+      - I do not have some ideological objection to Azure Data Factory or orchestration tools in general. They are fine for certain kinds of work. But this sync kept picking up more rules, more edge cases, and more moments where somebody needed an answer fast.
+      - At some point I had to admit it was not just glue anymore. It wanted tests, real observability, and a place in the codebase where engineers could reason about it. That should have been obvious sooner than it was.
   - id: bakery-floor-software
     permalink: b9w2k6rt
-    title: "The bakery floor changes the software"
-    summary: "At the bakery, the right feature was usually the one somebody could use half awake at 5am."
-    context: "Pearl Bakery, 2020-2023"
-    published: "2026-03-10"
+    title: The bakery floor changes the software
+    summary: At the bakery, the right feature was usually the one somebody could use half awake at 5am.
+    context: Pearl Bakery, 2020-2023
+    published: '2026-03-10'
     tags:
       - bakery
       - operations
       - erp
     body:
-      - "That may sound dramatic if you have not worked in a production shop, but it was real. We had iPads on tables, people moving fast, and no quiet little gap where someone could stop and decode a clever screen. If one step was confusing, the whole morning got worse."
-      - "I still think about that when people talk about UX in abstract terms. Sometimes good UX is just making the next step obvious enough that a tired person can do it without getting lost."
+      - That may sound dramatic if you have not worked in a production shop, but it was real. We had iPads on tables, people moving fast, and no quiet little gap where someone could stop and decode a clever screen. If one step was confusing, the whole morning got worse.
+      - I still think about that when people talk about UX in abstract terms. Sometimes good UX is just making the next step obvious enough that a tired person can do it without getting lost.
     links:
       - label: Read the bakery ERP write-up
         href: /blog/pearl-bakery-custom-erp-for-production
-
   - id: owning-the-p-and-l-changed-how-i-think-about-software
     permalink: f2z8m5hp
-    title: "Owning the P&L changed my taste in software"
-    summary: "Running the bakery changed how much patience I had for internal tools that looked clever but did not remove a real constraint."
-    context: "Pearl Bakery, 2020-2023"
-    published: "2026-03-10"
+    title: Owning the P&L changed my taste in software
+    summary: Running the bakery changed how much patience I had for internal tools that looked clever but did not remove a real constraint.
+    context: Pearl Bakery, 2020-2023
+    published: '2026-03-10'
     tags:
       - bakery
       - operations
       - architecture
     body:
-      - "Once labor, waste, pricing, ingredient costs, and manual re-entry all land on the same sheet, weak tooling stops feeling theoretical. You can see the cost of it. You can feel it in overtime, throwaway product, and extra admin work at the end of the day."
-      - "I do not think that made me less technical. If anything it made me more practical. I have a lot less patience now for software that sounds interesting but does not pay rent."
-
+      - Once labor, waste, pricing, ingredient costs, and manual re-entry all land on the same sheet, weak tooling stops feeling theoretical. You can see the cost of it. You can feel it in overtime, throwaway product, and extra admin work at the end of the day.
+      - I do not think that made me less technical. If anything it made me more practical. I have a lot less patience now for software that sounds interesting but does not pay rent.
   - id: single-big-machine-bias
     permalink: d4s7v1lx
-    title: "One big machine can take you pretty far"
-    summary: "I am not against Kubernetes. I just think a lot of teams start paying the complexity bill long before they get anything back for it."
-    context: "Architecture and operations"
-    published: "2026-03-10"
+    title: One big machine can take you pretty far
+    summary: I am not against Kubernetes. I just think a lot of teams start paying the complexity bill long before they get anything back for it.
+    context: Architecture and operations
+    published: '2026-03-10'
     tags:
       - architecture
       - operations
       - tooling
     body:
-      - "I keep coming back to this because I have seen how fast infrastructure sprawl becomes a staffing problem. A solid machine, or a small redundant set of them, can take you a long way if the application is designed sanely."
-      - "Most systems do not fail because the first version was too simple. They fail because nobody can reason about the moving parts when something breaks. I have not really seen reality argue with that."
+      - I keep coming back to this because I have seen how fast infrastructure sprawl becomes a staffing problem. A solid machine, or a small redundant set of them, can take you a long way if the application is designed sanely.
+      - Most systems do not fail because the first version was too simple. They fail because nobody can reason about the moving parts when something breaks. I have not really seen reality argue with that.
     links:
       - label: Read the engineering principles post
         href: /blog/how-i-build-software-that-survives-reality
-
   - id: uri-schemes-i-actually-need
     permalink: u7r2m9kx
-    title: "The URI schemes I actually need to remember"
-    summary: "When I only need the practical subset, I mostly care about https, mailto, tel, sms, file, data, ws or wss, geo, and sometimes urn."
-    context: "Web apps and documents"
-    published: "2026-03-12"
+    title: The URI schemes I actually need to remember
+    summary: When I only need the practical subset, I mostly care about https, mailto, tel, sms, file, data, ws or wss, geo, and sometimes urn.
+    context: Web apps and documents
+    published: '2026-03-12'
     tags:
       - tooling
       - architecture
     body:
-      - "The distinction I usually want to remember is simple: `mailto:` starts an email draft, and `tel:` hands a number to the phone app or dialer. For normal user-facing links, `https:` is still the default, and `mailto:` and `tel:` are the two other ones I am most likely to actually use."
-      - "After that, the useful short list is `sms:` for text messages, `file:` for local or network files, `data:` for inline payloads, `ws:` or `wss:` for WebSockets, `geo:` for map locations, and `urn:` when something is a name rather than a fetchable location. I do not usually bother listing `blob:` unless I am talking about browser code, and I treat `javascript:` and most old schemes as things to avoid unless there is a specific reason."
+      - 'The distinction I usually want to remember is simple: `mailto:` starts an email draft, and `tel:` hands a number to the phone app or dialer. For normal user-facing links, `https:` is still the default, and `mailto:` and `tel:` are the two other ones I am most likely to actually use.'
+      - After that, the useful short list is `sms:` for text messages, `file:` for local or network files, `data:` for inline payloads, `ws:` or `wss:` for WebSockets, `geo:` for map locations, and `urn:` when something is a name rather than a fetchable location. I do not usually bother listing `blob:` unless I am talking about browser code, and I treat `javascript:` and most old schemes as things to avoid unless there is a specific reason.
     links:
       - label: MDN URI schemes reference
         href: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes
       - label: IANA URI schemes registry
         href: https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
-
   - id: rdp-to-entra-needs-the-hostname-entra-knows
     permalink: x4p7k2mn
-    title: "RDP to Entra needs the hostname Entra knows"
-    summary: "I hit \"The target device identifier in the request was not found in the tenant\" when I tried to RDP into an Entra ID joined machine from a client that was not joined to the same tenant. The fix was using the hostname Entra knew and turning on web account sign-in."
-    context: "Remote access setup"
-    published: "2026-03-25"
+    title: RDP to Entra needs the hostname Entra knows
+    summary: I hit "The target device identifier in the request was not found in the tenant" when I tried to RDP into an Entra ID joined machine from a client that was not joined to the same tenant. The fix was using the hostname Entra knew and turning on web account sign-in.
+    context: Remote access setup
+    published: '2026-03-25'
     tags:
       - support
       - tooling
     body:
-      - "The problem was the error `The target device identifier in the request was not found in the tenant.` I had a connection that looked fine at the network layer, but Entra rejected the device identity because the name I was using did not match the registered host."
-      - "The fix was not a credential trick. I had to use the real device name, make that name resolvable, and set `enablerdsaadauth:i:1` in the `.rdp` file. The hostname was part of identity here, not just routing."
+      - The problem was the error `The target device identifier in the request was not found in the tenant.` I had a connection that looked fine at the network layer, but Entra rejected the device identity because the name I was using did not match the registered host.
+      - The fix was not a credential trick. I had to use the real device name, make that name resolvable, and set `enablerdsaadauth:i:1` in the `.rdp` file. The hostname was part of identity here, not just routing.
       - |-
         The file I ended up with, redacted:
 
@@ -184,16 +175,15 @@ entries:
         href: https://learn.microsoft.com/en-us/entra/identity/devices/howto-vm-sign-in-azure-ad-windows
       - label: Remote PC sign-in with Microsoft Entra authentication
         href: https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-connection-single-sign-on
-
   - id: git-commands-i-keep-forgetting
     permalink: m6q8t2rv
-    title: "Git commands I keep handy"
-    summary: "A tiny reminder for the Git commands I reach for when I need to check the worktree, save the work, or switch branches."
-    published: "2026-03-25"
+    title: Git commands I keep handy
+    summary: A tiny reminder for the Git commands I reach for when I need to check the worktree, save the work, or switch branches.
+    published: '2026-03-25'
     tags:
       - tooling
     body:
-      - "I do not use Git on the command line every day, so I keep this note around as a quick reminder."
+      - I do not use Git on the command line every day, so I keep this note around as a quick reminder.
       - |-
         - `git status -sb` - shows whether the worktree is dirty and which branch I am on.
         - `git add -A && git commit -m "..." && git push` - saves the current work and sends it.
