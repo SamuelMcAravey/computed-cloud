@@ -9,12 +9,10 @@ export interface PriorArtRepository {
   html_url: string | null;
   homepage: string | null;
   archived: boolean;
-  fork: boolean;
-  default_branch: string | null;
   created_at: string;
   updated_at: string;
-  pushed_at: string;
-  language: string | null;
+  earliest_commit_date?: string | null;
+  latest_commit_date?: string | null;
   topics: string[];
 }
 
@@ -83,12 +81,19 @@ export const getPriorArtRepositoryVisibilityCounts = (): PriorArtRepositoryVisib
     },
   );
 
+const getRepositoryChronologyDate = (repository: PriorArtRepository): string =>
+  repository.earliest_commit_date ?? repository.created_at;
+
 export const formatPriorArtRepositoryDate = (value: string | null | undefined): string => {
   if (!value) {
     return "unknown";
   }
 
-  const parsed = new Date(`${value}T00:00:00Z`);
+  let parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime()) && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    parsed = new Date(`${value}T00:00:00Z`);
+  }
+
   if (Number.isNaN(parsed.getTime())) {
     return "unknown";
   }
@@ -96,11 +101,38 @@ export const formatPriorArtRepositoryDate = (value: string | null | undefined): 
   return monthYearFormatter.format(parsed);
 };
 
-export const getPriorArtRepositoryLanguage = (repository: PriorArtRepository): string =>
-  labelize(repository.language);
+export const getPriorArtRepositoryDateRange = (repository: PriorArtRepository): string => {
+  const start = repository.earliest_commit_date ?? repository.created_at;
+  const end = repository.latest_commit_date ?? repository.updated_at;
 
-export const getPriorArtRepositoryBranch = (repository: PriorArtRepository): string =>
-  repository.default_branch?.trim() || "unknown";
+  if (!start && !end) {
+    return "unknown";
+  }
+
+  const startLabel = formatPriorArtRepositoryDate(start);
+  const endLabel = formatPriorArtRepositoryDate(end);
+
+  if (!start || !end || startLabel === endLabel) {
+    return startLabel;
+  }
+
+  return `${startLabel} - ${endLabel}`;
+};
+
+export const getPriorArtRepositoryVisibilityLabel = (repository: PriorArtRepository): string =>
+  labelize(repository.visibility);
+
+export const getPriorArtRepositoryVisibilityClass = (repository: PriorArtRepository): string => {
+  switch (repository.visibility) {
+    case "public":
+      return "border-primary/20 bg-primary/10 text-primary";
+    case "internal":
+      return "border-accent/20 bg-accent/10 text-accent";
+    case "private":
+    default:
+      return "border-border bg-bg/70 text-muted";
+  }
+};
 
 export const getPriorArtRepositoryLink = (
   repository: PriorArtRepository,
@@ -127,7 +159,16 @@ export const getPriorArtRepositoryGroups = (): PriorArtRepositoryGroup[] => {
     .map(([owner, repositories]) => ({
       id: getRepositoryGroupId(owner),
       owner,
-      repositories,
+      repositories: [...repositories].sort((left, right) => {
+        const leftDate = getRepositoryChronologyDate(left);
+        const rightDate = getRepositoryChronologyDate(right);
+
+        if (leftDate !== rightDate) {
+          return leftDate.localeCompare(rightDate, "en");
+        }
+
+        return left.full_name.localeCompare(right.full_name, "en");
+      }),
     }))
     .sort((left, right) => {
       const leftSize = left.repositories.length;

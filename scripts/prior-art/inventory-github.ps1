@@ -400,6 +400,10 @@ function Get-GithubRepositories {
       continue
     }
 
+    if ([bool]$repository.fork) {
+      continue
+    }
+
     $filtered.Add([ordered]@{
       id = $repository.id
       node_id = $repository.node_id
@@ -1638,16 +1642,14 @@ function Convert-ToRepositoryCatalogRecord {
   return [ordered]@{
     archived = [bool]$RepositoryRecord.archived
     created_at = $RepositoryRecord.created_at
-    default_branch = $RepositoryRecord.default_branch
     description = $RepositoryRecord.description
-    fork = [bool]$RepositoryRecord.fork
+    earliest_commit_date = $RepositoryRecord.earliest_commit_date
     full_name = $RepositoryRecord.full_name
     homepage = $publicHomepage
     html_url = $publicHtmlUrl
-    language = $RepositoryRecord.language
+    latest_commit_date = $RepositoryRecord.latest_commit_date
     name = $RepositoryRecord.name
     private = [bool]$RepositoryRecord.private
-    pushed_at = $RepositoryRecord.pushed_at
     topics = @($RepositoryRecord.topics)
     updated_at = $RepositoryRecord.updated_at
     visibility = $RepositoryRecord.visibility
@@ -2019,6 +2021,7 @@ if ($resolvedRoots.Count -eq 0) {
 $generationNotes = New-Object System.Collections.Generic.List[string]
 $reviewFlags = New-Object System.Collections.Generic.List[object]
 $failures = New-Object System.Collections.Generic.List[object]
+$generationNotes.Add("Forked repositories were excluded from the GitHub inventory by request.")
 
 $localEvidenceResult = Invoke-LocalEvidenceExport -Roots @($resolvedRoots) -ConfigFile $ConfigFile -Recurse:$Recurse -UseGhCli:$UseGhCli
 $localEvidenceDocument = $localEvidenceResult.document

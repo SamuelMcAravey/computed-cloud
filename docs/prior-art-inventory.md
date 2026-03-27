@@ -35,6 +35,8 @@ Keep these surfaces separate:
 - `src/data/prior-art.repositories.json`
   - Public repository catalog used by the page
   - Repo names and metadata only
+  - Forks are excluded
+  - Uses commit-history dates when local evidence is available
   - Safe to commit and publish
 
 Rule of thumb: the public page should only read committed public-safe data. It must never import the private master or the generated evidence snapshots.
@@ -73,6 +75,7 @@ Do not put these in the public site files:
 - local file paths
 - private remote URLs
 - commit hashes
+- pushed dates
 - branch names
 - confidential notes
 - copied source code
