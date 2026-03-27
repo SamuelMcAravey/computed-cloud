@@ -12,9 +12,20 @@ import {
   priorArtKindOrder,
   priorArtStatusOrder,
 } from "../data/prior-art";
+import {
+  formatPriorArtRepositoryDate,
+  getPriorArtRepositoryBranch,
+  getPriorArtRepositoryDescription,
+  getPriorArtRepositoryGroups,
+  getPriorArtRepositoryLanguage,
+  getPriorArtRepositoryLink,
+  getPriorArtRepositoryVisibilityCounts,
+} from "../data/prior-art.repositories";
 
 const groupedEntries = getPriorArtGroups();
 const timelineEntries = getPriorArtTimelineEntries();
+const repositoryGroups = getPriorArtRepositoryGroups();
+const repositoryVisibilityCounts = getPriorArtRepositoryVisibilityCounts();
 const kindOptions = priorArtKindOrder.filter((kind) =>
   priorArtEntries.some((entry) => entry.kind === kind),
 );
@@ -71,8 +82,8 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
         <p class="text-xs uppercase tracking-[0.2em] text-muted">What this page includes</p>
         <ul class="mt-4 space-y-3 text-sm leading-6 text-muted">
           <li>This page is a public summary of the record, not the full evidence file.</li>
-          <li>It shows public and non-public work at a high level, but private evidence stays local.</li>
-          <li>Detailed evidence and implementation notes are kept out of the public page.</li>
+          <li>It shows public and non-public work at a high level, including repository names and other metadata where useful.</li>
+          <li>Detailed evidence, source code, and local paths are kept out of the public page.</li>
           <li>When dates are uncertain, I keep them approximate instead of guessing.</li>
         </ul>
       </div>
@@ -442,6 +453,154 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
     >
       No entries match the current filters.
     </p>
+  </section>
+
+  <section class="mt-14 space-y-8" aria-labelledby="prior-art-repository-heading">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Repository catalog</p>
+      <h2 id="prior-art-repository-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
+        GitHub repositories I can access, grouped by owner
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        Repository names are included because they establish chronology and
+        provenance. The catalog lists public, private, and internal repositories at
+        a high level, but it does not show source code, file contents, or local
+        paths.
+      </p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Total repos</p>
+        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.total}</p>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Public</p>
+        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.public}</p>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Private</p>
+        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.private}</p>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Internal</p>
+        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.internal}</p>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Owners</p>
+        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryGroups.length}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      {repositoryGroups.map((group) => (
+        <a
+          class="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+          href={`#${group.id}`}
+        >
+          {group.owner}
+        </a>
+      ))}
+    </div>
+
+    <div class="space-y-6">
+      {repositoryGroups.map((group) => (
+        <section
+          id={group.id}
+          class="overflow-hidden rounded-[2rem] border border-border bg-surface/90 shadow-sm"
+        >
+          <div class="border-b border-border px-5 py-5 sm:px-6">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.2em] text-muted">Owner</p>
+                <h3 class="mt-2 font-heading text-2xl font-semibold text-text">{group.owner}</h3>
+              </div>
+              <p class="text-sm text-muted">
+                {group.repositories.length} repos
+              </p>
+            </div>
+          </div>
+
+          <div class="cc-scrollbox overflow-x-auto">
+            <table class="min-w-[920px] w-full border-collapse text-left text-sm">
+              <thead class="bg-bg/70 text-xs uppercase tracking-[0.18em] text-muted">
+                <tr>
+                  <th class="px-5 py-3 font-medium">Repository</th>
+                  <th class="px-3 py-3 font-medium">Visibility</th>
+                  <th class="px-3 py-3 font-medium">Branch</th>
+                  <th class="px-3 py-3 font-medium">Language</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.repositories.map((repository) => {
+                  const description = getPriorArtRepositoryDescription(repository);
+                  const link = getPriorArtRepositoryLink(repository);
+                  const nameElement = link ? (
+                    <a
+                      class="font-semibold text-text hover:text-primary"
+                      href={link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {repository.full_name}
+                    </a>
+                  ) : (
+                    <span class="font-semibold text-text">{repository.full_name}</span>
+                  );
+
+                  return (
+                    <tr
+                      class="border-t border-border/70 align-top hover:bg-bg/40"
+                      data-kind={repository.visibility}
+                      data-status={repository.archived ? "archived" : "active"}
+                      data-searchable={[
+                        repository.full_name,
+                        repository.description ?? "",
+                        repository.default_branch ?? "",
+                        repository.language ?? "",
+                        ...repository.topics,
+                      ]
+                        .join(" ")
+                        .toLowerCase()}
+                    >
+                      <td class="px-5 py-4">
+                        <div class="space-y-3">
+                          <div class="flex flex-wrap items-center gap-2">
+                            {nameElement}
+                            <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                              {repository.visibility}
+                            </span>
+                            {repository.archived && (
+                              <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                                archived
+                              </span>
+                            )}
+                            {repository.fork && (
+                              <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                                fork
+                              </span>
+                            )}
+                          </div>
+                          <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
+                            Created {formatPriorArtRepositoryDate(repository.created_at)} · pushed {formatPriorArtRepositoryDate(repository.pushed_at)}
+                          </p>
+                          {description && (
+                            <p class="text-sm leading-6 text-muted">{description}</p>
+                          )}
+                        </div>
+                      </td>
+                      <td class="px-3 py-4 text-sm text-muted">{repository.visibility}</td>
+                      <td class="px-3 py-4 text-sm text-muted">{getPriorArtRepositoryBranch(repository)}</td>
+                      <td class="px-3 py-4 text-sm text-muted">{getPriorArtRepositoryLanguage(repository)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))}
+    </div>
   </section>
 
   <section class="mt-14" aria-labelledby="prior-art-timeline-heading">
