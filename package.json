@@ -10,6 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "a11y": "node scripts/a11y-check.mjs",
+    "note:new": "node scripts/new-note.mjs",
+    "note:dry-run": "node scripts/new-note.mjs --dry-run",
+    "prior-art:evidence": "pwsh -File scripts/Export-PriorArtEvidence.ps1",
     "astro": "astro"
   },
   "dependencies": {

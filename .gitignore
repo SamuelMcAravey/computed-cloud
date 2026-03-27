@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 
 .wrangler/
+src/data/prior-art.evidence.generated.json
+src/data/prior-art.evidence.generated.md
+src/data/prior-art.evidence.config.local.json

@@ -19,6 +19,7 @@ import pagefind from "astro-pagefind";
 // - Markdown supports callouts, Mermaid, and figure wrapping for article content
 const USE_MISSING_IMAGE_PLACEHOLDER = true;
 const MISSING_IMAGE_PLACEHOLDER_SRC = "/assets/image-missing.svg";
+const SITEMAP_EXCLUDED_PATHS = new Set(["/prior-art", "/prior-art/"]);
 
 const buildSha = (() => {
   const candidate =
@@ -55,7 +56,9 @@ export default defineConfig({
   },
   integrations: [
     robotsTxt(),
-    sitemap(),
+    sitemap({
+      filter: (page) => !SITEMAP_EXCLUDED_PATHS.has(new URL(page).pathname),
+    }),
     expressiveCode(expressiveCodeOptions),
     mermaid({
       theme: "neutral",

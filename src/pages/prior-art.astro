@@ -1,0 +1,423 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PriorArtEntryCard from "@components/prior-art/PriorArtEntryCard.astro";
+import {
+  formatPriorArtDateRange,
+  getPriorArtGroups,
+  getPriorArtKindLabel,
+  getPriorArtStatusLabel,
+  getPriorArtTimelineEntries,
+  priorArtEntries,
+  priorArtKindOrder,
+  priorArtStatusOrder,
+} from "../data/prior-art";
+
+const groupedEntries = getPriorArtGroups();
+const timelineEntries = getPriorArtTimelineEntries();
+const kindOptions = priorArtKindOrder.filter((kind) =>
+  priorArtEntries.some((entry) => entry.kind === kind),
+);
+const statusOptions = priorArtStatusOrder.filter((status) =>
+  priorArtEntries.some((entry) => entry.status === status),
+);
+const cardClass = "rounded-3xl border border-border bg-surface/90 p-6 shadow-sm";
+const heroCardClass = "relative overflow-hidden rounded-[2rem] border border-border bg-surface/90 p-8 shadow-sm";
+const wideCardClass = "rounded-[2rem] border border-border bg-surface/90 p-8 shadow-sm";
+const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 shadow-sm";
+---
+
+<BaseLayout
+  title="Prior Art and Reusable Systems"
+  description="Public-safe summary of prior art, reusable systems, and the delivery model that keeps ownership boundaries clear."
+  robots="noindex,nofollow"
+  data-pagefind-ignore="all"
+>
+  <section class="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.9fr)]">
+    <div class={heroCardClass}>
+      <div aria-hidden="true" class="absolute -right-10 top-2 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
+      <div aria-hidden="true" class="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-accent/10 blur-3xl"></div>
+      <div class="relative">
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Prior art and reusable systems</p>
+        <h1 class="mt-4 max-w-4xl font-heading text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+          Prior art, reusable systems, and a clean delivery model.
+        </h1>
+        <p class="mt-6 max-w-3xl text-lg leading-8 text-muted">
+          Over the course of my career, I have built a substantial body of reusable
+          systems, libraries, integration components, and operational tooling. This
+          page explains how I separate that prior work from new employer or client
+          deliverables.
+        </p>
+        <p class="mt-4 max-w-3xl text-sm leading-7 text-muted">
+          The operating model is straightforward: pre-existing work stays pre-existing,
+          role-specific work belongs to the employer or client, and selected proven
+          components may be reused where they help delivery.
+        </p>
+      </div>
+    </div>
+
+    <aside class="space-y-6">
+      <div class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Operating model</p>
+        <ul class="mt-4 space-y-3 text-sm leading-6 text-muted">
+          <li>Pre-existing materials remain my property.</li>
+          <li>Work created specifically for an employer or client belongs to that employer or client.</li>
+          <li>Selected prior components may be reused when they speed delivery or reduce risk.</li>
+          <li>Delivered systems are meant to be used, modified, maintained, and operated without practical lock-in.</li>
+          <li>I do not expect every role to absorb my prior art or every change to flow back upstream.</li>
+        </ul>
+      </div>
+      <div class={mutedCardClass}>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Public-safe scope</p>
+        <ul class="mt-4 space-y-3 text-sm leading-6 text-muted">
+          <li>This page is direct-link only and stays out of the normal nav, footer, sitemap, and search surfaces.</li>
+          <li>The rendered page reads only curated public inventory data.</li>
+          <li>Private evidence snapshots stay local and are not rendered here.</li>
+          <li>Unknown dates remain approximate or unpublished instead of guessed.</li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <section class="mt-12 space-y-6" aria-labelledby="prior-art-model-heading">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Working model</p>
+      <h2 id="prior-art-model-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
+        What the boundary looks like in practice
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        The point is not to create friction. The point is to keep ownership clean and
+        make it easy for a team to understand what they are getting, what remains
+        pre-existing, and how delivery can move quickly without confusion later.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-2">
+      <article class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.18em] text-muted">What counts as prior art</p>
+        <h3 class="mt-3 font-heading text-2xl font-semibold text-text">
+          Reusable systems I have built before.
+        </h3>
+        <p class="mt-4 text-sm leading-7 text-muted">
+          In practice, this includes integration libraries, workflow and orchestration
+          components, auditing and tracking systems, ERP and payment integrations,
+          platform and infrastructure building blocks, and internal developer tooling.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm leading-7 text-muted">
+          <li>Integration adapters and connector libraries.</li>
+          <li>Workflow, orchestration, and request-routing components.</li>
+          <li>Auditing, tracking, and operational visibility systems.</li>
+          <li>ERP, financial, and payment integrations.</li>
+          <li>Platform primitives, infrastructure helpers, and internal tools.</li>
+        </ul>
+      </article>
+
+      <article class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.18em] text-muted">Ownership boundary</p>
+        <h3 class="mt-3 font-heading text-2xl font-semibold text-text">
+          Pre-existing work stays pre-existing.
+        </h3>
+        <p class="mt-4 text-sm leading-7 text-muted">
+          If something existed before a role or engagement, I treat it as my prior work.
+          That work is not transferred by default just because I take a new position or
+          start a client project.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm leading-7 text-muted">
+          <li>Pre-existing materials remain mine.</li>
+          <li>New work created specifically for an employer or client belongs to that employer or client.</li>
+          <li>That separation stays clear even when the project uses ideas or code patterns from earlier work.</li>
+        </ul>
+      </article>
+
+      <article class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.18em] text-muted">How reusable components may be used</p>
+        <h3 class="mt-3 font-heading text-2xl font-semibold text-text">
+          Use proven building blocks when they help.
+        </h3>
+        <p class="mt-4 text-sm leading-7 text-muted">
+          Where it makes sense, I may bring selected pre-existing components into a
+          new role or engagement to accelerate delivery, reduce risk, and avoid
+          rebuilding solved infrastructure from scratch.
+        </p>
+        <p class="mt-4 text-sm leading-7 text-muted">
+          The intent is practical reuse, not ambiguity. The delivered system should
+          start from a stronger baseline because the underlying parts have already
+          been tested in real work.
+        </p>
+      </article>
+
+      <article class={cardClass}>
+        <p class="text-xs uppercase tracking-[0.18em] text-muted">What the employer/client gets</p>
+        <h3 class="mt-3 font-heading text-2xl font-semibold text-text">
+          Broad rights to run the delivered solution.
+        </h3>
+        <p class="mt-4 text-sm leading-7 text-muted">
+          If I deliver a system for a role, the employer or client gets the practical
+          freedom they need to use it, modify it, extend it, maintain it, and operate
+          it without practical restriction.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm leading-7 text-muted">
+          <li>No expectation that changes must be contributed back.</li>
+          <li>No hidden dependency on my continued involvement.</li>
+          <li>No practical lock-in from the way the work is delivered.</li>
+        </ul>
+      </article>
+    </div>
+
+    <article class={wideCardClass}>
+      <p class="text-xs uppercase tracking-[0.18em] text-muted">Why this model exists</p>
+      <h3 class="mt-3 font-heading text-2xl font-semibold text-text">
+        Clean boundaries make delivery easier for everyone involved.
+      </h3>
+      <p class="mt-4 max-w-4xl text-sm leading-7 text-muted">
+        This model preserves clear ownership boundaries, reduces ambiguity, speeds up
+        delivery, and improves reliability by reusing proven building blocks where
+        that is the right tradeoff. It is meant to be a straightforward working
+        arrangement, not a source of friction.
+      </p>
+      <p class="mt-4 max-w-4xl text-sm leading-7 text-muted">
+        In practice, it helps both sides: I can move faster because I am not starting
+        from zero, and the employer or client gets a delivered system they can run and
+        evolve with confidence.
+      </p>
+    </article>
+  </section>
+
+  <section class="mt-8 rounded-[2rem] border border-border bg-surface/90 p-6 shadow-sm">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">Public inventory</p>
+        <h2 class="mt-2 font-heading text-2xl font-semibold text-text">
+          Search by title or tag, then narrow by kind and status.
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-muted">
+          The archive below stays public-safe. It gives technical leaders, recruiters,
+          founders, and diligence reviewers a plain chronology of the work without
+          exposing private implementation details.
+        </p>
+      </div>
+      <button
+        type="button"
+        class="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm font-medium text-text hover:border-primary"
+        data-prior-art-reset
+      >
+        Reset filters
+      </button>
+    </div>
+
+    <div class="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(180px,0.55fr))]">
+      <label class="flex flex-col gap-2">
+        <span class="text-xs uppercase tracking-[0.18em] text-muted">Search</span>
+        <input
+          class="rounded-2xl border border-border bg-bg/80 px-4 py-3 text-sm text-text shadow-sm"
+          type="search"
+          placeholder="Search by project name, summary, or tag"
+          data-prior-art-search
+          autocomplete="off"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2">
+        <span class="text-xs uppercase tracking-[0.18em] text-muted">Kind</span>
+        <select
+          class="rounded-2xl border border-border bg-bg/80 px-4 py-3 text-sm text-text shadow-sm"
+          data-prior-art-kind
+        >
+          <option value="">All kinds</option>
+          {kindOptions.map((kind) => (
+            <option value={kind}>{getPriorArtKindLabel(kind)}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-2">
+        <span class="text-xs uppercase tracking-[0.18em] text-muted">Status</span>
+        <select
+          class="rounded-2xl border border-border bg-bg/80 px-4 py-3 text-sm text-text shadow-sm"
+          data-prior-art-status
+        >
+          <option value="">All statuses</option>
+          {statusOptions.map((status) => (
+            <option value={status}>{getPriorArtStatusLabel(status)}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="mt-14 space-y-8" aria-labelledby="prior-art-grouped-heading">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Grouped archive</p>
+      <h2 id="prior-art-grouped-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
+        Grouped by portfolio and parent project
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        The grouped view is the main public index. It favors context over exhaustive
+        detail and keeps related work clustered even when dates are incomplete.
+      </p>
+    </div>
+
+    {groupedEntries.map((section) => (
+      <section class="space-y-5" data-prior-art-group>
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-muted">Portfolio</p>
+            <h3 class="mt-2 font-heading text-2xl font-semibold text-text">{section.name}</h3>
+          </div>
+          <p class="text-sm text-muted">
+            {section.parents.length} root item{section.parents.length === 1 ? "" : "s"}
+          </p>
+        </div>
+
+        {section.parents.map((parent) => {
+          const children = section.childMap.get(parent.id) ?? [];
+
+          return (
+            <article class="space-y-5">
+              <PriorArtEntryCard entry={parent} featured />
+              {children.length > 0 && (
+                <div class="grid gap-5 xl:grid-cols-2">
+                  {children.map((entry) => (
+                    <PriorArtEntryCard entry={entry} parentTitle={parent.title} />
+                  ))}
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </section>
+    ))}
+
+    <p
+      class="hidden rounded-3xl border border-border bg-surface/90 px-6 py-5 text-sm text-muted shadow-sm"
+      data-prior-art-empty
+    >
+      No entries match the current filters.
+    </p>
+  </section>
+
+  <section class="mt-14" aria-labelledby="prior-art-timeline-heading">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Timeline</p>
+      <h2 id="prior-art-timeline-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
+        Chronological view
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        This timeline orders the same public inventory from earliest known activity
+        to latest. Approximate and unpublished dates stay approximate.
+      </p>
+    </div>
+
+    <ol class="mt-6 space-y-4">
+      {timelineEntries.map((entry) => (
+        <li
+          class="rounded-3xl border border-border bg-surface/90 p-5 shadow-sm"
+          data-prior-art-timeline-entry
+          data-kind={entry.kind}
+          data-status={entry.status}
+          data-searchable={[
+            entry.title,
+            entry.publicSummary,
+            entry.notesPublic ?? "",
+            entry.portfolio ?? "",
+            ...entry.tags,
+            ...entry.domains,
+          ].join(" ").toLowerCase()}
+        >
+          <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-muted">
+                {entry.portfolio ?? "Inventory"}
+              </p>
+              <h3 class="mt-2 font-heading text-xl font-semibold text-text">
+                <a class="hover:text-primary" href={`#${entry.slug}`}>{entry.title}</a>
+              </h3>
+              <p class="mt-3 text-sm leading-7 text-muted">{entry.publicSummary}</p>
+            </div>
+            <div class="shrink-0 text-xs uppercase tracking-[0.18em] text-muted">
+              {formatPriorArtDateRange(entry)}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const searchInput = document.querySelector("[data-prior-art-search]");
+      const kindSelect = document.querySelector("[data-prior-art-kind]");
+      const statusSelect = document.querySelector("[data-prior-art-status]");
+      const resetButton = document.querySelector("[data-prior-art-reset]");
+      const groupedSections = Array.from(document.querySelectorAll("[data-prior-art-group]"));
+      const groupedEntries = Array.from(document.querySelectorAll("[data-prior-art-entry]"));
+      const timelineEntries = Array.from(
+        document.querySelectorAll("[data-prior-art-timeline-entry]"),
+      );
+      const emptyState = document.querySelector("[data-prior-art-empty]");
+
+      if (
+        !(searchInput instanceof HTMLInputElement) ||
+        !(kindSelect instanceof HTMLSelectElement) ||
+        !(statusSelect instanceof HTMLSelectElement)
+      ) {
+        return;
+      }
+
+      const getSearchableText = (element) =>
+        (element.getAttribute("data-searchable") || "").toLowerCase();
+
+      const applyFilters = () => {
+        const query = searchInput.value.trim().toLowerCase();
+        const kind = kindSelect.value;
+        const status = statusSelect.value;
+
+        let visibleCount = 0;
+
+        const matches = (element) => {
+          const searchableText = getSearchableText(element);
+          const kindMatch = !kind || element.getAttribute("data-kind") === kind;
+          const statusMatch = !status || element.getAttribute("data-status") === status;
+          const searchMatch = !query || searchableText.includes(query);
+          return kindMatch && statusMatch && searchMatch;
+        };
+
+        for (const entry of groupedEntries) {
+          if (!(entry instanceof HTMLElement)) continue;
+          const isMatch = matches(entry);
+          entry.hidden = !isMatch;
+          if (isMatch) visibleCount += 1;
+        }
+
+        for (const section of groupedSections) {
+          if (!(section instanceof HTMLElement)) continue;
+          const hasVisibleEntry = Array.from(
+            section.querySelectorAll("[data-prior-art-entry]"),
+          ).some((entry) => entry instanceof HTMLElement && !entry.hidden);
+          section.hidden = !hasVisibleEntry;
+        }
+
+        for (const entry of timelineEntries) {
+          if (!(entry instanceof HTMLElement)) continue;
+          entry.hidden = !matches(entry);
+        }
+
+        if (emptyState instanceof HTMLElement) {
+          emptyState.hidden = visibleCount > 0;
+        }
+      };
+
+      const resetFilters = () => {
+        searchInput.value = "";
+        kindSelect.value = "";
+        statusSelect.value = "";
+        applyFilters();
+      };
+
+      searchInput.addEventListener("input", applyFilters);
+      kindSelect.addEventListener("change", applyFilters);
+      statusSelect.addEventListener("change", applyFilters);
+      resetButton?.addEventListener("click", resetFilters);
+      applyFilters();
+    })();
+  </script>
+</BaseLayout>

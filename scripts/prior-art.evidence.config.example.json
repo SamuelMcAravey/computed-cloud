@@ -1,0 +1,20 @@
+{
+  "manualEntries": [
+    {
+      "name": "Example local-only domain archive",
+      "path": "C:/projects/example-domain",
+      "kind": "website",
+      "summary": "Synthetic example for a site or domain that is not tracked in git.",
+      "notes": [
+        "Keep real private notes and local paths in a local-only config file."
+      ],
+      "urls": [
+        "https://example.invalid/archive"
+      ],
+      "domains": [
+        "example.invalid"
+      ],
+      "sortDate": "2019-01-01"
+    }
+  ]
+}
