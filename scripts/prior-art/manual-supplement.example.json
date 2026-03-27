@@ -1,0 +1,26 @@
+{
+  "manualEntries": [
+    {
+      "id": "manual:example-archived-site",
+      "title": "Example Archived Site",
+      "kind": "website",
+      "summary": "Placeholder for a domain or marketing site that is not tracked in git.",
+      "notes": [
+        "Use this file as a local-only supplement for older work that lives outside GitHub."
+      ],
+      "path": "C:/projects/example-archived-site",
+      "urls": [
+        "https://example.invalid/archive"
+      ],
+      "domains": [
+        "example.invalid"
+      ],
+      "sortDate": "2019-01-01",
+      "include_in_public_page": false,
+      "include_in_pdf_exhibit": true,
+      "mention_strategy": "generalized_family",
+      "sensitivity_level": "low",
+      "manual_review_required": true
+    }
+  ]
+}

@@ -6,7 +6,7 @@ export interface PriorArtRepository {
   private: boolean;
   visibility: "public" | "private" | "internal";
   description: string | null;
-  html_url: string;
+  html_url: string | null;
   homepage: string | null;
   archived: boolean;
   fork: boolean;

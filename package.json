@@ -13,6 +13,7 @@
     "note:new": "node scripts/new-note.mjs",
     "note:dry-run": "node scripts/new-note.mjs --dry-run",
     "prior-art:evidence": "pwsh -File scripts/Export-PriorArtEvidence.ps1",
+    "prior-art:inventory": "pwsh -File scripts/prior-art/inventory-github.ps1",
     "astro": "astro"
   },
   "dependencies": {

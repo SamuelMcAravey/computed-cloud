@@ -1,160 +1,183 @@
-# Prior Art Inventory
+# Prior Art Inventory Pipeline
 
-This repo contains a hidden but published prior-art page at `/prior-art`.
+This repo has a hidden but published prior-art page at `/prior-art`.
 
-Its job is simple:
+The page is public. The source data pipeline is split so private evidence stays local.
 
-- keep a public-safe ownership and chronology record
-- keep private evidence snapshots local
-- make it easy to update the public page without exposing repository paths, remotes, or internal notes
+## Data surfaces
 
-## Public vs private
+Keep these surfaces separate:
 
-There are two separate data surfaces. Keep them separate.
+- `artifacts/prior-art/master-prior-art.json`
+  - Private master inventory
+  - Local only
+  - Not imported by Astro
+  - Can include repo names, orgs, history evidence, project units, and review flags
 
-Public inventory:
+- `artifacts/prior-art/public-candidate-view.json`
+  - Filtered public-safe view derived from the master
+  - Used for review before promotion
+  - Safe to inspect locally
 
-- File: `src/data/prior-art.inventory.json`
-- Used by: `src/pages/prior-art.astro`
-- Safe to commit and publish
-- Contains only curated, high-level descriptions, public links, public evidence, tags, and rough chronology
+- `artifacts/prior-art/pdf-candidate-view.json`
+  - Broader filtered view for a future PDF exhibit or excluded-prior-art schedule
+  - Local review artifact
 
-Private evidence:
+- `artifacts/prior-art/review-summary.md`
+  - Human review report
+  - Local only
 
-- Default outputs:
-  - `src/data/prior-art.evidence.generated.json`
-  - `src/data/prior-art.evidence.generated.md`
-- Produced by: `scripts/Export-PriorArtEvidence.ps1`
-- Local only
-- Ignored by git
-- May contain local paths, remote URLs, commit hashes, branch names, and other evidence details
+- `src/data/prior-art.inventory.json`
+  - Public site inventory
+  - Used by `src/pages/prior-art.astro`
+  - Safe to commit and publish
 
-Rule of thumb: the public page must never import or render the generated evidence files.
+- `src/data/prior-art.repositories.json`
+  - Public repository catalog used by the page
+  - Repo names and metadata only
+  - Safe to commit and publish
 
-## Editing the public inventory
+Rule of thumb: the public page should only read committed public-safe data. It must never import the private master or the generated evidence snapshots.
 
-Add or update entries in `src/data/prior-art.inventory.json`.
+## What the pipeline is for
 
-Each entry supports:
+The master inventory is the source of truth for three downstream views:
 
-- `id`
-- `title`
-- `slug`
-- `parentId`
-- `kind`
-- `status`
-- `visibility`
-- `ownerLabel`
-- `started`
-- `startedPrecision`
-- `ended`
-- `endedPrecision`
-- `publicSummary`
-- `notesPublic`
-- `tags`
-- `domains`
-- `publicLinks`
-- `evidencePublic`
-- `relatedIds`
-- `group`
+1. The public page
+2. The PDF exhibit staging view
+3. The private evidence register
 
-Guidelines:
+The master is meant to be exhaustive enough to support later filtering. The derived views are meant to be narrower and easier to review.
 
-- Use `parentId` when an umbrella item should contain child items.
-- Use `group` for portfolio-style grouping across related records.
-- If a date is not confirmed, keep it `null` and use `unknown`, or use an approximate value with `approximate`.
-- Do not invent precision.
-- Keep summaries high level and public safe.
+## What belongs where
 
-Do not put any of the following into the public inventory:
+Use the public site files for curated, public-safe entries:
+
+- public project names
+- rough chronology
+- public links
+- public evidence links
+- high-level summaries
+
+Use the master inventory for:
+
+- all accessible GitHub orgs and repos relevant to prior work
+- private and public repo metadata
+- local clone evidence
+- project and package discovery
+- review flags and classification fields
+- notes that should not be published
+
+Do not put these in the public site files:
 
 - local file paths
-- private repository URLs
+- private remote URLs
 - commit hashes
-- internal folder names
+- branch names
 - confidential notes
-- copied raw evidence output
+- copied source code
+- raw evidence output
 
-## Exporting private evidence
+## How to run the inventory script
 
-Run the export with one or more local roots:
+The new master inventory script is expected at:
+
+- `scripts/prior-art/inventory-github.ps1`
+
+Typical run:
 
 ```powershell
-npm run prior-art:evidence -- -Roots C:\src C:\work -Recurse
+npm run prior-art:inventory -- `
+  -Roots C:\src `
+  -Recurse `
+  -UseGhCli `
+  -OutMaster artifacts/prior-art/master-prior-art.json `
+  -OutPublic artifacts/prior-art/public-candidate-view.json `
+  -OutPdf artifacts/prior-art/pdf-candidate-view.json `
+  -OutSummary artifacts/prior-art/review-summary.md
 ```
 
-You can also call the script directly:
+If you have manual non-repo items, pass a local supplement file:
 
 ```powershell
-pwsh -File scripts/Export-PriorArtEvidence.ps1 `
-  -Roots C:\src,C:\work `
-  -OutJson src/data/prior-art.evidence.generated.json `
-  -OutMarkdown src/data/prior-art.evidence.generated.md `
-  -Recurse
+npm run prior-art:inventory -- `
+  -Roots C:\src `
+  -Recurse `
+  -UseGhCli `
+  -ConfigFile scripts/prior-art/manual-supplement.example.json `
+  -OutMaster artifacts/prior-art/master-prior-art.json `
+  -OutPublic artifacts/prior-art/public-candidate-view.json `
+  -OutPdf artifacts/prior-art/pdf-candidate-view.json `
+  -OutSummary artifacts/prior-art/review-summary.md
 ```
 
-Optional flags:
+The script should:
 
-- `-ConfigFile` to add manual non-repo entries
-- `-UseGhCli` to resolve GitHub visibility when `gh` is installed and authenticated
+- query `gh` for identity, org memberships, and accessible repos
+- scan local roots for git repositories and project units
+- build the private master inventory
+- emit the public candidate view and PDF candidate view
+- write a review summary instead of failing hard on partial discovery
 
-The script collects, when available:
+## Manual supplement
 
-- local repo or folder name
-- local path
-- remote URLs
-- default branch
-- earliest and latest commit hashes and dates
-- current HEAD and branch
-- dirty worktree state
-- README heading and preview
-- repo visibility from `gh`
+Use a local supplement when you want to add non-repo prior art:
 
-## Manual config entries
+- domains and websites
+- abandoned projects
+- old venture code
+- prototypes that are not in an active repo
+- local-only folders
 
-Use a local config file when you want to track domains, abandoned projects, local-only folders, or older work that is not in an active git repository.
+Recommended template:
 
-Recommended local file:
+- `scripts/prior-art/manual-supplement.example.json`
 
-- `src/data/prior-art.evidence.config.local.json`
+Keep the local supplement private if it contains anything sensitive. Use placeholders in the example file.
 
-That file is ignored by git.
+## What is safe to commit
 
-Example shape:
+Safe to commit:
 
-```json
-{
-  "manualEntries": [
-    {
-      "name": "Example archived site",
-      "path": "C:\\placeholder\\example-archived-site",
-      "kind": "website",
-      "summary": "Local-only placeholder example.",
-      "notes": "Local-only placeholder example.",
-      "urls": ["https://example.com"],
-      "domains": ["example.com"],
-      "sortDate": "2014-01-01"
-    }
-  ]
-}
-```
+- `src/data/prior-art.inventory.json`
+- `src/data/prior-art.repositories.json`
+- `scripts/prior-art/inventory-github.ps1`
+- `scripts/prior-art/manual-supplement.example.json`
+- docs that explain the workflow
 
-Use placeholders in docs and examples. Do not commit real private paths or remotes.
+Keep local unless you intentionally want to promote them:
+
+- `artifacts/prior-art/master-prior-art.json`
+- `artifacts/prior-art/pdf-candidate-view.json`
+- `artifacts/prior-art/review-summary.md`
+- any local supplement file with private details
+
+Treat `artifacts/prior-art/public-candidate-view.json` as a review artifact. It can be committed only after you decide it is safe and useful to keep in history.
+
+## Existing local evidence export
+
+The older repo-root evidence snapshot script still exists:
+
+- `scripts/Export-PriorArtEvidence.ps1`
+
+That script is for local evidence capture from roots and optional manual entries. It is useful when you want a simple local snapshot without the full GitHub inventory pass.
 
 ## Recommended workflow
 
-1. Scan local roots with `scripts/Export-PriorArtEvidence.ps1`.
-2. Review the generated JSON and Markdown locally.
-3. Curate or update high-level entries in `src/data/prior-art.inventory.json`.
-4. Build and publish the site.
-5. Keep local copies of evidence snapshots outside the public workflow if you want dated archives.
+1. Run the GitHub inventory script against the local roots you care about.
+2. Review `artifacts/prior-art/review-summary.md`.
+3. Review the master JSON locally.
+4. Promote approved records into the public candidate view.
+5. Copy the reviewed public data into the site files if you want the page updated.
+6. Keep the private master and evidence outputs local.
+7. If you need a PDF exhibit, generate it from the PDF candidate view, not from the raw master.
 
 ## Safety checks
 
 Before publishing:
 
-- confirm `src/pages/prior-art.astro` imports only the public inventory helpers
-- confirm the generated evidence files are still ignored
-- confirm no local paths or private remotes were copied into `prior-art.inventory.json`
+- confirm `src/pages/prior-art.astro` only imports public-safe site data
+- confirm the private master stays outside `src/`
+- confirm no private paths, remotes, or commit hashes were copied into the public site files
 - confirm `/prior-art` still has `noindex,nofollow`
 - confirm `/prior-art` stays out of sitemap and site search
