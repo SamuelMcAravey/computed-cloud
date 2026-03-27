@@ -1,11 +1,13 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PriorArtEntryCard from "@components/prior-art/PriorArtEntryCard.astro";
 import {
   formatPriorArtDateRange,
   getPriorArtGroups,
   getPriorArtKindLabel,
+  getPriorArtRelatedEntries,
+  getPriorArtSearchText,
   getPriorArtStatusLabel,
+  getPriorArtVisibilityLabel,
   getPriorArtTimelineEntries,
   priorArtEntries,
   priorArtKindOrder,
@@ -67,12 +69,12 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
         </ul>
       </div>
       <div class={mutedCardClass}>
-        <p class="text-xs uppercase tracking-[0.2em] text-muted">Public-safe scope</p>
+        <p class="text-xs uppercase tracking-[0.2em] text-muted">What this page includes</p>
         <ul class="mt-4 space-y-3 text-sm leading-6 text-muted">
-          <li>This page is direct-link only and stays out of the normal nav, footer, sitemap, and search surfaces.</li>
-          <li>The rendered page reads only curated public inventory data.</li>
-          <li>Private evidence snapshots stay local and are not rendered here.</li>
-          <li>Unknown dates remain approximate or unpublished instead of guessed.</li>
+          <li>This page is a public summary of the record, not the full evidence file.</li>
+          <li>It shows public and non-public work at a high level, but private evidence stays local.</li>
+          <li>Detailed evidence and implementation notes are kept out of the public page.</li>
+          <li>When dates are uncertain, I keep them approximate instead of guessing.</li>
         </ul>
       </div>
     </aside>
@@ -190,8 +192,8 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
           Search by title or tag, then narrow by kind and status.
         </h2>
         <p class="mt-3 max-w-3xl text-sm leading-7 text-muted">
-          The archive below stays public-safe. It gives technical leaders, recruiters,
-          founders, and diligence reviewers a plain chronology of the work without
+          The table below stays public-safe. It gives technical leaders, recruiters,
+          founders, and diligence reviewers a plain scan of the record without
           exposing private implementation details.
         </p>
       </div>
@@ -246,46 +248,249 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
 
   <section class="mt-14 space-y-8" aria-labelledby="prior-art-grouped-heading">
     <div class="max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.2em] text-muted">Grouped archive</p>
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Compact index</p>
       <h2 id="prior-art-grouped-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
         Grouped by portfolio and parent project
       </h2>
       <p class="mt-4 text-base leading-7 text-muted">
-        The grouped view is the main public index. It favors context over exhaustive
-        detail and keeps related work clustered even when dates are incomplete.
+        This is the fastest way to scan the archive. The table keeps the record dense,
+        shows the ownership scope up front, and keeps related work clustered even
+        when dates are incomplete.
       </p>
     </div>
 
-    {groupedEntries.map((section) => (
-      <section class="space-y-5" data-prior-art-group>
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs uppercase tracking-[0.2em] text-muted">Portfolio</p>
-            <h3 class="mt-2 font-heading text-2xl font-semibold text-text">{section.name}</h3>
+    <div class="space-y-6">
+      {groupedEntries.map((section) => (
+        <section class="overflow-hidden rounded-[2rem] border border-border bg-surface/90 shadow-sm" data-prior-art-group>
+          <div class="border-b border-border px-5 py-5 sm:px-6">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.2em] text-muted">Portfolio</p>
+                <h3 class="mt-2 font-heading text-2xl font-semibold text-text">{section.name}</h3>
+              </div>
+              <p class="text-sm text-muted">
+                {section.parents.length} root item{section.parents.length === 1 ? "" : "s"}
+              </p>
+            </div>
           </div>
-          <p class="text-sm text-muted">
-            {section.parents.length} root item{section.parents.length === 1 ? "" : "s"}
-          </p>
-        </div>
 
-        {section.parents.map((parent) => {
-          const children = section.childMap.get(parent.id) ?? [];
+          <div class="cc-scrollbox overflow-x-auto">
+            <table class="min-w-[1100px] w-full border-collapse text-left text-sm">
+              <thead class="bg-bg/70 text-xs uppercase tracking-[0.18em] text-muted">
+                <tr>
+                  <th class="px-5 py-3 font-medium">Item</th>
+                  <th class="px-3 py-3 font-medium">Type</th>
+                  <th class="px-3 py-3 font-medium">Status</th>
+                  <th class="px-3 py-3 font-medium">Scope</th>
+                  <th class="px-3 py-3 font-medium">Range</th>
+                  <th class="px-5 py-3 font-medium">Summary</th>
+                  <th class="px-5 py-3 font-medium">Links</th>
+                </tr>
+              </thead>
+              <tbody>
+                {section.parents.map((parent) => {
+                  const children = section.childMap.get(parent.id) ?? [];
+                  const relatedEntries = getPriorArtRelatedEntries(parent);
 
-          return (
-            <article class="space-y-5">
-              <PriorArtEntryCard entry={parent} featured />
-              {children.length > 0 && (
-                <div class="grid gap-5 xl:grid-cols-2">
-                  {children.map((entry) => (
-                    <PriorArtEntryCard entry={entry} parentTitle={parent.title} />
-                  ))}
-                </div>
-              )}
-            </article>
-          );
-        })}
-      </section>
-    ))}
+                  return (
+                    <>
+                      <tr
+                        id={parent.slug}
+                        class="border-t border-border/70 align-top hover:bg-bg/40"
+                        data-prior-art-entry
+                        data-kind={parent.kind}
+                        data-status={parent.status}
+                        data-searchable={getPriorArtSearchText(parent)}
+                      >
+                        <td class="px-5 py-4">
+                          <div class="space-y-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                              <a class="font-semibold text-text hover:text-primary" href={`#${parent.slug}`}>
+                                {parent.title}
+                              </a>
+                              <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                                {parent.portfolio}
+                              </span>
+                            </div>
+                            {parent.notesPublic && (
+                              <p class="text-xs leading-6 text-muted">{parent.notesPublic}</p>
+                            )}
+                            {parent.tags.length > 0 && (
+                              <div class="flex flex-wrap gap-2">
+                                {parent.tags.map((tag) => (
+                                  <span class="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium text-muted">
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            {relatedEntries.length > 0 && (
+                              <div class="flex flex-wrap gap-2">
+                                {relatedEntries.map((relatedEntry) => (
+                                  <a
+                                    class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-xs font-medium text-text hover:border-primary"
+                                    href={`#${relatedEntry.slug}`}
+                                  >
+                                    Related: {relatedEntry.title}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td class="px-3 py-4 text-sm text-muted">{getPriorArtKindLabel(parent.kind)}</td>
+                        <td class="px-3 py-4 text-sm text-muted">{getPriorArtStatusLabel(parent.status)}</td>
+                        <td class="px-3 py-4 text-sm text-muted">{getPriorArtVisibilityLabel(parent.visibility)}</td>
+                        <td class="px-3 py-4 text-xs uppercase tracking-[0.18em] text-muted">
+                          {formatPriorArtDateRange(parent)}
+                        </td>
+                        <td class="px-5 py-4 text-sm leading-6 text-muted">{parent.publicSummary}</td>
+                        <td class="px-5 py-4">
+                          <div class="space-y-3">
+                            {parent.publicLinks.length > 0 && (
+                              <div>
+                                <p class="text-[11px] uppercase tracking-[0.18em] text-muted">Public links</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                  {parent.publicLinks.map((link) => (
+                                    <a
+                                      class="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                                      href={link.url}
+                                      target={link.url.startsWith("http") ? "_blank" : undefined}
+                                      rel={link.url.startsWith("http") ? "noreferrer" : undefined}
+                                    >
+                                      {link.label}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {parent.evidencePublic.length > 0 && (
+                              <div>
+                                <p class="text-[11px] uppercase tracking-[0.18em] text-muted">Public evidence</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                  {parent.evidencePublic.map((evidence) => (
+                                    <a
+                                      class="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                                      href={evidence.url}
+                                      target={evidence.url.startsWith("http") ? "_blank" : undefined}
+                                      rel={evidence.url.startsWith("http") ? "noreferrer" : undefined}
+                                    >
+                                      {evidence.label}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+
+                      {children.map((entry) => {
+                        const relatedChildEntries = getPriorArtRelatedEntries(entry);
+
+                        return (
+                          <tr
+                            id={entry.slug}
+                            class="border-t border-border/50 align-top bg-bg/25 hover:bg-bg/50"
+                            data-prior-art-entry
+                            data-kind={entry.kind}
+                            data-status={entry.status}
+                            data-searchable={getPriorArtSearchText(entry)}
+                          >
+                            <td class="px-5 py-4">
+                              <div class="space-y-3">
+                                <div class="flex flex-wrap items-center gap-2">
+                                  <span class="text-muted">Child of</span>
+                                  <a class="font-semibold text-text hover:text-primary" href={`#${entry.slug}`}>
+                                    {entry.title}
+                                  </a>
+                                </div>
+                                <p class="text-xs leading-6 text-muted">Part of {parent.title}</p>
+                                {entry.notesPublic && (
+                                  <p class="text-xs leading-6 text-muted">{entry.notesPublic}</p>
+                                )}
+                                {entry.tags.length > 0 && (
+                                  <div class="flex flex-wrap gap-2">
+                                    {entry.tags.map((tag) => (
+                                      <span class="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium text-muted">
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                                {relatedChildEntries.length > 0 && (
+                                  <div class="flex flex-wrap gap-2">
+                                    {relatedChildEntries.map((relatedEntry) => (
+                                      <a
+                                        class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-xs font-medium text-text hover:border-primary"
+                                        href={`#${relatedEntry.slug}`}
+                                      >
+                                        Related: {relatedEntry.title}
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                            <td class="px-3 py-4 text-sm text-muted">{getPriorArtKindLabel(entry.kind)}</td>
+                            <td class="px-3 py-4 text-sm text-muted">{getPriorArtStatusLabel(entry.status)}</td>
+                            <td class="px-3 py-4 text-sm text-muted">{getPriorArtVisibilityLabel(entry.visibility)}</td>
+                            <td class="px-3 py-4 text-xs uppercase tracking-[0.18em] text-muted">
+                              {formatPriorArtDateRange(entry)}
+                            </td>
+                            <td class="px-5 py-4 text-sm leading-6 text-muted">{entry.publicSummary}</td>
+                            <td class="px-5 py-4">
+                              <div class="space-y-3">
+                                {entry.publicLinks.length > 0 && (
+                                  <div>
+                                    <p class="text-[11px] uppercase tracking-[0.18em] text-muted">Public links</p>
+                                    <div class="mt-2 flex flex-wrap gap-2">
+                                      {entry.publicLinks.map((link) => (
+                                        <a
+                                          class="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                                          href={link.url}
+                                          target={link.url.startsWith("http") ? "_blank" : undefined}
+                                          rel={link.url.startsWith("http") ? "noreferrer" : undefined}
+                                        >
+                                          {link.label}
+                                        </a>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {entry.evidencePublic.length > 0 && (
+                                  <div>
+                                    <p class="text-[11px] uppercase tracking-[0.18em] text-muted">Public evidence</p>
+                                    <div class="mt-2 flex flex-wrap gap-2">
+                                      {entry.evidencePublic.map((evidence) => (
+                                        <a
+                                          class="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                                          href={evidence.url}
+                                          target={evidence.url.startsWith("http") ? "_blank" : undefined}
+                                          rel={evidence.url.startsWith("http") ? "noreferrer" : undefined}
+                                        >
+                                          {evidence.label}
+                                        </a>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))}
+    </div>
 
     <p
       class="hidden rounded-3xl border border-border bg-surface/90 px-6 py-5 text-sm text-muted shadow-sm"
@@ -314,14 +519,7 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
           data-prior-art-timeline-entry
           data-kind={entry.kind}
           data-status={entry.status}
-          data-searchable={[
-            entry.title,
-            entry.publicSummary,
-            entry.notesPublic ?? "",
-            entry.portfolio ?? "",
-            ...entry.tags,
-            ...entry.domains,
-          ].join(" ").toLowerCase()}
+          data-searchable={getPriorArtSearchText(entry)}
         >
           <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
             <div>
