@@ -29,7 +29,7 @@
       "latest_commit_date": "2020-04-10T14:34:06-06:00",
       "name": "vh-all",
       "private": true,
-      "summary": "VendorHub umbrella repository and repository-management scripts for cloning, building, restoring, and watching the solution set.",
+      "summary": "VendorHub umbrella repository and scripts for cloning, building, restoring, and watching the solution set.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:14Z",
       "visibility": "private"
@@ -237,7 +237,7 @@
       "latest_commit_date": "2022-12-08T09:06:40Z",
       "name": "forms",
       "private": false,
-      "summary": "VendorHub Forms Client",
+      "summary": "VendorHub Forms API client package.",
       "topics": [],
       "updated_at": "2020-09-14T21:08:14Z",
       "visibility": "public"
@@ -573,7 +573,7 @@
       "latest_commit_date": "2026-03-18T11:55:20-06:00",
       "name": "ai-writing-styles",
       "private": true,
-      "summary": "Email Corpus ETL",
+      "summary": "Email corpus ETL pipeline for collecting and normalizing writing-style examples.",
       "topics": [],
       "updated_at": "2026-03-18T17:55:38Z",
       "visibility": "private"
@@ -621,7 +621,7 @@
       "latest_commit_date": "2022-11-28T22:56:11-07:00",
       "name": "RxWrappers",
       "private": false,
-      "summary": "This project contains code that wraps common libraries with an Reactive Extension (Rx) facade. The intention is for these wrappers to be used in the MonadSharp language (name tenat...",
+      "summary": "Library of Reactive Extensions wrappers around common libraries, intended for use in MonadSharp.",
       "topics": [],
       "updated_at": "2022-11-29T05:56:22Z",
       "visibility": "public"
@@ -653,7 +653,7 @@
       "latest_commit_date": "2016-02-06T17:13:49-07:00",
       "name": "MonadSharp",
       "private": false,
-      "summary": "MonadSharp is an experimental language based on the Reactive Extension (Rx). The basis for the language comes from the ideas outline in this paper: http://rixianopentech.github.io/...",
+      "summary": "MonadSharp is an experimental language based on the Reactive Extension (Rx). The language follows the ideas outlined in the linked paper.",
       "topics": [],
       "updated_at": "2016-02-06T23:01:37Z",
       "visibility": "public"
@@ -688,6 +688,54 @@
       "summary": "CloudEvents support library with NewtonsoftJson integration and tests.",
       "topics": [],
       "updated_at": "2019-07-21T01:42:38Z",
+      "visibility": "public"
+    },
+    {
+      "archived": false,
+      "created_at": "2017-08-19T17:26:28Z",
+      "description": "MSGraph SDK Code Generator",
+      "earliest_commit_date": "2016-03-29T22:13:05-07:00",
+      "full_name": "RixianOpenTech/MSGraph-SDK-Code-Generator",
+      "homepage": null,
+      "html_url": "https://github.com/RixianOpenTech/MSGraph-SDK-Code-Generator",
+      "latest_commit_date": "2017-08-19T14:11:04-07:00",
+      "name": "MSGraph-SDK-Code-Generator",
+      "private": false,
+      "summary": "T4-based Microsoft Graph SDK generator for language-specific client writers.",
+      "topics": [],
+      "updated_at": "2017-08-19T17:26:31Z",
+      "visibility": "public"
+    },
+    {
+      "archived": false,
+      "created_at": "2017-10-21T19:58:34Z",
+      "description": "Exploring graph queries on top of Azure Cosmos DB with Gremlin",
+      "earliest_commit_date": "2017-04-06T17:15:27-07:00",
+      "full_name": "RixianOpenTech/azure-cosmos-db-dotnet-graphexplorer",
+      "homepage": null,
+      "html_url": "https://github.com/RixianOpenTech/azure-cosmos-db-dotnet-graphexplorer",
+      "latest_commit_date": "2017-10-23T18:44:40-07:00",
+      "name": "azure-cosmos-db-dotnet-graphexplorer",
+      "private": false,
+      "summary": "Azure Cosmos DB Gremlin sample with console upload and graph explorer UI.",
+      "topics": [],
+      "updated_at": "2020-06-22T05:15:29Z",
+      "visibility": "public"
+    },
+    {
+      "archived": false,
+      "created_at": "2018-06-12T01:01:49Z",
+      "description": "Helper library when using Gremlin.Net in conjunction with a Cosmos DB graph",
+      "earliest_commit_date": "2018-03-30T14:43:45-07:00",
+      "full_name": "RixianOpenTech/Gremlin.Net.CosmosDb",
+      "homepage": null,
+      "html_url": "https://github.com/RixianOpenTech/Gremlin.Net.CosmosDb",
+      "latest_commit_date": "2018-06-11T07:24:18-07:00",
+      "name": "Gremlin.Net.CosmosDb",
+      "private": false,
+      "summary": "Helper library for using Gremlin.Net with Azure Cosmos DB graph endpoints.",
+      "topics": [],
+      "updated_at": "2018-06-12T01:01:51Z",
       "visibility": "public"
     },
     {
@@ -813,7 +861,7 @@
       "latest_commit_date": "2026-02-25T10:52:00-07:00",
       "name": "integrations-postmark",
       "private": true,
-      "summary": "Incursa Email",
+      "summary": "Incursa Email integration package for Postmark delivery and webhook handling.",
       "topics": [],
       "updated_at": "2026-02-25T17:54:48Z",
       "visibility": "private"
@@ -877,7 +925,7 @@
       "latest_commit_date": "2026-03-08T20:08:36-06:00",
       "name": "incursa-labs",
       "private": true,
-      "summary": "Incursa Labs Monorepo",
+      "summary": "Incursa Labs monorepo for prototypes, experiments, and shared tooling.",
       "topics": [],
       "updated_at": "2026-03-09T02:08:52Z",
       "visibility": "internal"
@@ -909,7 +957,7 @@
       "latest_commit_date": "2026-03-08T18:45:55-06:00",
       "name": "generators",
       "private": false,
-      "summary": "This repository now contains two generation approaches:",
+      "summary": "Repository for two code-generation approaches.",
       "topics": [],
       "updated_at": "2026-03-09T00:46:04Z",
       "visibility": "public"
@@ -941,7 +989,7 @@
       "latest_commit_date": "2026-03-02T03:06:43Z",
       "name": "console",
       "private": true,
-      "summary": "is a baseline ASP.NET Core Razor Pages repository configured with Incursa C# standards, UIShell, CI quality reporting, and Workbench workflows.",
+      "summary": "Baseline ASP.NET Core Razor Pages repository configured with Incursa C# standards, UIShell, CI quality reporting, and Workbench workflows.",
       "topics": [],
       "updated_at": "2026-02-28T03:32:59Z",
       "visibility": "internal"
@@ -973,7 +1021,7 @@
       "latest_commit_date": "2026-03-25T14:17:47-06:00",
       "name": "codex-dotnet",
       "private": false,
-      "summary": "Incursa.OpenAI.Codex",
+      "summary": "Incursa.OpenAI.Codex package repository.",
       "topics": [],
       "updated_at": "2026-03-27T18:16:41Z",
       "visibility": "public"
@@ -1053,7 +1101,7 @@
       "latest_commit_date": "2026-01-26T18:48:50-07:00",
       "name": "apt-repo-catalog",
       "private": false,
-      "summary": "APT Repository Catalog",
+      "summary": "Curated APT repository catalog with fingerprint pinning and CI validation.",
       "topics": [],
       "updated_at": "2026-02-18T23:11:30Z",
       "visibility": "public"
@@ -1149,7 +1197,7 @@
       "latest_commit_date": "2026-03-25T08:39:28-06:00",
       "name": "integrations-private",
       "private": true,
-      "summary": "contains proprietary or operationally private provider-specific integrations that build on the provider-neutral packages in the sibling `platform` repository.",
+      "summary": "Private provider-specific integrations that build on the provider-neutral packages in the sibling `platform` repository.",
       "topics": [],
       "updated_at": "2026-03-25T14:39:56Z",
       "visibility": "internal"
@@ -1181,7 +1229,7 @@
       "latest_commit_date": "2026-03-27T13:57:37Z",
       "name": "integrations-public",
       "private": false,
-      "summary": "contains public provider-specific implementations that build on the provider-neutral packages in the sibling `platform` repository.",
+      "summary": "Public provider-specific implementations that build on the provider-neutral packages in the sibling `platform` repository.",
       "topics": [],
       "updated_at": "2026-03-26T01:59:59Z",
       "visibility": "public"
@@ -1277,7 +1325,7 @@
       "latest_commit_date": "2026-02-19T20:12:39-07:00",
       "name": "app",
       "private": true,
-      "summary": "RequestRelay",
+      "summary": "RequestRelay app shell for the webhook relay service and admin UI.",
       "topics": [],
       "updated_at": "2026-02-20T03:14:18Z",
       "visibility": "private"
@@ -1398,7 +1446,7 @@
       "latest_commit_date": "2026-03-08T03:03:49Z",
       "name": "types",
       "private": false,
-      "summary": "A set of reusable value objects and helper abstractions that can be shared across Incursa services and libraries. The package focuses on predictable formatting/parsing, determinist...",
+      "summary": "Reusable value objects and helper abstractions for Incursa services and libraries. The package focuses on predictable formatting, parsing, and deterministic behavior.",
       "topics": [],
       "updated_at": "2026-03-04T03:41:48Z",
       "visibility": "public"
@@ -1414,7 +1462,7 @@
       "latest_commit_date": "2026-03-25T08:43:47-06:00",
       "name": "tradefile-www",
       "private": true,
-      "summary": "Trade File",
+      "summary": "Trade File marketing site and public web app.",
       "topics": [],
       "updated_at": "2026-03-25T14:43:56Z",
       "visibility": "internal"
@@ -1430,7 +1478,7 @@
       "latest_commit_date": "2026-03-25T08:45:19-06:00",
       "name": "tradefile",
       "private": true,
-      "summary": "Incursa Tradefile Bronze",
+      "summary": "Incursa Tradefile Bronze core package and domain layer.",
       "topics": [],
       "updated_at": "2026-03-25T14:45:41Z",
       "visibility": "internal"
@@ -1462,7 +1510,7 @@
       "latest_commit_date": "2026-03-25T08:41:51-06:00",
       "name": "requestrelay",
       "private": true,
-      "summary": "RequestRelay is a .NET 10 ASP.NET Core webhook relay service with a small admin API and test suite. It is intentionally narrow so the standalone repo can stabilize before broader p...",
+      "summary": "RequestRelay is a .NET 10 ASP.NET Core webhook relay service with a small admin API and test suite. It stays intentionally narrow so the standalone repo can stabilize before broader packaging.",
       "topics": [],
       "updated_at": "2026-03-25T14:42:21Z",
       "visibility": "private"
@@ -1478,7 +1526,7 @@
       "latest_commit_date": "2026-03-25T09:55:00-06:00",
       "name": "repomanager",
       "private": true,
-      "summary": "Incursa Repo Manager",
+      "summary": "Incursa Repo Manager tooling for package and repository maintenance.",
       "topics": [],
       "updated_at": "2026-03-25T15:55:25Z",
       "visibility": "private"
@@ -1494,7 +1542,7 @@
       "latest_commit_date": "2026-03-25T08:40:43-06:00",
       "name": "platform",
       "private": false,
-      "summary": "contains the provider-neutral foundation for the Incursa package family: abstractions, shared models, orchestration, hosting adapters, and tooling that public or private integratio...",
+      "summary": "Provider-neutral foundation for the Incursa package family: abstractions, shared models, orchestration, hosting adapters, and tooling for public or private integrations.",
       "topics": [],
       "updated_at": "2026-03-25T14:41:38Z",
       "visibility": "public"
@@ -1510,7 +1558,7 @@
       "latest_commit_date": "2026-03-24T22:42:40-06:00",
       "name": "openai-agents-dotnet",
       "private": false,
-      "summary": "Incursa.OpenAI.Agents",
+      "summary": "Incursa.OpenAI.Agents .NET package and sample workspace for agent workflows.",
       "topics": [],
       "updated_at": "2026-03-27T18:16:19Z",
       "visibility": "public"
@@ -1526,7 +1574,7 @@
       "latest_commit_date": "2026-02-20T16:05:16-07:00",
       "name": "nuget-manager",
       "private": true,
-      "summary": "is a .NET CLI for bulk delisting package versions from NuGet.org.",
+      "summary": "A .NET CLI for bulk delisting package versions from NuGet.org.",
       "topics": [],
       "updated_at": "2026-02-20T23:05:22Z",
       "visibility": "private"
