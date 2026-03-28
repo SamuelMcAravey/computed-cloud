@@ -81,7 +81,16 @@ function Write-JsonFile {
 
   Ensure-ParentDirectory -Path $Path
   $json = $InputObject | ConvertTo-Json -Depth $Depth
-  Set-Content -LiteralPath $Path -Value $json -Encoding utf8
+  $json = $json -replace "`r`n", "`n"
+  if (-not $json.EndsWith("`n")) {
+    $json += "`n"
+  }
+
+  [System.IO.File]::WriteAllText(
+    $Path,
+    $json,
+    [System.Text.UTF8Encoding]::new($false)
+  )
 }
 
 function Convert-ToArray {
@@ -1177,15 +1186,196 @@ function Get-RepositoryRootSummary {
 
   $readmeTitle = Get-OptionalPropertyValue -Object $Repository -Name "readmeTitle"
   if (-not [string]::IsNullOrWhiteSpace([string]$readmeTitle)) {
-    return [string]$readmeTitle
+    $compactTitle = ([string]$readmeTitle -replace "\s+", " ").Trim()
+    if (
+      $compactTitle.Length -gt 32 -or
+      $compactTitle -notmatch '^(?i)(forms?|drive|dashboard|docs?|documentation|marketing|platform|site|website|toolbox|internal|examples?|extensions?|library|client|app|repository|project|church|samuelmcaravey)$'
+    ) {
+      return $compactTitle
+    }
   }
 
   $readmePreview = Get-OptionalPropertyValue -Object $Repository -Name "readmePreview"
   if (-not [string]::IsNullOrWhiteSpace([string]$readmePreview)) {
-    return [string]$readmePreview
+    $compactPreview = ([string]$readmePreview -replace "\s+", " ").Trim()
+    if ($compactPreview.Length -gt 140) {
+      return ($compactPreview.Substring(0, 140).TrimEnd() + "...")
+    }
+
+    return $compactPreview
   }
 
-  return ("Repository for {0}" -f (Get-OptionalPropertyValue -Object $Repository -Name "full_name"))
+  $name = $Repository.name
+  $ownerLabel = Get-OptionalPropertyValue -Object $Repository -Name "owner_label"
+  if ([string]::IsNullOrWhiteSpace([string]$ownerLabel)) {
+    $ownerLabel = Get-OptionalPropertyValue -Object $Repository -Name "owner"
+  }
+
+  if ([string]::IsNullOrWhiteSpace([string]$name)) {
+    return ("Repository for {0}" -f $Repository.full_name)
+  }
+
+  $cleanName = [string]$name
+  $originalNameLower = $cleanName.ToLowerInvariant()
+  $cleanName = $cleanName -replace "^(?:rxn|vh|incursa|rixian)[-_.]+", ""
+  $cleanName = $cleanName -replace "[-_.]+", " "
+  $tokens = @($cleanName -split "\s+" | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+  $joined = ($tokens -join " ").Trim()
+  $lowered = @($tokens | ForEach-Object { $_.ToLowerInvariant() })
+
+  if ([string]::IsNullOrWhiteSpace($joined)) {
+    return ("Repository for {0}" -f $Repository.full_name)
+  }
+
+  if ($tokens.Count -eq 1) {
+    switch ($lowered[0]) {
+      "all" { return "Umbrella repository" }
+      "app" { if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} application" -f $ownerLabel) } return "Application repository" }
+      "bighornfoundry" { return "Bighorn Foundry repository" }
+      "dashboard" { if ($originalNameLower -like "vh-*") { return "VendorHub dashboard" } return "Dashboard application" }
+      "docs" { if ($originalNameLower -like "vh-*") { return "VendorHub documentation site" } if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} documentation site" -f $ownerLabel) } return "Documentation repository" }
+      "examples" { return "Examples repository" }
+      "iam" { return "IAM repository" }
+      "internal" { return "Internal repository" }
+      "marketing" { if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} marketing site" -f $ownerLabel) } return "Marketing site repository" }
+      "platform" { if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} platform" -f $ownerLabel) } return "Platform repository" }
+      "forms" { if ($originalNameLower -like "vh-*") { return "VendorHub forms application" } return "Forms application" }
+      "site" { if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} website" -f $ownerLabel) } return "Website repository" }
+      "template" { return "Template repository" }
+      "toolbox" { return "Tooling repository" }
+      "monadsharp" { return "MonadSharp library" }
+      "rxwrappers" { return "Reactive wrappers library" }
+      "www" { if (-not [string]::IsNullOrWhiteSpace([string]$ownerLabel)) { return ("{0} website" -f $ownerLabel) } return "Website repository" }
+      default { return ("{0} repository" -f $joined) }
+    }
+  }
+
+  $joinedLower = $joined.ToLowerInvariant()
+  if ($joinedLower -eq "document library file transfer") {
+    return "File transfer component for the document library"
+  }
+  if ($joinedLower -eq "drive storage management sql") {
+    return "SQL storage backend for the drive storage management layer"
+  }
+  if ($joinedLower -eq "drive storage management abstractions") {
+    return "Drive storage management abstractions"
+  }
+  if ($joinedLower -eq "drive storage management azureblob") {
+    return "Azure Blob storage adapter for the drive storage system"
+  }
+  if ($joinedLower -eq "drive storage management amazons3") {
+    return "Amazon S3 storage adapter for the drive storage system"
+  }
+  if ($joinedLower -eq "drive storage azureblob") {
+    return "Azure Blob storage adapter for the drive storage system"
+  }
+  if ($joinedLower -eq "drive storage amazons3") {
+    return "Amazon S3 storage adapter for the drive storage system"
+  }
+  if ($joinedLower -eq "drive storage management") {
+    return "Drive storage management layer"
+  }
+  if ($joinedLower -eq "document library") {
+    return "Document library"
+  }
+  if ($joinedLower -eq "integrations cloudflare") {
+    return "Cloudflare integration components"
+  }
+  if ($joinedLower -eq "integrations electronicnotary") {
+    return "Electronic notary integration components"
+  }
+  if ($joinedLower -eq "integrations postmark") {
+    return "Postmark integration components"
+  }
+  if ($joinedLower -eq "integrations private") {
+    return "Private integration components"
+  }
+  if ($joinedLower -eq "integrations public") {
+    return "Public integration components"
+  }
+  if ($joinedLower -eq "integrations workos") {
+    return "WorkOS integration components"
+  }
+  if ($joinedLower -eq "extensions tokens") {
+    return "Token extension helpers"
+  }
+  if ($joinedLower -eq "extensions http") {
+    return "HTTP extension helpers"
+  }
+  if ($joinedLower -eq "extensions dependencyinjection") {
+    return "Dependency injection extensions"
+  }
+  if ($joinedLower -eq "extensions caching") {
+    return "Caching extensions"
+  }
+  if ($joinedLower -eq "extensions errors") {
+    return "Error handling extensions"
+  }
+  if ($joinedLower -eq "vh all" -or $joinedLower -eq "vh all") {
+    return "VendorHub umbrella repository"
+  }
+  if ($joinedLower -eq "vh dashboard") {
+    return "VendorHub dashboard"
+  }
+  if ($joinedLower -eq "vh docs") {
+    return "VendorHub documentation site"
+  }
+  if ($joinedLower -eq "vh document library") {
+    return "VendorHub document library"
+  }
+  if ($joinedLower -eq "vh document library file transfer") {
+    return "File transfer component for the VendorHub document library"
+  }
+  if ($joinedLower -eq "vh forms") {
+    return "VendorHub forms application"
+  }
+  if ($joinedLower -eq "vh marketing") {
+    return "VendorHub marketing site"
+  }
+  if ($joinedLower -eq "approvum www") {
+    return "Approvum website"
+  }
+  if ($joinedLower -eq "request relay" -or $joinedLower -eq "requestrelay") {
+    return "Request Relay service"
+  }
+  if ($joinedLower -eq "tradefile www") {
+    return "Tradefile website"
+  }
+  if ($joinedLower -eq "tradefile") {
+    return "Tradefile platform"
+  }
+  if ($joinedLower -eq "vendorhub api client") {
+    return "VendorHub API client"
+  }
+  if ($joinedLower -eq "vendorhub api core client") {
+    return "VendorHub core API client"
+  }
+  if ($joinedLower -eq "infra bootstrap") {
+    return "Infrastructure bootstrap tooling"
+  }
+  if ($joinedLower -eq "job app assistant") {
+    return "Job application assistant tooling"
+  }
+  if ($joinedLower -eq "freshdesk agent") {
+    return "Freshdesk agent tooling"
+  }
+  if ($joinedLower -eq "ai writing styles") {
+    return "AI writing style reference"
+  }
+  if ($joinedLower -eq "membership reboot tutorial") {
+    return "MembershipReboot tutorial"
+  }
+  if ($joinedLower -eq "monadsharp" -or $joinedLower -eq "monad sharp") {
+    return "MonadSharp library"
+  }
+  if ($joinedLower -eq "rxwrappers" -or $joinedLower -eq "rx wrappers") {
+    return "Reactive wrappers library"
+  }
+  if ($joinedLower -eq "cloud events" -or $joinedLower -eq "cloudevents") {
+    return "CloudEvents examples"
+  }
+
+  return ("{0} repository" -f $joined)
 }
 
 function Get-ClassificationDefaults {
@@ -1356,6 +1546,7 @@ function Build-RepositoryRecord {
     kind = $kind
     status = $status
     description = $Repository.description
+    summary = Get-RepositoryRootSummary -Repository $Repository
     homepage = $Repository.homepage
     html_url = $publicUrl
     public_url = $publicUrl
@@ -1711,6 +1902,7 @@ function Convert-ToRepositoryCatalogRecord {
     latest_commit_date = $RepositoryRecord.latest_commit_date
     name = $RepositoryRecord.name
     private = [bool]$RepositoryRecord.private
+    summary = Get-RepositoryRootSummary -Repository $RepositoryRecord
     topics = @($RepositoryRecord.topics)
     updated_at = $RepositoryRecord.updated_at
     visibility = $RepositoryRecord.visibility
@@ -1736,6 +1928,7 @@ function Convert-ToPublicCandidateRepository {
     kind = $RepositoryRecord.kind
     status = $RepositoryRecord.status
     description = $RepositoryRecord.description
+    summary = Get-RepositoryRootSummary -Repository $RepositoryRecord
     homepage = if ($RepositoryRecord.visibility -eq "public") { $RepositoryRecord.homepage } else { $null }
     html_url = $RepositoryRecord.public_url
     public_url = $RepositoryRecord.public_url
@@ -1784,6 +1977,7 @@ function Convert-ToPdfCandidateRepository {
     kind = $RepositoryRecord.kind
     status = $RepositoryRecord.status
     description = $RepositoryRecord.description
+    summary = Get-RepositoryRootSummary -Repository $RepositoryRecord
     homepage = if ($RepositoryRecord.visibility -eq "public") { $RepositoryRecord.homepage } else { $null }
     html_url = $RepositoryRecord.public_url
     public_url = $RepositoryRecord.public_url

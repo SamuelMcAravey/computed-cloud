@@ -6,6 +6,7 @@ export interface PriorArtRepository {
   private: boolean;
   visibility: "public" | "private" | "internal";
   description: string | null;
+  summary?: string | null;
   html_url: string | null;
   homepage: string | null;
   archived: boolean;
@@ -96,20 +97,135 @@ const buildRepositoryFallbackDescription = (repository: PriorArtRepository): str
     switch (lowered[0]) {
       case "all":
         return "Umbrella repository";
+      case "app":
+        return `${ownerLabel} application`;
+      case "bighornfoundry":
+        return "Bighorn Foundry repository";
       case "docs":
-        return "Documentation repository";
+        return `${ownerLabel} documentation site`;
+      case "iam":
+        return "IAM repository";
       case "internal":
         return "Internal repository";
+      case "marketing":
+        return `${ownerLabel} marketing site`;
+      case "platform":
+        return `${ownerLabel} platform`;
+      case "monadsharp":
+        return "MonadSharp library";
+      case "rxwrappers":
+        return "Reactive wrappers library";
       case "template":
         return "Template repository";
       case "toolbox":
         return "Tooling repository";
+      case "site":
+      case "www":
+        return `${ownerLabel} website`;
       default:
         return `${tokens[0]} repository`;
     }
   }
 
-  if (tokens.join(" ").toLowerCase() === ownerLabel.toLowerCase()) {
+  const joinedLower = tokens.join(" ").toLowerCase();
+  if (joinedLower === "document library file transfer") {
+    return "File transfer component for the document library";
+  }
+  if (joinedLower === "drive storage management sql") {
+    return "SQL storage backend for the drive storage management layer";
+  }
+  if (joinedLower === "drive storage management abstractions") {
+    return "Drive storage management abstractions";
+  }
+  if (joinedLower === "drive storage management azureblob") {
+    return "Azure Blob storage adapter for the drive storage system";
+  }
+  if (joinedLower === "drive storage management amazons3") {
+    return "Amazon S3 storage adapter for the drive storage system";
+  }
+  if (joinedLower === "drive storage management") {
+    return "Drive storage management layer";
+  }
+  if (joinedLower === "integrations cloudflare") {
+    return "Cloudflare integration components";
+  }
+  if (joinedLower === "integrations electronicnotary") {
+    return "Electronic notary integration components";
+  }
+  if (joinedLower === "integrations postmark") {
+    return "Postmark integration components";
+  }
+  if (joinedLower === "integrations private") {
+    return "Private integration components";
+  }
+  if (joinedLower === "integrations public") {
+    return "Public integration components";
+  }
+  if (joinedLower === "integrations workos") {
+    return "WorkOS integration components";
+  }
+  if (joinedLower === "vh all") {
+    return "VendorHub umbrella repository";
+  }
+  if (joinedLower === "vh dashboard") {
+    return "VendorHub dashboard";
+  }
+  if (joinedLower === "vh docs") {
+    return "VendorHub documentation site";
+  }
+  if (joinedLower === "vh document library") {
+    return "VendorHub document library";
+  }
+  if (joinedLower === "vh document library file transfer") {
+    return "File transfer component for the VendorHub document library";
+  }
+  if (joinedLower === "vh forms") {
+    return "VendorHub forms application";
+  }
+  if (joinedLower === "vh marketing") {
+    return "VendorHub marketing site";
+  }
+  if (joinedLower === "approvum www") {
+    return "Approvum website";
+  }
+  if (joinedLower === "request relay" || joinedLower === "requestrelay") {
+    return "Request Relay service";
+  }
+  if (joinedLower === "tradefile www") {
+    return "Tradefile website";
+  }
+  if (joinedLower === "tradefile") {
+    return "Tradefile platform";
+  }
+  if (joinedLower === "infra bootstrap") {
+    return "Infrastructure bootstrap tooling";
+  }
+  if (joinedLower === "job app assistant") {
+    return "Job application assistant tooling";
+  }
+  if (joinedLower === "freshdesk agent") {
+    return "Freshdesk agent tooling";
+  }
+  if (joinedLower === "ai writing styles") {
+    return "AI writing style reference";
+  }
+  if (joinedLower === "membership reboot tutorial") {
+    return "MembershipReboot tutorial";
+  }
+  if (joinedLower === "monad sharp") {
+    return "MonadSharp library";
+  }
+  if (joinedLower === "rx wrappers") {
+    return "Reactive wrappers library";
+  }
+  if (joinedLower === "cloud events" || joinedLower === "cloudevents") {
+    return "CloudEvents examples";
+  }
+  if (joinedLower === "bighornfoundry") {
+    return "Bighorn Foundry repository";
+  }
+
+  if (joinedLower === ownerLabel.toLowerCase()) {
     return `${tokens.join(" ")} repository`;
   }
 
@@ -202,6 +318,11 @@ export const getPriorArtRepositoryLink = (
 ): string | null => (repository.visibility === "public" ? repository.html_url : null);
 
 export const getPriorArtRepositoryDescription = (repository: PriorArtRepository): string | null => {
+  const summary = repository.summary?.trim();
+  if (summary && summary.length > 0) {
+    return summary;
+  }
+
   const description = repository.description?.trim();
   if (description && description.length > 0) {
     return description;
