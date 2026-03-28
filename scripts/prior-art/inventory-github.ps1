@@ -1176,33 +1176,190 @@ function Get-ManifestUnitName {
   }
 }
 
-function Get-RepositoryRootSummary {
+function Get-RepositoryTextValue {
+  param(
+    [AllowNull()][object[]]$Sources,
+    [Parameter(Mandatory = $true)][string[]]$Names
+  )
+
+  foreach ($source in @($Sources)) {
+    if ($null -eq $source) {
+      continue
+    }
+
+    foreach ($name in $Names) {
+      $value = Get-OptionalPropertyValue -Object $source -Name $name
+      if (-not [string]::IsNullOrWhiteSpace([string]$value)) {
+        return [string]$value
+      }
+    }
+  }
+
+  return $null
+}
+
+function Convert-ToCompactText {
+  param([AllowNull()][string]$Text)
+
+  if ([string]::IsNullOrWhiteSpace($Text)) {
+    return $null
+  }
+
+  return (([string]$Text -replace "\s+", " ").Trim())
+}
+
+function Test-RepositorySummaryGeneric {
+  param(
+    [AllowNull()][string]$Title,
+    [AllowNull()][string]$RepositoryName
+  )
+
+  $compactTitle = Convert-ToCompactText -Text $Title
+  if ([string]::IsNullOrWhiteSpace($compactTitle)) {
+    return $true
+  }
+
+  $normalized = $compactTitle.ToLowerInvariant()
+  $normalized = $normalized -replace '^(?:incursa|rixian|rxn|vh|vendorhub|samuelmcaravey|bighorn foundry)\s*[-_.]*\s*', ''
+  $normalized = $normalized -replace '\s+', ' '
+  $normalized = $normalized.Trim()
+
+  if (-not [string]::IsNullOrWhiteSpace([string]$RepositoryName)) {
+    $repoNormalized = ([string]$RepositoryName -replace '[-_.]+', ' ').ToLowerInvariant()
+    if ($normalized -eq $repoNormalized) {
+      return $true
+    }
+  }
+
+  switch ($normalized) {
+    "your library" { return $true }
+    "library" { return $true }
+    "template" { return $true }
+    "templates" { return $true }
+    "repository" { return $true }
+    "project" { return $true }
+    "readme" { return $true }
+    "introduction" { return $true }
+    "overview" { return $true }
+    "welcome to your organization's demo repository" { return $true }
+    "welcome to your organization's demo respository" { return $true }
+    "todo" { return $true }
+    "placeholder" { return $true }
+  }
+
+  $genericNounPattern = '^(?:app|application|artifacts|backup|church|cloudflare|console|cs450|dashboard|docs?|documentation|drive|eventing|examples?|generators?|iam|internal|kit|library|marketing|platform|project|repomanager|site|shell|types?|ui|website|workos|cloudevents)$'
+  if ($normalized -match $genericNounPattern) {
+    return $true
+  }
+
+  $words = @($normalized -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+  if ($words.Count -eq 1 -and $words[0] -match $genericNounPattern.Trim('^', '$')) {
+    return $true
+  }
+
+  if ($words.Count -le 2 -and ($words -join ' ') -match '(app|application|artifacts|backup|church|cloudflare|console|cs450|dashboard|docs|documentation|drive|eventing|examples|generators|iam|internal|kit|library|marketing|platform|project|repomanager|site|shell|types|ui|website|workos|cloudevents)') {
+    return $true
+  }
+
+  return $false
+}
+
+function Get-RepositoryPreviewSummary {
+  param([AllowNull()][string]$Preview)
+
+  $compactPreview = Convert-ToCompactText -Text $Preview
+  if ([string]::IsNullOrWhiteSpace($compactPreview)) {
+    return $null
+  }
+
+  $previewText = $compactPreview -replace '[*_]+', ''
+  $previewText = $previewText -replace '^(?:\!\[[^\]]*\]\([^)]+\)|\[[^\]]+\]\([^)]+\)|<[^>]+>|`[^`]+`)\s*', ''
+  $previewText = Convert-ToCompactText -Text $previewText
+  if ([string]::IsNullOrWhiteSpace($previewText)) {
+    return $null
+  }
+
+  if ($previewText -match '^(?i)(an awesome template for your awesome library|placeholder for project documentation\.?|todo: give a short introduction of your project\.?)$') {
+    return $null
+  }
+
+  if ($previewText -match '^(?i)(this repository is a \*\*template\*\* for public nuget libraries\.?|this repository is a \*\*template\*\* for private bravellian .net libraries\.?)$') {
+    return $null
+  }
+
+  if ($previewText.Length -lt 20) {
+    return $null
+  }
+
+  if ($previewText.Length -gt 180) {
+    return ($previewText.Substring(0, 180).TrimEnd() + "...")
+  }
+
+  return $previewText
+}
+
+function Get-RepositorySummaryOverride {
   param([Parameter(Mandatory = $true)][object]$Repository)
 
-  $description = Get-OptionalPropertyValue -Object $Repository -Name "description"
+  switch ($Repository.full_name) {
+    "SamuelMcAravey/CS450" { return "CS450 machine-learning course project collection with classifier experiments and datasets." }
+    "SamuelMcAravey/church" { return "Church lesson presentation archive with dated Old Testament slide decks and media assets." }
+    "RixianOpenTech/CloudEvents" { return "CloudEvents support library with NewtonsoftJson integration and tests." }
+    "RixianOpenTech/MembershipRebootTutorial" { return "MembershipReboot tutorial and setup notes for IdentityServer-based authentication flows." }
+    "RixianOpenTech/Rixian.CosmosDB.Graph" { return "Cosmos DB graph data-access library prototype." }
+    "incursa/backup" { return "Backup pipeline with API, CLI, ingest, and storage components." }
+    "incursa/cloudflare" { return "Cloudflare integration scaffold." }
+    "incursa/ui-kit" { return "Reusable UI kit for data-heavy business applications." }
+    "incursa/workos" { return "WorkOS integration scaffold." }
+    "rixian/document-library-for-net" { return "VendorHub document library with dependency injection and tests." }
+    "rixian/cloudevents" { return "CloudEvents library with NewtonsoftJson support and test coverage." }
+    "rixian/drive" { return "Drive storage platform with management, adapter, and API projects." }
+    "rixian/rxn-drive" { return "Drive storage platform with management, adapter, and API projects." }
+    "rixian/eventing" { return "Eventing library with abstractions, ASP.NET Core support, and Azure Event Hubs / Notepad sinks." }
+    "rixian/iam" { return "Identity and access management client library and request-validation helpers." }
+    "rixian/rxn-iam" { return "Identity and access management API suite with IdentityServer and test clients." }
+    "rixian/examples" { return "Example projects and sample applications for the document library." }
+    "rixian/extensions-aspnetcore" { return "ASP.NET Core extension library with demos, Application Insights, Data Protection, and Dapr support." }
+    "rixian/internal" { return "Internal umbrella repository consolidating legacy drive, IAM, eventing, dashboard, documents, and forms code." }
+    "rixian/vh-marketing" { return "VendorHub marketing site and web-marketing project." }
+    "SamuelMcAravey/CS450-Team-Project" { return "CS450 team project workspace for machine-learning experiments and source code." }
+    default { return $null }
+  }
+}
+
+function Get-RepositoryRootSummary {
+  param(
+    [Parameter(Mandatory = $true)][object]$Repository,
+    [AllowNull()][object]$LocalEvidence
+  )
+
+  $override = Get-RepositorySummaryOverride -Repository $Repository
+  if (-not [string]::IsNullOrWhiteSpace([string]$override)) {
+    return [string]$override
+  }
+
+  $description = Get-RepositoryTextValue -Sources @($Repository, $LocalEvidence) -Names @("description")
   if (-not [string]::IsNullOrWhiteSpace([string]$description)) {
     return [string]$description
   }
 
-  $readmeTitle = Get-OptionalPropertyValue -Object $Repository -Name "readmeTitle"
+  $readmeTitle = Get-RepositoryTextValue -Sources @($LocalEvidence, $Repository) -Names @("readmeTitle", "readme_title")
+  $readmePreview = Get-RepositoryTextValue -Sources @($LocalEvidence, $Repository) -Names @("readmePreview", "readme_preview")
+
   if (-not [string]::IsNullOrWhiteSpace([string]$readmeTitle)) {
-    $compactTitle = ([string]$readmeTitle -replace "\s+", " ").Trim()
-    if (
-      $compactTitle.Length -gt 32 -or
-      $compactTitle -notmatch '^(?i)(forms?|drive|dashboard|docs?|documentation|marketing|platform|site|website|toolbox|internal|examples?|extensions?|library|client|app|repository|project|church|samuelmcaravey)$'
-    ) {
+    $compactTitle = Convert-ToCompactText -Text $readmeTitle
+    $previewSummary = Get-RepositoryPreviewSummary -Preview $readmePreview
+    if (-not [string]::IsNullOrWhiteSpace([string]$previewSummary) -and (Test-RepositorySummaryGeneric -Title $compactTitle -RepositoryName $Repository.name -or $compactTitle.Length -le 32)) {
+      return [string]$previewSummary
+    }
+    if (-not (Test-RepositorySummaryGeneric -Title $compactTitle -RepositoryName $Repository.name)) {
       return $compactTitle
     }
   }
 
-  $readmePreview = Get-OptionalPropertyValue -Object $Repository -Name "readmePreview"
-  if (-not [string]::IsNullOrWhiteSpace([string]$readmePreview)) {
-    $compactPreview = ([string]$readmePreview -replace "\s+", " ").Trim()
-    if ($compactPreview.Length -gt 140) {
-      return ($compactPreview.Substring(0, 140).TrimEnd() + "...")
-    }
-
-    return $compactPreview
+  $previewSummary = Get-RepositoryPreviewSummary -Preview $readmePreview
+  if (-not [string]::IsNullOrWhiteSpace([string]$previewSummary)) {
+    return [string]$previewSummary
   }
 
   $name = $Repository.name
@@ -1546,7 +1703,7 @@ function Build-RepositoryRecord {
     kind = $kind
     status = $status
     description = $Repository.description
-    summary = Get-RepositoryRootSummary -Repository $Repository
+    summary = Get-RepositoryRootSummary -Repository $Repository -LocalEvidence $LocalEvidence
     homepage = $Repository.homepage
     html_url = $publicUrl
     public_url = $publicUrl
@@ -1902,7 +2059,7 @@ function Convert-ToRepositoryCatalogRecord {
     latest_commit_date = $RepositoryRecord.latest_commit_date
     name = $RepositoryRecord.name
     private = [bool]$RepositoryRecord.private
-    summary = Get-RepositoryRootSummary -Repository $RepositoryRecord
+    summary = if (-not [string]::IsNullOrWhiteSpace([string]$RepositoryRecord.summary)) { [string]$RepositoryRecord.summary } else { Get-RepositoryRootSummary -Repository $RepositoryRecord }
     topics = @($RepositoryRecord.topics)
     updated_at = $RepositoryRecord.updated_at
     visibility = $RepositoryRecord.visibility
@@ -1928,7 +2085,7 @@ function Convert-ToPublicCandidateRepository {
     kind = $RepositoryRecord.kind
     status = $RepositoryRecord.status
     description = $RepositoryRecord.description
-    summary = Get-RepositoryRootSummary -Repository $RepositoryRecord
+    summary = if (-not [string]::IsNullOrWhiteSpace([string]$RepositoryRecord.summary)) { [string]$RepositoryRecord.summary } else { Get-RepositoryRootSummary -Repository $RepositoryRecord }
     homepage = if ($RepositoryRecord.visibility -eq "public") { $RepositoryRecord.homepage } else { $null }
     html_url = $RepositoryRecord.public_url
     public_url = $RepositoryRecord.public_url

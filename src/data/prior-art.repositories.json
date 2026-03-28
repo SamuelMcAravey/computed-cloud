@@ -13,7 +13,7 @@
       "latest_commit_date": "2026-03-26T12:41:53-06:00",
       "name": "bighornfoundry",
       "private": true,
-      "summary": "Bighorn Foundry repository",
+      "summary": "AstroFlow - Logistics & Manufacturing Website Template",
       "topics": [],
       "updated_at": "2026-01-11T09:18:29Z",
       "visibility": "private"
@@ -29,7 +29,7 @@
       "latest_commit_date": "2020-04-10T14:34:06-06:00",
       "name": "vh-all",
       "private": true,
-      "summary": "Umbrella repository",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:14Z",
       "visibility": "private"
@@ -45,7 +45,7 @@
       "latest_commit_date": "2021-11-29T00:18:08-07:00",
       "name": "templates",
       "private": true,
-      "summary": "templates repository",
+      "summary": "Templates for new projects.",
       "topics": [],
       "updated_at": "2021-11-29T07:18:13Z",
       "visibility": "private"
@@ -61,7 +61,7 @@
       "latest_commit_date": "2021-04-29T21:18:01Z",
       "name": "rxn-iam",
       "private": true,
-      "summary": "IAM repository",
+      "summary": "Identity and access management API suite with IdentityServer and test clients.",
       "topics": [],
       "updated_at": "2020-05-21T14:12:17Z",
       "visibility": "private"
@@ -109,7 +109,7 @@
       "latest_commit_date": "2021-04-29T21:18:02Z",
       "name": "rxn-drive-storage-management",
       "private": true,
-      "summary": "Drive storage management layer",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-03-21T18:54:48Z",
       "visibility": "private"
@@ -125,7 +125,7 @@
       "latest_commit_date": "2021-04-29T21:18:03Z",
       "name": "rxn-drive-storage-azureblob",
       "private": true,
-      "summary": "Azure Blob storage adapter for the drive storage system",
+      "summary": "Rixian Drive Storage for Azure Blobs",
       "topics": [],
       "updated_at": "2020-04-01T15:32:19Z",
       "visibility": "private"
@@ -141,7 +141,7 @@
       "latest_commit_date": "2021-04-28T22:16:23Z",
       "name": "rxn-drive-storage-amazons3",
       "private": true,
-      "summary": "Amazon S3 storage adapter for the drive storage system",
+      "summary": "Rixian Drive Storage for Amazon S3",
       "topics": [],
       "updated_at": "2020-03-26T19:08:39Z",
       "visibility": "private"
@@ -157,7 +157,7 @@
       "latest_commit_date": "2021-04-29T21:18:04Z",
       "name": "rxn-drive",
       "private": true,
-      "summary": "drive repository",
+      "summary": "Drive storage platform with management, adapter, and API projects.",
       "topics": [],
       "updated_at": "2020-05-23T19:10:13Z",
       "visibility": "private"
@@ -173,7 +173,7 @@
       "latest_commit_date": "2021-04-29T21:18:10Z",
       "name": "vh-dashboard",
       "private": true,
-      "summary": "VendorHub dashboard",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:12Z",
       "visibility": "private"
@@ -189,7 +189,7 @@
       "latest_commit_date": "2021-12-30T21:53:43-07:00",
       "name": "msbuild-tailwindcss",
       "private": false,
-      "summary": "msbuild tailwindcss repository",
+      "summary": "](https://nuget.org/packages/Rixian.MSBuild.TailwindCSS)",
       "topics": [],
       "updated_at": "2023-02-16T14:08:57Z",
       "visibility": "public"
@@ -205,7 +205,7 @@
       "latest_commit_date": "2022-12-08T09:07:29Z",
       "name": "iam",
       "private": false,
-      "summary": "IAM repository",
+      "summary": "Identity and access management client library and request-validation helpers.",
       "topics": [],
       "updated_at": "2020-05-26T22:18:12Z",
       "visibility": "public"
@@ -221,7 +221,7 @@
       "latest_commit_date": "2019-10-22T19:56:34-06:00",
       "name": "gotenberg-client-for-net",
       "private": false,
-      "summary": "gotenberg client for net repository",
+      "summary": "gotenberg-client-for-net",
       "topics": [],
       "updated_at": "2019-10-23T01:56:37Z",
       "visibility": "public"
@@ -237,7 +237,7 @@
       "latest_commit_date": "2022-12-08T09:06:40Z",
       "name": "forms",
       "private": false,
-      "summary": "Forms application",
+      "summary": "VendorHub Forms Client",
       "topics": [],
       "updated_at": "2020-09-14T21:08:14Z",
       "visibility": "public"
@@ -269,7 +269,7 @@
       "latest_commit_date": "2022-12-08T02:07:17Z",
       "name": "extensions-http",
       "private": false,
-      "summary": "HTTP extension helpers",
+      "summary": "Rixian HttpClient Extensions",
       "topics": [],
       "updated_at": "2020-04-24T18:44:25Z",
       "visibility": "public"
@@ -285,7 +285,7 @@
       "latest_commit_date": "2023-03-01T03:57:33Z",
       "name": "extensions-errors",
       "private": false,
-      "summary": "Error handling extensions",
+      "summary": "Errors and Results",
       "topics": [],
       "updated_at": "2021-10-20T14:24:01Z",
       "visibility": "public"
@@ -317,7 +317,7 @@
       "latest_commit_date": "2023-01-01T14:01:51Z",
       "name": "extensions-caching",
       "private": false,
-      "summary": "Caching extensions",
+      "summary": "Rixian Caching Extensions",
       "topics": [],
       "updated_at": "2021-10-15T17:47:34Z",
       "visibility": "public"
@@ -333,7 +333,7 @@
       "latest_commit_date": "2023-01-01T04:01:59Z",
       "name": "extensions-aspnetcore",
       "private": false,
-      "summary": "extensions aspnetcore repository",
+      "summary": "ASP.NET Core extension library with demos, Application Insights, Data Protection, and Dapr support.",
       "topics": [],
       "updated_at": "2024-03-06T04:51:39Z",
       "visibility": "public"
@@ -349,7 +349,7 @@
       "latest_commit_date": "2021-05-22T00:13:33-06:00",
       "name": "internal",
       "private": true,
-      "summary": "Internal repository",
+      "summary": "Internal umbrella repository consolidating legacy drive, IAM, eventing, dashboard, documents, and forms code.",
       "topics": [],
       "updated_at": "2021-05-22T04:48:53Z",
       "visibility": "private"
@@ -365,7 +365,7 @@
       "latest_commit_date": "2021-02-10T00:37:06-07:00",
       "name": "vh-docs",
       "private": false,
-      "summary": "VendorHub documentation site",
+      "summary": "](https://dev.azure.com/rixian/VendorHub/build/latest?definitionId=73&branchName=master)",
       "topics": [],
       "updated_at": "2021-02-10T07:37:13Z",
       "visibility": "public"
@@ -381,7 +381,7 @@
       "latest_commit_date": "2021-04-29T21:18:04Z",
       "name": "vh-document-library",
       "private": true,
-      "summary": "Document library",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:08Z",
       "visibility": "private"
@@ -397,7 +397,7 @@
       "latest_commit_date": "2021-04-28T22:16:21Z",
       "name": "vh-document-library-file-transfer",
       "private": true,
-      "summary": "File transfer component for the document library",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-03-22T00:34:54Z",
       "visibility": "private"
@@ -413,7 +413,7 @@
       "latest_commit_date": "2018-04-23T13:19:29-06:00",
       "name": "vendorhub-api-client",
       "private": false,
-      "summary": "VendorHub API client",
+      "summary": "vendorhub-api-client",
       "topics": [],
       "updated_at": "2018-04-23T19:20:27Z",
       "visibility": "public"
@@ -429,7 +429,7 @@
       "latest_commit_date": "2026-01-02T13:58:31-07:00",
       "name": "toolbox",
       "private": true,
-      "summary": "Tooling repository",
+      "summary": "Personal, neutral \"Switzerland\" toolkit for use across machines and business contexts without cross-contaminating secrets or tenant-specific files.",
       "topics": [],
       "updated_at": "2026-01-02T16:53:47Z",
       "visibility": "private"
@@ -445,7 +445,7 @@
       "latest_commit_date": "2026-01-15T19:48:20-07:00",
       "name": "samuelmcaravey",
       "private": false,
-      "summary": "samuelmcaravey repository",
+      "summary": "Samuel McAravey",
       "topics": [],
       "updated_at": "2026-01-16T02:48:24Z",
       "visibility": "public"
@@ -461,7 +461,7 @@
       "latest_commit_date": "2026-03-25T08:46:44-06:00",
       "name": "job-app-assistant",
       "private": true,
-      "summary": "Job application assistant tooling",
+      "summary": "Job Application Assistant",
       "topics": [],
       "updated_at": "2026-03-25T14:46:53Z",
       "visibility": "private"
@@ -477,7 +477,7 @@
       "latest_commit_date": "2026-01-19T14:25:34-07:00",
       "name": "infra-bootstrap",
       "private": false,
-      "summary": "Infrastructure bootstrap tooling",
+      "summary": "infra-bootstrap",
       "topics": [],
       "updated_at": "2026-01-19T21:25:43Z",
       "visibility": "public"
@@ -493,7 +493,7 @@
       "latest_commit_date": "2026-02-06T11:43:48-07:00",
       "name": "freshdesk-agent",
       "private": true,
-      "summary": "Freshdesk agent tooling",
+      "summary": ".NET 10 solution for ingesting Freshdesk tickets, sanitizing them into clinical summaries, and preparing Git worktrees for follow-up fixes.",
       "topics": [],
       "updated_at": "2026-02-06T18:44:21Z",
       "visibility": "private"
@@ -509,7 +509,7 @@
       "latest_commit_date": "2015-07-11T16:22:37-06:00",
       "name": "CS450-Team-Project",
       "private": false,
-      "summary": "CS450 Team Project repository",
+      "summary": "CS450 team project workspace for machine-learning experiments and source code.",
       "topics": [],
       "updated_at": "2015-05-13T19:15:20Z",
       "visibility": "public"
@@ -525,7 +525,7 @@
       "latest_commit_date": "2015-06-06T19:27:28-06:00",
       "name": "CS450",
       "private": false,
-      "summary": "CS450 repository",
+      "summary": "CS450 machine-learning course project collection with classifier experiments and datasets.",
       "topics": [],
       "updated_at": "2015-05-07T19:22:57Z",
       "visibility": "public"
@@ -534,16 +534,16 @@
       "archived": false,
       "created_at": "2026-01-14T23:35:45Z",
       "description": "Personal blog",
-      "earliest_commit_date": "2026-03-27T18:26:30-06:00",
+      "earliest_commit_date": "2026-03-27T19:20:54-06:00",
       "full_name": "SamuelMcAravey/computed-cloud",
       "homepage": null,
       "html_url": "https://github.com/SamuelMcAravey/computed-cloud",
-      "latest_commit_date": "2026-03-27T18:26:30-06:00",
+      "latest_commit_date": "2026-03-27T19:20:54-06:00",
       "name": "computed-cloud",
       "private": false,
-      "summary": "computed cloud repository",
+      "summary": "Public source for [computedcloud.com](https://computedcloud.com): Samuel McAravey's personal site, technical blog, portfolio, and a small set of browser-based engineering tools.",
       "topics": [],
-      "updated_at": "2026-03-28T00:26:38Z",
+      "updated_at": "2026-03-28T01:21:09Z",
       "visibility": "public"
     },
     {
@@ -557,7 +557,7 @@
       "latest_commit_date": "2026-01-17T15:44:58-07:00",
       "name": "church",
       "private": true,
-      "summary": "church repository",
+      "summary": "Church lesson presentation archive with dated Old Testament slide decks and media assets.",
       "topics": [],
       "updated_at": "2026-01-17T22:45:07Z",
       "visibility": "private"
@@ -573,7 +573,7 @@
       "latest_commit_date": "2026-03-18T11:55:20-06:00",
       "name": "ai-writing-styles",
       "private": true,
-      "summary": "AI writing style reference",
+      "summary": "Email Corpus ETL",
       "topics": [],
       "updated_at": "2026-03-18T17:55:38Z",
       "visibility": "private"
@@ -589,7 +589,7 @@
       "latest_commit_date": "2017-08-03T17:00:51-06:00",
       "name": "VS-Git-DefaultRepo",
       "private": false,
-      "summary": "VS Git DefaultRepo repository",
+      "summary": "VS-Git-DefaultRepo",
       "topics": [],
       "updated_at": "2017-08-03T22:57:19Z",
       "visibility": "public"
@@ -605,7 +605,7 @@
       "latest_commit_date": "2019-05-16T05:54:42-06:00",
       "name": "serilog-enricher-datadog",
       "private": false,
-      "summary": "serilog enricher datadog repository",
+      "summary": "serilog-enricher-datadog",
       "topics": [],
       "updated_at": "2019-05-16T11:54:44Z",
       "visibility": "public"
@@ -621,7 +621,7 @@
       "latest_commit_date": "2022-11-28T22:56:11-07:00",
       "name": "RxWrappers",
       "private": false,
-      "summary": "Reactive wrappers library",
+      "summary": "This project contains code that wraps common libraries with an Reactive Extension (Rx) facade. The intention is for these wrappers to be used in the MonadSharp language (name tenat...",
       "topics": [],
       "updated_at": "2022-11-29T05:56:22Z",
       "visibility": "public"
@@ -637,7 +637,7 @@
       "latest_commit_date": "2017-08-03T15:55:25-07:00",
       "name": "Rixian.CosmosDB.Graph",
       "private": false,
-      "summary": "CosmosDB Graph repository",
+      "summary": "Cosmos DB graph data-access library prototype.",
       "topics": [],
       "updated_at": "2017-08-03T22:55:24Z",
       "visibility": "public"
@@ -653,7 +653,7 @@
       "latest_commit_date": "2016-02-06T17:13:49-07:00",
       "name": "MonadSharp",
       "private": false,
-      "summary": "MonadSharp library",
+      "summary": "MonadSharp is an experimental language based on the Reactive Extension (Rx). The basis for the language comes from the ideas outline in this paper: http://rixianopentech.github.io/...",
       "topics": [],
       "updated_at": "2016-02-06T23:01:37Z",
       "visibility": "public"
@@ -669,7 +669,7 @@
       "latest_commit_date": "2015-09-18T10:47:49-06:00",
       "name": "MembershipRebootTutorial",
       "private": false,
-      "summary": "MembershipRebootTutorial repository",
+      "summary": "MembershipReboot tutorial and setup notes for IdentityServer-based authentication flows.",
       "topics": [],
       "updated_at": "2015-06-18T16:45:38Z",
       "visibility": "public"
@@ -685,7 +685,7 @@
       "latest_commit_date": "2022-12-08T01:55:44Z",
       "name": "CloudEvents",
       "private": false,
-      "summary": "CloudEvents repository",
+      "summary": "CloudEvents support library with NewtonsoftJson integration and tests.",
       "topics": [],
       "updated_at": "2019-07-21T01:42:38Z",
       "visibility": "public"
@@ -701,7 +701,7 @@
       "latest_commit_date": "2021-02-24T13:18:47-07:00",
       "name": "CO105-IntroductionToContainersAndOrchestration",
       "private": false,
-      "summary": "CO105 IntroductionToContainersAndOrchestration repository",
+      "summary": "CO105-IntroductionToContainersAndOrchestration",
       "topics": [],
       "updated_at": "2021-02-24T20:18:56Z",
       "visibility": "public"
@@ -717,7 +717,7 @@
       "latest_commit_date": "2021-02-10T00:49:21-07:00",
       "name": "vh-marketing",
       "private": true,
-      "summary": "Marketing site repository",
+      "summary": "VendorHub marketing site and web-marketing project.",
       "topics": [],
       "updated_at": "2021-02-10T07:49:29Z",
       "visibility": "private"
@@ -733,7 +733,7 @@
       "latest_commit_date": "2021-04-29T21:18:06Z",
       "name": "vh-forms",
       "private": true,
-      "summary": "VendorHub forms application",
+      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
       "topics": [],
       "updated_at": "2020-11-14T07:31:23Z",
       "visibility": "private"
@@ -749,7 +749,7 @@
       "latest_commit_date": "2026-02-20T23:47:01-07:00",
       "name": "extensions",
       "private": false,
-      "summary": "extensions repository",
+      "summary": "- Active development happens only in this repository: `rixian/extensions`. - Legacy split repositories are migration sources only and will be archived as read-only. - Package IDs r...",
       "topics": [],
       "updated_at": "2026-02-21T06:47:13Z",
       "visibility": "public"
@@ -765,7 +765,7 @@
       "latest_commit_date": "2020-05-30T23:10:32-06:00",
       "name": "examples",
       "private": false,
-      "summary": "Examples repository",
+      "summary": "Example projects and sample applications for the document library.",
       "topics": [],
       "updated_at": "2020-05-31T05:10:41Z",
       "visibility": "public"
@@ -781,7 +781,7 @@
       "latest_commit_date": "2020-07-01T19:18:10-06:00",
       "name": "eventing",
       "private": false,
-      "summary": "eventing repository",
+      "summary": "Eventing library with abstractions, ASP.NET Core support, and Azure Event Hubs / Notepad sinks.",
       "topics": [],
       "updated_at": "2020-06-30T05:30:40Z",
       "visibility": "public"
@@ -797,7 +797,7 @@
       "latest_commit_date": "2022-12-08T10:11:19Z",
       "name": "drive-storage-abstractions",
       "private": false,
-      "summary": "drive storage abstractions repository",
+      "summary": "Storage abstractions for Rixian Drive.",
       "topics": [],
       "updated_at": "2020-04-23T19:27:02Z",
       "visibility": "public"
@@ -813,7 +813,7 @@
       "latest_commit_date": "2026-02-25T10:52:00-07:00",
       "name": "integrations-postmark",
       "private": true,
-      "summary": "Postmark integration components",
+      "summary": "Incursa Email",
       "topics": [],
       "updated_at": "2026-02-25T17:54:48Z",
       "visibility": "private"
@@ -829,7 +829,7 @@
       "latest_commit_date": "2026-02-25T10:55:00-07:00",
       "name": "integrations-electronicnotary",
       "private": true,
-      "summary": "Electronic notary integration components",
+      "summary": "Incursa Integrations: Electronic Notary",
       "topics": [],
       "updated_at": "2026-02-25T17:55:09Z",
       "visibility": "private"
@@ -845,7 +845,7 @@
       "latest_commit_date": "2026-02-26T03:04:40Z",
       "name": "integrations-cloudflare",
       "private": true,
-      "summary": "Cloudflare integration components",
+      "summary": "Shared Cloudflare integration library for Incursa applications.",
       "topics": [],
       "updated_at": "2026-02-25T05:37:48Z",
       "visibility": "private"
@@ -861,7 +861,7 @@
       "latest_commit_date": "2026-01-25T15:55:20-07:00",
       "name": "infra-monitor",
       "private": false,
-      "summary": "infra monitor repository",
+      "summary": "Bravellian Infra Monitor Metrics",
       "topics": [],
       "updated_at": "2026-02-18T23:13:32Z",
       "visibility": "public"
@@ -877,7 +877,7 @@
       "latest_commit_date": "2026-03-08T20:08:36-06:00",
       "name": "incursa-labs",
       "private": true,
-      "summary": "labs repository",
+      "summary": "Incursa Labs Monorepo",
       "topics": [],
       "updated_at": "2026-03-09T02:08:52Z",
       "visibility": "internal"
@@ -893,7 +893,7 @@
       "latest_commit_date": "2026-03-27T13:55:33-06:00",
       "name": "govern",
       "private": true,
-      "summary": "govern repository",
+      "summary": "Approvum Host Platform (Govern compatibility namespaces)",
       "topics": [],
       "updated_at": "2026-03-27T19:55:43Z",
       "visibility": "internal"
@@ -909,7 +909,7 @@
       "latest_commit_date": "2026-03-08T18:45:55-06:00",
       "name": "generators",
       "private": false,
-      "summary": "generators repository",
+      "summary": "This repository now contains two generation approaches:",
       "topics": [],
       "updated_at": "2026-03-09T00:46:04Z",
       "visibility": "public"
@@ -925,7 +925,7 @@
       "latest_commit_date": "2026-02-18T19:52:20-07:00",
       "name": "demo-repository",
       "private": true,
-      "summary": "demo repository repository",
+      "summary": "This code repository (or \"repo\") is designed to demonstrate the best GitHub has to offer with the least amount of noise.",
       "topics": [],
       "updated_at": "2026-02-19T02:52:23Z",
       "visibility": "private"
@@ -941,7 +941,7 @@
       "latest_commit_date": "2026-03-02T03:06:43Z",
       "name": "console",
       "private": true,
-      "summary": "console repository",
+      "summary": "is a baseline ASP.NET Core Razor Pages repository configured with Incursa C# standards, UIShell, CI quality reporting, and Workbench workflows.",
       "topics": [],
       "updated_at": "2026-02-28T03:32:59Z",
       "visibility": "internal"
@@ -957,7 +957,7 @@
       "latest_commit_date": "2026-03-01T03:04:14Z",
       "name": "conduit",
       "private": true,
-      "summary": "conduit repository",
+      "summary": "Production-oriented TCP egress gateway with an HTTP control plane.",
       "topics": [],
       "updated_at": "2026-02-28T05:25:53Z",
       "visibility": "private"
@@ -973,7 +973,7 @@
       "latest_commit_date": "2026-03-25T14:17:47-06:00",
       "name": "codex-dotnet",
       "private": false,
-      "summary": "codex dotnet repository",
+      "summary": "Incursa.OpenAI.Codex",
       "topics": [],
       "updated_at": "2026-03-27T18:16:41Z",
       "visibility": "public"
@@ -989,7 +989,7 @@
       "latest_commit_date": "2026-02-05T14:29:12-07:00",
       "name": "cloudflare",
       "private": true,
-      "summary": "cloudflare repository",
+      "summary": "Cloudflare integration scaffold.",
       "topics": [],
       "updated_at": "2026-02-05T21:29:16Z",
       "visibility": "private"
@@ -1005,7 +1005,7 @@
       "latest_commit_date": "2026-03-27T13:55:29Z",
       "name": "chatkit-dotnet",
       "private": false,
-      "summary": "chatkit dotnet repository",
+      "summary": "](https://github.com/incursa/chatkit-dotnet/actions/workflows/ci.yml) [![Quality](https://github.com/incursa/chatkit-dotnet/actions/workflows/library-fast-quality.yml/badge.svg)](h...",
       "topics": [],
       "updated_at": "2026-03-27T18:16:30Z",
       "visibility": "public"
@@ -1021,7 +1021,7 @@
       "latest_commit_date": "2026-02-08T12:13:34-07:00",
       "name": "backup",
       "private": true,
-      "summary": "backup repository",
+      "summary": "Backup pipeline with API, CLI, ingest, and storage components.",
       "topics": [],
       "updated_at": "2026-02-08T19:13:47Z",
       "visibility": "private"
@@ -1037,7 +1037,7 @@
       "latest_commit_date": "2026-02-27T20:08:56-07:00",
       "name": "artifacts",
       "private": true,
-      "summary": "artifacts repository",
+      "summary": "This repository contains the initial skeleton for the artifact platform.",
       "topics": [],
       "updated_at": "2026-02-28T03:09:08Z",
       "visibility": "private"
@@ -1053,7 +1053,7 @@
       "latest_commit_date": "2026-01-26T18:48:50-07:00",
       "name": "apt-repo-catalog",
       "private": false,
-      "summary": "apt repo catalog repository",
+      "summary": "APT Repository Catalog",
       "topics": [],
       "updated_at": "2026-02-18T23:11:30Z",
       "visibility": "public"
@@ -1069,7 +1069,7 @@
       "latest_commit_date": "2026-03-27T12:35:49-06:00",
       "name": "approvum-www",
       "private": true,
-      "summary": "Approvum website",
+      "summary": "Approval control for governed workflows.",
       "topics": [],
       "updated_at": "2026-03-27T18:36:48Z",
       "visibility": "internal"
@@ -1085,7 +1085,7 @@
       "latest_commit_date": "2026-03-27T04:03:42Z",
       "name": "app",
       "private": true,
-      "summary": "Application repository",
+      "summary": "A modular ASP.NET Core application for invoice processing, approvals, and business management.",
       "topics": [],
       "updated_at": "2026-03-23T20:29:41Z",
       "visibility": "private"
@@ -1101,7 +1101,7 @@
       "latest_commit_date": "2026-02-07T00:12:55-07:00",
       "name": "template-public-nuget",
       "private": false,
-      "summary": "template public nuget repository",
+      "summary": "Bravellian Public .NET Library Template",
       "topics": [],
       "updated_at": "2026-02-07T07:13:02Z",
       "visibility": "public"
@@ -1117,7 +1117,7 @@
       "latest_commit_date": "2026-02-10T04:56:33Z",
       "name": "template-internal-nuget",
       "private": false,
-      "summary": "template internal nuget repository",
+      "summary": "Bravellian .NET Library Template",
       "topics": [],
       "updated_at": "2026-02-09T17:26:44Z",
       "visibility": "public"
@@ -1133,7 +1133,7 @@
       "latest_commit_date": "2026-01-07T15:35:40-07:00",
       "name": "incursa",
       "private": true,
-      "summary": "incursa repository",
+      "summary": "AstroFlow - Logistics & Manufacturing Website Template",
       "topics": [],
       "updated_at": "2026-01-07T22:36:11Z",
       "visibility": "private"
@@ -1149,7 +1149,7 @@
       "latest_commit_date": "2026-03-25T08:39:28-06:00",
       "name": "integrations-private",
       "private": true,
-      "summary": "Private integration components",
+      "summary": "contains proprietary or operationally private provider-specific integrations that build on the provider-neutral packages in the sibling `platform` repository.",
       "topics": [],
       "updated_at": "2026-03-25T14:39:56Z",
       "visibility": "internal"
@@ -1165,7 +1165,7 @@
       "latest_commit_date": "2018-04-23T13:31:24-06:00",
       "name": "vendorhub-api-core-client",
       "private": false,
-      "summary": "VendorHub core API client",
+      "summary": "vendorhub-api-core-client",
       "topics": [],
       "updated_at": "2018-04-23T19:32:20Z",
       "visibility": "public"
@@ -1181,7 +1181,7 @@
       "latest_commit_date": "2026-03-27T13:57:37Z",
       "name": "integrations-public",
       "private": false,
-      "summary": "Public integration components",
+      "summary": "contains public provider-specific implementations that build on the provider-neutral packages in the sibling `platform` repository.",
       "topics": [],
       "updated_at": "2026-03-26T01:59:59Z",
       "visibility": "public"
@@ -1197,7 +1197,7 @@
       "latest_commit_date": "2026-03-27T13:56:02Z",
       "name": "jinja-dotnet",
       "private": true,
-      "summary": "jinja dotnet repository",
+      "summary": "Incursa.Jinja",
       "topics": [],
       "updated_at": "2026-03-25T19:40:17Z",
       "visibility": "internal"
@@ -1213,7 +1213,7 @@
       "latest_commit_date": "2020-04-10T14:10:52-06:00",
       "name": "drive-common",
       "private": false,
-      "summary": "drive common repository",
+      "summary": "Supporting code for Rixian Drive components",
       "topics": [],
       "updated_at": "2020-04-10T20:10:56Z",
       "visibility": "public"
@@ -1229,7 +1229,7 @@
       "latest_commit_date": "2020-05-26T23:19:57-06:00",
       "name": "drive",
       "private": false,
-      "summary": "drive repository",
+      "summary": "Drive storage platform with management, adapter, and API projects.",
       "topics": [],
       "updated_at": "2020-05-27T05:19:38Z",
       "visibility": "public"
@@ -1245,7 +1245,7 @@
       "latest_commit_date": "2021-10-28T01:30:17-06:00",
       "name": "document-library-for-net",
       "private": false,
-      "summary": "document library for net repository",
+      "summary": "VendorHub document library with dependency injection and tests.",
       "topics": [],
       "updated_at": "2020-09-15T15:55:49Z",
       "visibility": "public"
@@ -1261,7 +1261,7 @@
       "latest_commit_date": "2022-01-24T12:41:37-07:00",
       "name": "cloudevents",
       "private": false,
-      "summary": "cloudevents repository",
+      "summary": "CloudEvents library with NewtonsoftJson support and test coverage.",
       "topics": [],
       "updated_at": "2022-01-24T17:29:50Z",
       "visibility": "public"
@@ -1277,7 +1277,7 @@
       "latest_commit_date": "2026-02-19T20:12:39-07:00",
       "name": "app",
       "private": true,
-      "summary": "Application repository",
+      "summary": "RequestRelay",
       "topics": [],
       "updated_at": "2026-02-20T03:14:18Z",
       "visibility": "private"
@@ -1293,7 +1293,7 @@
       "latest_commit_date": "2026-01-04T21:44:50-07:00",
       "name": "template-base",
       "private": true,
-      "summary": "template base repository",
+      "summary": "AstroFlow - Logistics & Manufacturing Website Template",
       "topics": [],
       "updated_at": "2026-01-05T04:45:00Z",
       "visibility": "private"
@@ -1309,7 +1309,7 @@
       "latest_commit_date": "2026-01-03T20:26:53-07:00",
       "name": "incursa",
       "private": true,
-      "summary": "incursa repository",
+      "summary": "AstroFlow - Logistics & Manufacturing Website Template",
       "topics": [],
       "updated_at": "2026-01-04T03:27:04Z",
       "visibility": "private"
@@ -1325,7 +1325,7 @@
       "latest_commit_date": "2026-02-05T14:30:20-07:00",
       "name": "workos",
       "private": true,
-      "summary": "workos repository",
+      "summary": "WorkOS integration scaffold.",
       "topics": [],
       "updated_at": "2026-02-05T21:30:23Z",
       "visibility": "private"
@@ -1341,7 +1341,7 @@
       "latest_commit_date": "2026-03-25T08:28:53-06:00",
       "name": "workbench",
       "private": false,
-      "summary": "workbench repository",
+      "summary": "Workbench is a .NET CLI for repo-native specifications, architecture, work items, verification, validation, and generated navigation that all live in source control. The canonical...",
       "topics": [
         "adr",
         "automation",
@@ -1366,7 +1366,7 @@
       "latest_commit_date": "2026-02-26T16:11:22-07:00",
       "name": "ui-shell",
       "private": true,
-      "summary": "ui shell repository",
+      "summary": "Shared Razor UI shell and design foundation for Incursa web applications.",
       "topics": [],
       "updated_at": "2026-02-26T23:11:36Z",
       "visibility": "private"
@@ -1382,7 +1382,7 @@
       "latest_commit_date": "2026-03-25T19:45:55-06:00",
       "name": "ui-kit",
       "private": false,
-      "summary": "ui kit repository",
+      "summary": "Reusable UI kit for data-heavy business applications.",
       "topics": [],
       "updated_at": "2026-03-26T01:46:02Z",
       "visibility": "public"
@@ -1398,7 +1398,7 @@
       "latest_commit_date": "2026-03-08T03:03:49Z",
       "name": "types",
       "private": false,
-      "summary": "types repository",
+      "summary": "A set of reusable value objects and helper abstractions that can be shared across Incursa services and libraries. The package focuses on predictable formatting/parsing, determinist...",
       "topics": [],
       "updated_at": "2026-03-04T03:41:48Z",
       "visibility": "public"
@@ -1414,7 +1414,7 @@
       "latest_commit_date": "2026-03-25T08:43:47-06:00",
       "name": "tradefile-www",
       "private": true,
-      "summary": "Tradefile website",
+      "summary": "Trade File",
       "topics": [],
       "updated_at": "2026-03-25T14:43:56Z",
       "visibility": "internal"
@@ -1430,7 +1430,7 @@
       "latest_commit_date": "2026-03-25T08:45:19-06:00",
       "name": "tradefile",
       "private": true,
-      "summary": "tradefile repository",
+      "summary": "Incursa Tradefile Bronze",
       "topics": [],
       "updated_at": "2026-03-25T14:45:41Z",
       "visibility": "internal"
@@ -1446,7 +1446,7 @@
       "latest_commit_date": "2026-03-25T08:46:50-06:00",
       "name": "spec-trace",
       "private": false,
-      "summary": "spec trace repository",
+      "summary": "Repository-Native Requirements and Traceability Standard",
       "topics": [],
       "updated_at": "2026-03-25T14:46:57Z",
       "visibility": "public"
@@ -1462,7 +1462,7 @@
       "latest_commit_date": "2026-03-25T08:41:51-06:00",
       "name": "requestrelay",
       "private": true,
-      "summary": "requestrelay repository",
+      "summary": "RequestRelay is a .NET 10 ASP.NET Core webhook relay service with a small admin API and test suite. It is intentionally narrow so the standalone repo can stabilize before broader p...",
       "topics": [],
       "updated_at": "2026-03-25T14:42:21Z",
       "visibility": "private"
@@ -1478,7 +1478,7 @@
       "latest_commit_date": "2026-03-25T09:55:00-06:00",
       "name": "repomanager",
       "private": true,
-      "summary": "repomanager repository",
+      "summary": "Incursa Repo Manager",
       "topics": [],
       "updated_at": "2026-03-25T15:55:25Z",
       "visibility": "private"
@@ -1494,7 +1494,7 @@
       "latest_commit_date": "2026-03-25T08:40:43-06:00",
       "name": "platform",
       "private": false,
-      "summary": "Platform repository",
+      "summary": "contains the provider-neutral foundation for the Incursa package family: abstractions, shared models, orchestration, hosting adapters, and tooling that public or private integratio...",
       "topics": [],
       "updated_at": "2026-03-25T14:41:38Z",
       "visibility": "public"
@@ -1510,7 +1510,7 @@
       "latest_commit_date": "2026-03-24T22:42:40-06:00",
       "name": "openai-agents-dotnet",
       "private": false,
-      "summary": "openai agents dotnet repository",
+      "summary": "Incursa.OpenAI.Agents",
       "topics": [],
       "updated_at": "2026-03-27T18:16:19Z",
       "visibility": "public"
@@ -1526,7 +1526,7 @@
       "latest_commit_date": "2026-02-20T16:05:16-07:00",
       "name": "nuget-manager",
       "private": true,
-      "summary": "nuget manager repository",
+      "summary": "is a .NET CLI for bulk delisting package versions from NuGet.org.",
       "topics": [],
       "updated_at": "2026-02-20T23:05:22Z",
       "visibility": "private"
@@ -1542,7 +1542,7 @@
       "latest_commit_date": "2026-02-09T07:48:19-07:00",
       "name": "nuget-feed-gateway",
       "private": true,
-      "summary": "nuget feed gateway repository",
+      "summary": "nuget-feed-gateway",
       "topics": [],
       "updated_at": "2026-02-09T14:48:34Z",
       "visibility": "private"
@@ -1558,7 +1558,7 @@
       "latest_commit_date": "2026-02-24T22:32:54-07:00",
       "name": "integrations-workos",
       "private": true,
-      "summary": "WorkOS integration components",
+      "summary": "Shared WorkOS integration platform for Incursa services. It provides reusable contracts, runtime auth, management key lifecycle APIs, webhook verification/processing, and pluggable...",
       "topics": [],
       "updated_at": "2026-02-25T05:33:07Z",
       "visibility": "private"
@@ -1574,7 +1574,7 @@
       "latest_commit_date": "2019-09-30T07:53:35-06:00",
       "name": "vendorhub-sdk-for-net",
       "private": false,
-      "summary": "vendorhub sdk for net repository",
+      "summary": "vendorhub-sdk-for-net",
       "topics": [],
       "updated_at": "2019-09-30T13:53:38Z",
       "visibility": "public"
