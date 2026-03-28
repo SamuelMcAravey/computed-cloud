@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-03-27",
+  "updated": "2026-03-28",
   "entries": [
     {
       "id": "payewaive",
@@ -370,6 +370,467 @@
       "publicLinks": [],
       "evidencePublic": [],
       "relatedIds": ["legacy-prior-venture-umbrella", "websites-domains-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "monadsharp",
+      "title": "MonadSharp",
+      "slug": "monadsharp",
+      "parentId": "legacy-prior-venture-umbrella",
+      "kind": "prototype",
+      "status": "historical",
+      "visibility": "public",
+      "ownerLabel": "Samuel McAravey",
+      "started": "2015-02",
+      "startedPrecision": "month",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Experimental language and compiler work based on the Reactive Extension (Rx), with syntax, testbed, WPF, and wrapper-generation projects.",
+      "notesPublic": null,
+      "tags": ["compiler", "language", "rx", "research"],
+      "domains": [],
+      "publicLinks": [
+        {
+          "label": "GitHub repository",
+          "url": "https://github.com/RixianOpenTech/MonadSharp",
+          "type": "repository"
+        },
+        {
+          "label": "Project site",
+          "url": "http://rixianopentech.github.io/MonadSharp/",
+          "type": "website"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["computation-at-speed-of-monads", "legacy-prior-venture-umbrella"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "computation-at-speed-of-monads",
+      "title": "Computation at the Speed of Monads",
+      "slug": "computation-at-speed-of-monads",
+      "parentId": "monadsharp",
+      "kind": "other",
+      "status": "historical",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Research presentation and paper materials tied to MonadSharp and the computation-at-the-speed-of-monads idea behind it.",
+      "notesPublic": null,
+      "tags": ["research", "presentation", "compiler", "monads"],
+      "domains": [],
+      "publicLinks": [],
+      "evidencePublic": [],
+      "relatedIds": ["monadsharp"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "chip-exchange",
+      "title": "ChipExchange",
+      "slug": "chip-exchange",
+      "parentId": "legacy-prior-venture-umbrella",
+      "kind": "internal-system",
+      "status": "historical",
+      "visibility": "private",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Payment rails work centered on Brazilian boleto, CNAB, and bank integration artifacts.",
+      "notesPublic": null,
+      "tags": ["payments", "settlement", "brazil", "boleto", "cnab"],
+      "domains": [],
+      "publicLinks": [],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "timecard",
+      "title": "Timecard",
+      "slug": "timecard",
+      "parentId": "legacy-prior-venture-umbrella",
+      "kind": "app",
+      "status": "archived",
+      "visibility": "public",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Defunct time tracking and reporting app with web, data, and view-model layers that was later open sourced.",
+      "notesPublic": null,
+      "tags": ["timekeeping", "reports", "silverlight", "web"],
+      "domains": [],
+      "publicLinks": [],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "vendorhub-vendorlink",
+      "title": "VendorHub / VendorLink",
+      "slug": "vendorhub-vendorlink",
+      "parentId": "legacy-prior-venture-umbrella",
+      "kind": "product",
+      "status": "historical",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Centralized vendor-management platform and supporting site/CMS archive, including Umbraco assets, design files, and data extracts.",
+      "notesPublic": null,
+      "tags": ["vendor-management", "cms", "workflow", "design"],
+      "domains": [],
+      "publicLinks": [],
+      "evidencePublic": [],
+      "relatedIds": ["rixian-vendor-hub", "websites-domains-umbrella"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "pearl-bakery-erp",
+      "title": "Pearl Bakery ERP",
+      "slug": "pearl-bakery-erp",
+      "parentId": "legacy-prior-venture-umbrella",
+      "kind": "internal-system",
+      "status": "historical",
+      "visibility": "private",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Bakery ERP and operations system organized around accounting, orders, packing, routing, labels, and wholesale workflows.",
+      "notesPublic": null,
+      "tags": ["erp", "bakery", "operations", "wholesale"],
+      "domains": [],
+      "publicLinks": [],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Legacy and prior venture work"
+    },
+    {
+      "id": "incursa-com",
+      "title": "incursa.com",
+      "slug": "incursa-com",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public site for Incursa's platform, integrations, and delivery work.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "platform", "brand"],
+      "domains": ["incursa.com"],
+      "publicLinks": [
+        {
+          "label": "incursa.com",
+          "url": "https://incursa.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["incursa-platform-family"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "approvum-app",
+      "title": "Approvum / Approvem",
+      "slug": "approvum-app",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "App and marketing domains for the Approvum product surface and launch materials.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "app", "marketing"],
+      "domains": ["approvum.app", "approvem.app"],
+      "publicLinks": [
+        {
+          "label": "approvum.app",
+          "url": "https://approvum.app",
+          "type": "domain"
+        },
+        {
+          "label": "approvem.app",
+          "url": "https://approvem.app",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["approvum-marketing-app-work", "legacy-prior-venture-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "requestrelay-app",
+      "title": "requestrelay.app",
+      "slug": "requestrelay-app",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey",
+      "started": "2026-01",
+      "startedPrecision": "month",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public site for Request Relay, the request-routing and webhook product family.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "webhooks", "relay"],
+      "domains": ["requestrelay.app"],
+      "publicLinks": [
+        {
+          "label": "requestrelay.app",
+          "url": "https://requestrelay.app",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["request-relay", "incursa-platform-family"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "rixian-net",
+      "title": "rixian.net",
+      "slug": "rixian-net",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "historical",
+      "visibility": "public",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "unknown",
+      "publicSummary": "Legacy Rixian domain retained as part of the brand chronology; the site is offline.",
+      "notesPublic": "Offline domain.",
+      "tags": ["website", "domain", "legacy", "offline"],
+      "domains": ["rixian.net"],
+      "publicLinks": [
+        {
+          "label": "rixian.net",
+          "url": "https://rixian.net",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "bighornfoundry-com",
+      "title": "bighornfoundry.com",
+      "slug": "bighornfoundry-com",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": "2026-01",
+      "startedPrecision": "month",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public-facing site for Bighorn Foundry, built from a logistics and manufacturing Astro template.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "manufacturing", "logistics"],
+      "domains": ["bighornfoundry.com"],
+      "publicLinks": [
+        {
+          "label": "bighornfoundry.com",
+          "url": "https://bighornfoundry.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": [],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "computedcloud-com",
+      "title": "computedcloud.com",
+      "slug": "computedcloud-com",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "public",
+      "ownerLabel": "Samuel McAravey",
+      "started": "2026-01",
+      "startedPrecision": "month",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public source for computedcloud.com: Samuel McAravey's personal site, technical blog, portfolio, and a small set of browser-based engineering tools.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "blog", "portfolio"],
+      "domains": ["computedcloud.com"],
+      "publicLinks": [
+        {
+          "label": "computedcloud.com",
+          "url": "https://computedcloud.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["public-repositories-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "vendorhub-net",
+      "title": "vendorhub.net",
+      "slug": "vendorhub-net",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public site and brand surface for the VendorHub vendor-management platform and related messaging.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "vendor-management", "brand"],
+      "domains": ["vendorhub.net"],
+      "publicLinks": [
+        {
+          "label": "vendorhub.net",
+          "url": "https://vendorhub.net",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["rixian-vendor-hub"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "bravellian-bravillian",
+      "title": "Bravellian / Bravillian",
+      "slug": "bravellian-bravillian",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public brand domains for Bravellian's template and NuGet/tooling work.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "branding", "nuget"],
+      "domains": ["bravellian.com", "bravillian.com"],
+      "publicLinks": [
+        {
+          "label": "bravellian.com",
+          "url": "https://bravellian.com",
+          "type": "domain"
+        },
+        {
+          "label": "bravillian.com",
+          "url": "https://bravillian.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["public-repositories-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "mycorreio-com",
+      "title": "mycorreio.com",
+      "slug": "mycorreio-com",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public domain and brand property for MyCorreio, a mail-related product or service surface.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "mail", "brand"],
+      "domains": ["mycorreio.com"],
+      "publicLinks": [
+        {
+          "label": "mycorreio.com",
+          "url": "https://mycorreio.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "rixianmedical-com",
+      "title": "rixianmedical.com",
+      "slug": "rixianmedical-com",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public domain and brand property for Rixian Medical work.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "medical", "brand"],
+      "domains": ["rixianmedical.com"],
+      "publicLinks": [
+        {
+          "label": "rixianmedical.com",
+          "url": "https://rixianmedical.com",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
+      "group": "Websites and domains"
+    },
+    {
+      "id": "medprep-pro",
+      "title": "medprep.pro",
+      "slug": "medprep-pro",
+      "parentId": "websites-domains-umbrella",
+      "kind": "website",
+      "status": "active",
+      "visibility": "mixed",
+      "ownerLabel": "Samuel McAravey and collaborators",
+      "started": null,
+      "startedPrecision": "unknown",
+      "ended": null,
+      "endedPrecision": "ongoing",
+      "publicSummary": "Public domain and brand property for MedPrep, a medical-prep or training-related project.",
+      "notesPublic": null,
+      "tags": ["website", "domain", "medical", "brand"],
+      "domains": ["medprep.pro"],
+      "publicLinks": [
+        {
+          "label": "medprep.pro",
+          "url": "https://medprep.pro",
+          "type": "domain"
+        }
+      ],
+      "evidencePublic": [],
+      "relatedIds": ["legacy-prior-venture-umbrella"],
       "group": "Websites and domains"
     }
   ]
