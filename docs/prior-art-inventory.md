@@ -87,6 +87,10 @@ The new master inventory script is expected at:
 
 - `scripts/prior-art/inventory-github.ps1`
 
+The local repository sync helper is:
+
+- `scripts/prior-art/Sync-PriorArtRepositories.ps1`
+
 Typical run:
 
 ```powershell
@@ -118,9 +122,17 @@ The script should:
 
 - query `gh` for identity, org memberships, and accessible repos
 - scan local roots for git repositories and project units
+- fall back to the standard `C:\src\<owner>\<repo>` checkout layout when local evidence matching misses a cloned repo
 - build the private master inventory
 - emit the public candidate view and PDF candidate view
 - write a review summary instead of failing hard on partial discovery
+
+The sync helper should:
+
+- clone missing repositories into `C:\src\<owner>\<repo>`
+- fetch existing clones so local commit history stays current
+- use HTTPS clone URLs to avoid SSH helper issues on Windows
+- skip Git LFS smudging so the local checkout pass stays practical
 
 ## Manual supplement
 
@@ -145,6 +157,7 @@ Safe to commit:
 - `src/data/prior-art.inventory.json`
 - `src/data/prior-art.repositories.json`
 - `scripts/prior-art/inventory-github.ps1`
+- `scripts/prior-art/Sync-PriorArtRepositories.ps1`
 - `scripts/prior-art/manual-supplement.example.json`
 - docs that explain the workflow
 

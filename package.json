@@ -14,6 +14,7 @@
     "note:dry-run": "node scripts/new-note.mjs --dry-run",
     "prior-art:evidence": "pwsh -File scripts/Export-PriorArtEvidence.ps1",
     "prior-art:inventory": "pwsh -File scripts/prior-art/inventory-github.ps1",
+    "prior-art:sync-repos": "pwsh -File scripts/prior-art/Sync-PriorArtRepositories.ps1",
     "astro": "astro"
   },
   "dependencies": {

@@ -57,6 +57,12 @@ function Resolve-FullPath {
   throw "Path not found: $Path"
 }
 
+function Test-IsGitRepository {
+  param([Parameter(Mandatory = $true)][string]$Path)
+
+  return Test-Path -LiteralPath (Join-Path $Path ".git")
+}
+
 function Ensure-ParentDirectory {
   param([Parameter(Mandatory = $true)][string]$Path)
 
@@ -594,6 +600,39 @@ function Resolve-OwnerLabel {
   }
 
   return $OwnerLogin
+}
+
+function Resolve-RepositoryCheckoutPath {
+  param(
+    [AllowNull()][string[]]$Roots,
+    [Parameter(Mandatory = $true)][object]$Repository,
+    [AllowNull()][object]$LocalEvidence
+  )
+
+  $localPath = Get-OptionalPropertyValue -Object $LocalEvidence -Name "localPath"
+  if (-not [string]::IsNullOrWhiteSpace([string]$localPath) -and (Test-Path -LiteralPath $localPath)) {
+    return [string]$localPath
+  }
+
+  foreach ($root in @($Roots)) {
+    if ([string]::IsNullOrWhiteSpace([string]$root)) {
+      continue
+    }
+
+    $candidates = @(
+      (Join-Path (Join-Path $root $Repository.owner) $Repository.name),
+      (Join-Path $root $Repository.full_name),
+      (Join-Path $root $Repository.name)
+    ) | Select-Object -Unique
+
+    foreach ($candidate in $candidates) {
+      if (Test-IsGitRepository -Path $candidate) {
+        return $candidate
+      }
+    }
+  }
+
+  return $null
 }
 
 function Get-OwnershipRelationship {
@@ -1229,15 +1268,17 @@ function Build-RepositoryRecord {
     [Parameter(Mandatory = $true)][object]$Repository,
     [AllowNull()][object]$LocalEvidence,
     [AllowNull()][object]$Identity,
-    [AllowNull()][object[]]$Organizations
+    [AllowNull()][object[]]$Organizations,
+    [AllowNull()][string[]]$Roots
   )
 
   $kind = Get-RepositoryKind -Repository $Repository -ReadmeTitle (Get-OptionalPropertyValue -Object $LocalEvidence -Name "readmeTitle") -ReadmePreview (Get-OptionalPropertyValue -Object $LocalEvidence -Name "readmePreview")
-  $classification = Get-ClassificationDefaults -Visibility $Repository.visibility -Kind $kind -HasLocalEvidence:($null -ne $LocalEvidence)
+  $localPath = Resolve-RepositoryCheckoutPath -Roots $Roots -Repository $Repository -LocalEvidence $LocalEvidence
+  $hasLocalEvidence = (-not [string]::IsNullOrWhiteSpace([string]$localPath))
+  $classification = Get-ClassificationDefaults -Visibility $Repository.visibility -Kind $kind -HasLocalEvidence:$hasLocalEvidence
   $ownerLabel = Resolve-OwnerLabel -OwnerLogin $Repository.owner -Organizations $Organizations -Identity $Identity
   $relationship = Get-OwnershipRelationship -Repository $Repository -Identity $Identity -Organizations $Organizations
   $status = Get-RepositoryStatus -Repository $Repository -LocalEvidence $LocalEvidence
-  $localPath = Get-OptionalPropertyValue -Object $LocalEvidence -Name "localPath"
   $localName = Get-OptionalPropertyValue -Object $LocalEvidence -Name "localName"
   $defaultBranchResolved = Get-OptionalPropertyValue -Object $LocalEvidence -Name "defaultBranch"
   $currentBranch = Get-OptionalPropertyValue -Object $LocalEvidence -Name "currentBranch"
@@ -1252,7 +1293,27 @@ function Build-RepositoryRecord {
   $readmePreview = Get-OptionalPropertyValue -Object $LocalEvidence -Name "readmePreview"
   $commitCount = $null
 
-  if ($LocalEvidence -and -not [string]::IsNullOrWhiteSpace([string]$localPath) -and (Test-Path -LiteralPath $localPath)) {
+  if (-not [string]::IsNullOrWhiteSpace([string]$localPath) -and (Test-Path -LiteralPath $localPath)) {
+    if ([string]::IsNullOrWhiteSpace([string]$earliestCommitDate)) {
+      $firstCommit = Get-FirstCommitForPath -RepositoryPath $localPath -RelativePath "."
+      if ($firstCommit) {
+        $earliestCommitDate = $firstCommit.date
+        if ([string]::IsNullOrWhiteSpace([string]$earliestCommitHash)) {
+          $earliestCommitHash = $firstCommit.hash
+        }
+      }
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$latestCommitDate)) {
+      $latestCommit = Get-LatestCommitForPath -RepositoryPath $localPath -RelativePath "."
+      if ($latestCommit) {
+        $latestCommitDate = $latestCommit.date
+        if ([string]::IsNullOrWhiteSpace([string]$latestCommitHash)) {
+          $latestCommitHash = $latestCommit.hash
+        }
+      }
+    }
+
     $commitCount = Get-CommitCountForPath -RepositoryPath $localPath -RelativePath "."
   }
 
@@ -1270,7 +1331,7 @@ function Build-RepositoryRecord {
   }
 
   $notes = New-Object System.Collections.Generic.List[string]
-  if (-not $LocalEvidence) {
+  if ([string]::IsNullOrWhiteSpace([string]$localPath)) {
     $notes.Add("No local checkout matched this repository under the configured roots.")
   }
 
@@ -1308,7 +1369,7 @@ function Build-RepositoryRecord {
     license = $Repository.license
     local_path = $localPath
     local_name = $localName
-    has_local_evidence = [bool]$LocalEvidence
+    has_local_evidence = $hasLocalEvidence
     default_branch_resolved = $defaultBranchResolved
     current_branch = $currentBranch
     head_commit = $headCommit
@@ -1329,7 +1390,7 @@ function Build-RepositoryRecord {
     sensitivity_level = [string]$classification.sensitivity_level
     confidence_label = [string]$classification.confidence_label
     manual_review_required = [bool]$classification.manual_review_required
-    rationale = if ($LocalEvidence) {
+    rationale = if ($hasLocalEvidence) {
       "Repository metadata matched local checkout evidence."
     }
     else {
@@ -2084,7 +2145,7 @@ $inspectedRepositorySlugs = New-Object System.Collections.Generic.HashSet[string
 foreach ($repository in $githubRepositories) {
   $slug = [string]$repository.full_name
   $localEvidence = $localEvidenceIndexes.bySlug[$slug.ToLowerInvariant()]
-  $record = Build-RepositoryRecord -Repository $repository -LocalEvidence $localEvidence -Identity $githubIdentity -Organizations $githubOrganizations
+  $record = Build-RepositoryRecord -Repository $repository -LocalEvidence $localEvidence -Identity $githubIdentity -Organizations $githubOrganizations -Roots $resolvedRoots
   $repositoryRecords.Add($record)
   $repositoryBySlug[$slug.ToLowerInvariant()] = $record
   $repositoryById[$record.id] = $record

@@ -200,9 +200,9 @@ function Get-GitRepositoryPaths {
     return @($paths.Keys) | Sort-Object
   }
 
-  $gitDirectories = Get-ChildItem -LiteralPath $Root -Directory -Force -Recurse -Filter ".git" -ErrorAction SilentlyContinue |
+  $gitDirectories = Get-ChildItem -LiteralPath $Root -Directory -Force -Recurse -ErrorAction SilentlyContinue |
     Where-Object {
-      $_.FullName -notmatch "[\\/](node_modules|dist|\.astro|\.wrangler)[\\/]"
+      $_.Name -eq ".git" -and $_.FullName -notmatch "[\\/](node_modules|dist|\.astro|\.wrangler)[\\/]"
     }
 
   foreach ($gitDirectory in $gitDirectories) {
