@@ -33,7 +33,6 @@ export interface PriorArtRepositoryVisibilityCounts {
   total: number;
   public: number;
   private: number;
-  internal: number;
 }
 
 const repositoryDocument = repositoryCatalogJson as PriorArtRepositoryCatalogDocument;
@@ -245,18 +244,21 @@ const getRepositoryGroupId = (owner: string): string =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+const normalizeRepositoryVisibility = (
+  visibility: PriorArtRepository["visibility"],
+): "public" | "private" => (visibility === "public" ? "public" : "private");
+
 export const getPriorArtRepositoryVisibilityCounts = (): PriorArtRepositoryVisibilityCounts =>
   priorArtRepositories.reduce<PriorArtRepositoryVisibilityCounts>(
     (counts, repository) => {
       counts.total += 1;
-      counts[repository.visibility] += 1;
+      counts[normalizeRepositoryVisibility(repository.visibility)] += 1;
       return counts;
     },
     {
       total: 0,
       public: 0,
       private: 0,
-      internal: 0,
     },
   );
 
@@ -299,14 +301,12 @@ export const getPriorArtRepositoryDateRange = (repository: PriorArtRepository): 
 };
 
 export const getPriorArtRepositoryVisibilityLabel = (repository: PriorArtRepository): string =>
-  labelize(repository.visibility);
+  labelize(normalizeRepositoryVisibility(repository.visibility));
 
 export const getPriorArtRepositoryVisibilityClass = (repository: PriorArtRepository): string => {
-  switch (repository.visibility) {
+  switch (normalizeRepositoryVisibility(repository.visibility)) {
     case "public":
       return "border-primary/20 bg-primary/10 text-primary";
-    case "internal":
-      return "border-accent/20 bg-accent/10 text-accent";
     case "private":
     default:
       return "border-border bg-bg/70 text-muted";

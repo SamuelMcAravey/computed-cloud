@@ -472,13 +472,12 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
         Repository names are included because they establish chronology and
         provenance. Forks are excluded. The date line shows the first known commit
         when available, with GitHub creation or last observed activity as a
-        fallback. The catalog lists public, private, and internal repositories at
-        a high level, but it does not show source code, file contents, or local
-        paths.
+        fallback. The catalog lists public and private repositories at a high
+        level, but it does not show source code, file contents, or local paths.
       </p>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <div class={mutedCardClass}>
         <p class="text-xs uppercase tracking-[0.2em] text-muted">Total repos</p>
         <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.total}</p>
@@ -490,10 +489,6 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
       <div class={mutedCardClass}>
         <p class="text-xs uppercase tracking-[0.2em] text-muted">Private</p>
         <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.private}</p>
-      </div>
-      <div class={mutedCardClass}>
-        <p class="text-xs uppercase tracking-[0.2em] text-muted">Internal</p>
-        <p class="mt-3 font-heading text-3xl font-semibold text-text">{repositoryVisibilityCounts.internal}</p>
       </div>
       <div class={mutedCardClass}>
         <p class="text-xs uppercase tracking-[0.2em] text-muted">Owners</p>
@@ -563,7 +558,7 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
                   return (
                     <tr
                       class="border-t border-border/70 align-top hover:bg-bg/40"
-                      data-kind={repository.visibility}
+                      data-kind={repository.visibility === "public" ? "public" : "private"}
                       data-status={repository.archived ? "archived" : "active"}
                       data-searchable={[
                         repository.full_name,
