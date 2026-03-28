@@ -29,7 +29,7 @@
       "latest_commit_date": "2020-04-10T14:34:06-06:00",
       "name": "vh-all",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "VendorHub umbrella repository and repository-management scripts for cloning, building, restoring, and watching the solution set.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:14Z",
       "visibility": "private"
@@ -109,7 +109,7 @@
       "latest_commit_date": "2021-04-29T21:18:02Z",
       "name": "rxn-drive-storage-management",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "Drive storage management library and test project.",
       "topics": [],
       "updated_at": "2020-03-21T18:54:48Z",
       "visibility": "private"
@@ -173,7 +173,7 @@
       "latest_commit_date": "2021-04-29T21:18:10Z",
       "name": "vh-dashboard",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "VendorHub dashboard web app with generated API clients and supporting identity, Redis, and data-protection wiring.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:12Z",
       "visibility": "private"
@@ -189,7 +189,7 @@
       "latest_commit_date": "2021-12-30T21:53:43-07:00",
       "name": "msbuild-tailwindcss",
       "private": false,
-      "summary": "](https://nuget.org/packages/Rixian.MSBuild.TailwindCSS)",
+      "summary": "MSBuild package that adds Tailwind CSS build targets to .NET projects.",
       "topics": [],
       "updated_at": "2023-02-16T14:08:57Z",
       "visibility": "public"
@@ -221,7 +221,7 @@
       "latest_commit_date": "2019-10-22T19:56:34-06:00",
       "name": "gotenberg-client-for-net",
       "private": false,
-      "summary": "gotenberg-client-for-net",
+      "summary": "Gotenberg .NET client library for the document-conversion service.",
       "topics": [],
       "updated_at": "2019-10-23T01:56:37Z",
       "visibility": "public"
@@ -365,7 +365,7 @@
       "latest_commit_date": "2021-02-10T00:37:06-07:00",
       "name": "vh-docs",
       "private": false,
-      "summary": "](https://dev.azure.com/rixian/VendorHub/build/latest?definitionId=73&branchName=master)",
+      "summary": "Open-source VendorHub documentation site and contribution workflow.",
       "topics": [],
       "updated_at": "2021-02-10T07:37:13Z",
       "visibility": "public"
@@ -381,7 +381,7 @@
       "latest_commit_date": "2021-04-29T21:18:04Z",
       "name": "vh-document-library",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "VendorHub document platform with API, client, dependency-injection, and database projects.",
       "topics": [],
       "updated_at": "2020-04-10T20:10:08Z",
       "visibility": "private"
@@ -397,7 +397,7 @@
       "latest_commit_date": "2021-04-28T22:16:21Z",
       "name": "vh-document-library-file-transfer",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "VendorHub document-library file-transfer worker for moving documents over SFTP.",
       "topics": [],
       "updated_at": "2020-03-22T00:34:54Z",
       "visibility": "private"
@@ -413,7 +413,7 @@
       "latest_commit_date": "2018-04-23T13:19:29-06:00",
       "name": "vendorhub-api-client",
       "private": false,
-      "summary": "vendorhub-api-client",
+      "summary": "VendorHub API client package repository.",
       "topics": [],
       "updated_at": "2018-04-23T19:20:27Z",
       "visibility": "public"
@@ -477,7 +477,7 @@
       "latest_commit_date": "2026-01-19T14:25:34-07:00",
       "name": "infra-bootstrap",
       "private": false,
-      "summary": "infra-bootstrap",
+      "summary": "Infrastructure bootstrap scripts and cloud-init profiles for Debian/Ubuntu host provisioning.",
       "topics": [],
       "updated_at": "2026-01-19T21:25:43Z",
       "visibility": "public"
@@ -589,7 +589,7 @@
       "latest_commit_date": "2017-08-03T17:00:51-06:00",
       "name": "VS-Git-DefaultRepo",
       "private": false,
-      "summary": "VS-Git-DefaultRepo",
+      "summary": "Default repository template for a single Visual Studio solution.",
       "topics": [],
       "updated_at": "2017-08-03T22:57:19Z",
       "visibility": "public"
@@ -605,7 +605,7 @@
       "latest_commit_date": "2019-05-16T05:54:42-06:00",
       "name": "serilog-enricher-datadog",
       "private": false,
-      "summary": "serilog-enricher-datadog",
+      "summary": "Serilog enricher that adds Datadog-oriented context and metadata.",
       "topics": [],
       "updated_at": "2019-05-16T11:54:44Z",
       "visibility": "public"
@@ -701,7 +701,7 @@
       "latest_commit_date": "2021-02-24T13:18:47-07:00",
       "name": "CO105-IntroductionToContainersAndOrchestration",
       "private": false,
-      "summary": "CO105-IntroductionToContainersAndOrchestration",
+      "summary": "Training repo for a containers and orchestration lab with setup and run scripts.",
       "topics": [],
       "updated_at": "2021-02-24T20:18:56Z",
       "visibility": "public"
@@ -733,7 +733,7 @@
       "latest_commit_date": "2021-04-29T21:18:06Z",
       "name": "vh-forms",
       "private": true,
-      "summary": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+      "summary": "VendorHub forms backend with API and database projects for form definitions, submissions, and webhooks.",
       "topics": [],
       "updated_at": "2020-11-14T07:31:23Z",
       "visibility": "private"
@@ -1005,7 +1005,7 @@
       "latest_commit_date": "2026-03-27T13:55:29Z",
       "name": "chatkit-dotnet",
       "private": false,
-      "summary": "](https://github.com/incursa/chatkit-dotnet/actions/workflows/ci.yml) [![Quality](https://github.com/incursa/chatkit-dotnet/actions/workflows/library-fast-quality.yml/badge.svg)](h...",
+      "summary": "Incursa.OpenAI.ChatKit translation for .NET 10 with ASP.NET Core hosting and sample app.",
       "topics": [],
       "updated_at": "2026-03-27T18:16:30Z",
       "visibility": "public"
@@ -1165,7 +1165,7 @@
       "latest_commit_date": "2018-04-23T13:31:24-06:00",
       "name": "vendorhub-api-core-client",
       "private": false,
-      "summary": "vendorhub-api-core-client",
+      "summary": "VendorHub core API client package repository.",
       "topics": [],
       "updated_at": "2018-04-23T19:32:20Z",
       "visibility": "public"
@@ -1197,7 +1197,7 @@
       "latest_commit_date": "2026-03-27T13:56:02Z",
       "name": "jinja-dotnet",
       "private": true,
-      "summary": "Incursa.Jinja",
+      "summary": "Minimal .NET solution for the Incursa.Jinja library, tests, and Spec Trace artifacts.",
       "topics": [],
       "updated_at": "2026-03-25T19:40:17Z",
       "visibility": "internal"
@@ -1542,7 +1542,7 @@
       "latest_commit_date": "2026-02-09T07:48:19-07:00",
       "name": "nuget-feed-gateway",
       "private": true,
-      "summary": "nuget-feed-gateway",
+      "summary": "Cloudflare Worker for serving a private NuGet v3 feed from R2 with Basic Auth and Workers KV.",
       "topics": [],
       "updated_at": "2026-02-09T14:48:34Z",
       "visibility": "private"
@@ -1574,7 +1574,7 @@
       "latest_commit_date": "2019-09-30T07:53:35-06:00",
       "name": "vendorhub-sdk-for-net",
       "private": false,
-      "summary": "vendorhub-sdk-for-net",
+      "summary": "VendorHub SDK for .NET.",
       "topics": [],
       "updated_at": "2019-09-30T13:53:38Z",
       "visibility": "public"
