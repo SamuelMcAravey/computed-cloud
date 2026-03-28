@@ -1,8 +1,8 @@
 # Prior Art Inventory Pipeline
 
-This repo has a hidden but published prior-art page at `/prior-art`.
+This repo has a hidden but published prior-art page at `/prior-art/`.
 
-The page is public. The source data pipeline is split so private evidence stays local.
+The page is public. The data pipeline is split so private evidence stays local.
 
 ## Data surfaces
 
@@ -83,7 +83,7 @@ Do not put these in the public site files:
 
 ## How to run the inventory script
 
-The new master inventory script is expected at:
+The master inventory script lives at:
 
 - `scripts/prior-art/inventory-github.ps1`
 
