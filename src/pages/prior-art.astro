@@ -285,7 +285,14 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
           </div>
 
           <div class="cc-scrollbox overflow-x-auto">
-            <table class="min-w-[920px] w-full border-collapse text-left text-sm">
+            <table class="min-w-[920px] w-full table-fixed border-collapse text-left text-sm">
+              <colgroup>
+                <col class="w-[54%]" />
+                <col class="w-[10%]" />
+                <col class="w-[10%]" />
+                <col class="w-[10%]" />
+                <col class="w-[16%]" />
+              </colgroup>
               <thead class="bg-bg/70 text-xs uppercase tracking-[0.18em] text-muted">
                 <tr>
                   <th class="px-5 py-3 font-medium">Item</th>
@@ -523,7 +530,11 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
           </div>
 
           <div class="cc-scrollbox overflow-x-auto">
-            <table class="min-w-[760px] w-full border-collapse text-left text-sm">
+            <table class="min-w-[760px] w-full table-fixed border-collapse text-left text-sm">
+              <colgroup>
+                <col class="w-[80%]" />
+                <col class="w-[20%]" />
+              </colgroup>
               <thead class="bg-bg/70 text-xs uppercase tracking-[0.18em] text-muted">
                 <tr>
                   <th class="px-5 py-3 font-medium">Repository</th>
@@ -555,7 +566,7 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
                       data-status={repository.archived ? "archived" : "active"}
                       data-searchable={[
                         repository.full_name,
-                        repository.description ?? "",
+                        description ?? "",
                         dateRange,
                         repository.created_at,
                         repository.updated_at,
@@ -567,13 +578,13 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
                         .toLowerCase()}
                     >
                       <td class="px-5 py-4">
-                        <div class="space-y-2">
-                          <div class="flex flex-wrap items-center gap-2">
-                            {nameElement}
-                            {repository.archived && (
-                              <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
-                                archived
-                              </span>
+                          <div class="space-y-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                              {nameElement}
+                              {repository.archived && (
+                                <span class="inline-flex items-center rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                                  archived
+                                </span>
                             )}
                           </div>
                           <p class="text-[11px] tracking-[0.16em] text-muted">

@@ -241,11 +241,11 @@ export const formatPriorArtDate = (
   precision: PriorArtDatePrecision | PriorArtEndPrecision,
 ): string => {
   if (precision === "ongoing") {
-    return "present";
+    return "ongoing";
   }
 
   if (!value || precision === "unknown") {
-    return "unknown";
+    return "undated";
   }
 
   if (precision === "year") {
@@ -264,7 +264,7 @@ export const formatPriorArtDate = (
 
   const parsed = parseDateValue(value, precision);
   if (!parsed) {
-    return "unknown";
+    return "undated";
   }
 
   if (precision === "month") {
@@ -278,19 +278,19 @@ export const formatPriorArtRange = (entry: PriorArtInventoryEntry): string => {
   const started = formatPriorArtDate(entry.started, entry.startedPrecision);
   const ended = formatPriorArtDate(entry.ended, entry.endedPrecision);
 
-  if (started === "unknown" && ended === "unknown") {
-    return "unknown";
+  if (started === "undated" && ended === "undated") {
+    return "undated";
   }
 
   if (ended === "ongoing") {
-    return started === "unknown" ? "unknown - present" : `${started} - present`;
+    return started === "undated" ? "undated - ongoing" : `${started} - ongoing`;
   }
 
-  if (ended === "unknown") {
+  if (ended === "undated") {
     return started;
   }
 
-  if (started === "unknown") {
+  if (started === "undated") {
     return ended;
   }
 

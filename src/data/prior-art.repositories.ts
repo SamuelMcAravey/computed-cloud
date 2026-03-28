@@ -53,6 +53,69 @@ const labelize = (value: string | null | undefined): string => {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 };
 
+const repositoryPrefixPattern = /^(?:rxn|vh|incursa|rixian)[-_.]+/i;
+const repositoryWordAliases: Record<string, string> = {
+  api: "API",
+  aspnet: "ASP.NET",
+  aspnetcore: "ASP.NET Core",
+  cli: "CLI",
+  db: "DB",
+  http: "HTTP",
+  sdk: "SDK",
+  sql: "SQL",
+  ui: "UI",
+};
+
+const toTitleCaseWord = (value: string): string => {
+  if (!value) {
+    return value;
+  }
+
+  const alias = repositoryWordAliases[value.toLowerCase()];
+  if (alias) {
+    return alias;
+  }
+
+  return `${value.charAt(0).toUpperCase()}${value.slice(1).toLowerCase()}`;
+};
+
+const buildRepositoryFallbackDescription = (repository: PriorArtRepository): string => {
+  const ownerLabel = repository.full_name.split("/")[0] ?? repository.name;
+  const normalizedTokens = repository.name
+    .replace(repositoryPrefixPattern, "")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[-_.]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(toTitleCaseWord);
+
+  const tokens = normalizedTokens.length > 0 ? normalizedTokens : [toTitleCaseWord(repository.name)];
+  const lowered = tokens.map((token) => token.toLowerCase());
+
+  if (tokens.length === 1) {
+    switch (lowered[0]) {
+      case "all":
+        return "Umbrella repository";
+      case "docs":
+        return "Documentation repository";
+      case "internal":
+        return "Internal repository";
+      case "template":
+        return "Template repository";
+      case "toolbox":
+        return "Tooling repository";
+      default:
+        return `${tokens[0]} repository`;
+    }
+  }
+
+  if (tokens.join(" ").toLowerCase() === ownerLabel.toLowerCase()) {
+    return `${tokens.join(" ")} repository`;
+  }
+
+  return `${tokens.join(" ")} repository`;
+};
+
 export const priorArtRepositoryCatalog = repositoryDocument;
 
 export const priorArtRepositories = repositoryDocument.repositories;
@@ -140,7 +203,11 @@ export const getPriorArtRepositoryLink = (
 
 export const getPriorArtRepositoryDescription = (repository: PriorArtRepository): string | null => {
   const description = repository.description?.trim();
-  return description && description.length > 0 ? description : null;
+  if (description && description.length > 0) {
+    return description;
+  }
+
+  return buildRepositoryFallbackDescription(repository);
 };
 
 export const getPriorArtRepositoryGroups = (): PriorArtRepositoryGroup[] => {
