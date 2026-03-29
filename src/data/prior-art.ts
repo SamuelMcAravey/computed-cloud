@@ -245,7 +245,7 @@ export const formatPriorArtDate = (
   }
 
   if (!value || precision === "unknown") {
-    return "undated";
+    return "";
   }
 
   if (precision === "year") {
@@ -264,7 +264,7 @@ export const formatPriorArtDate = (
 
   const parsed = parseDateValue(value, precision);
   if (!parsed) {
-    return "undated";
+    return "";
   }
 
   if (precision === "month") {
@@ -278,19 +278,19 @@ export const formatPriorArtRange = (entry: PriorArtInventoryEntry): string => {
   const started = formatPriorArtDate(entry.started, entry.startedPrecision);
   const ended = formatPriorArtDate(entry.ended, entry.endedPrecision);
 
-  if (started === "undated" && ended === "undated") {
-    return "undated";
+  if (!started && !ended) {
+    return "";
   }
 
   if (ended === "ongoing") {
-    return started === "undated" ? "undated - ongoing" : `${started} - ongoing`;
+    return started ? `${started} - ongoing` : "";
   }
 
-  if (ended === "undated") {
+  if (!ended) {
     return started;
   }
 
-  if (started === "undated") {
+  if (!started) {
     return ended;
   }
 
@@ -388,8 +388,10 @@ export interface PriorArtGroupEntry {
   childMap: Map<string, PriorArtInventoryEntry[]>;
 }
 
-export const getPriorArtGroupEntries = (): PriorArtGroupEntry[] => {
-  const tree = buildPriorArtTree(priorArtEntries);
+export const getPriorArtGroupEntries = (
+  entries: PriorArtInventoryEntry[] = priorArtEntries,
+): PriorArtGroupEntry[] => {
+  const tree = buildPriorArtTree(entries);
   const parents = sortPriorArtChronologically(tree);
 
   const groups = new Map<
@@ -418,7 +420,7 @@ export const getPriorArtGroupEntries = (): PriorArtGroupEntry[] => {
     group.childMap.set(
       parent.id,
       sortPriorArtChronologically(
-        priorArtEntries.filter((entry) => entry.parentId === parent.id),
+        entries.filter((entry) => entry.parentId === parent.id),
       ),
     );
     groups.set(parent.portfolio, group);
@@ -433,8 +435,10 @@ export const getPriorArtGroupEntries = (): PriorArtGroupEntry[] => {
     }));
 };
 
-export const getPriorArtTimelineEntries = (): PriorArtInventoryEntry[] =>
-  sortPriorArtChronologically(priorArtEntries);
+export const getPriorArtTimelineEntries = (
+  entries: PriorArtInventoryEntry[] = priorArtEntries,
+): PriorArtInventoryEntry[] =>
+  sortPriorArtChronologically(entries);
 
 export const getPriorArtChildren = (
   parentId: string,
@@ -443,9 +447,13 @@ export const getPriorArtChildren = (
     priorArtEntries.filter((entry) => entry.parentId === parentId),
   );
 
-export const getPriorArtGroups = (): PriorArtGroupEntry[] => getPriorArtGroupEntries();
+export const getPriorArtGroups = (
+  entries: PriorArtInventoryEntry[] = priorArtEntries,
+): PriorArtGroupEntry[] => getPriorArtGroupEntries(entries);
 
-export const getPriorArtTimeline = (): PriorArtInventoryEntry[] => getPriorArtTimelineEntries();
+export const getPriorArtTimeline = (
+  entries: PriorArtInventoryEntry[] = priorArtEntries,
+): PriorArtInventoryEntry[] => getPriorArtTimelineEntries(entries);
 
 export const getPriorArtSearchText = (entry: PriorArtInventoryEntry): string =>
   [

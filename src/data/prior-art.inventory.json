@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-03-28",
+  "updated": "2026-03-29",
   "entries": [
     {
       "id": "payewaive",
@@ -354,7 +354,7 @@
       "id": "approvum-marketing-app-work",
       "title": "Approvum Marketing / App Work",
       "slug": "approvum-marketing-app-work",
-      "parentId": "websites-domains-umbrella",
+      "parentId": "legacy-prior-venture-umbrella",
       "kind": "website",
       "status": "historical",
       "visibility": "mixed",
@@ -370,7 +370,7 @@
       "publicLinks": [],
       "evidencePublic": [],
       "relatedIds": ["legacy-prior-venture-umbrella", "websites-domains-umbrella"],
-      "group": "Websites and domains"
+      "group": "Legacy and prior venture work"
     },
     {
       "id": "monadsharp",
@@ -585,7 +585,7 @@
       "status": "active",
       "visibility": "mixed",
       "ownerLabel": "Samuel McAravey",
-      "started": "2026-01",
+      "started": "2025-12",
       "startedPrecision": "month",
       "ended": null,
       "endedPrecision": "ongoing",
@@ -669,7 +669,7 @@
       "status": "active",
       "visibility": "public",
       "ownerLabel": "Samuel McAravey",
-      "started": "2026-01",
+      "started": "2025-02",
       "startedPrecision": "month",
       "ended": null,
       "endedPrecision": "ongoing",

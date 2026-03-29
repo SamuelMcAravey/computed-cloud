@@ -4,6 +4,8 @@ import {
   formatPriorArtDateRange,
   getPriorArtGroups,
   getPriorArtKindLabel,
+  getPriorArtParent,
+  getPriorArtRelatedEntries,
   getPriorArtSearchText,
   getPriorArtStatusLabel,
   getPriorArtVisibilityLabel,
@@ -22,8 +24,16 @@ import {
   getPriorArtRepositoryVisibilityCounts,
 } from "../data/prior-art.repositories";
 
-const groupedEntries = getPriorArtGroups();
-const timelineEntries = getPriorArtTimelineEntries();
+const isDomainEntry = (entry) => entry.kind === "website" && entry.domains.length > 0;
+const hiddenWorkEntryIds = new Set(["websites-domains-umbrella"]);
+const domainEntries = getPriorArtTimelineEntries(
+  priorArtEntries.filter((entry) => isDomainEntry(entry) && entry.id !== "websites-domains-umbrella"),
+);
+const workEntries = priorArtEntries.filter(
+  (entry) => !isDomainEntry(entry) && !hiddenWorkEntryIds.has(entry.id),
+);
+const groupedEntries = getPriorArtGroups(workEntries);
+const timelineEntries = getPriorArtTimelineEntries(workEntries);
 const repositoryGroups = getPriorArtRepositoryGroups();
 const repositoryVisibilityCounts = getPriorArtRepositoryVisibilityCounts();
 const kindOptions = priorArtKindOrder.filter((kind) =>
@@ -258,14 +268,130 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
 
   <section class="mt-14 space-y-8" aria-labelledby="prior-art-grouped-heading">
     <div class="max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.2em] text-muted">Compact index</p>
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Domains</p>
       <h2 id="prior-art-grouped-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
-        Grouped by portfolio and parent project
+        Domains and public sites
       </h2>
       <p class="mt-4 text-base leading-7 text-muted">
-        This is the quickest way to scan the archive. The table keeps the record dense,
-        shows ownership scope up front, and keeps related work clustered even when
-        dates are incomplete.
+        Domains are listed separately so the public web properties read as one coherent
+        layer of the archive instead of being mixed into the systems and project history.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <section class="overflow-hidden rounded-[2rem] border border-border bg-surface/90 shadow-sm" data-prior-art-group>
+        <div class="cc-scrollbox overflow-x-auto">
+          <table class="min-w-[920px] w-full table-fixed border-collapse text-left text-sm">
+            <colgroup>
+              <col class="w-[48%]" />
+              <col class="w-[24%]" />
+              <col class="w-[10%]" />
+              <col class="w-[18%]" />
+            </colgroup>
+            <thead class="bg-bg/70 text-xs uppercase tracking-[0.18em] text-muted">
+              <tr>
+                <th class="px-5 py-3 font-medium">Domain</th>
+                <th class="px-3 py-3 font-medium">Related work</th>
+                <th class="px-3 py-3 font-medium">Scope</th>
+                <th class="px-5 py-3 font-medium">Links</th>
+              </tr>
+            </thead>
+            <tbody>
+              {domainEntries.map((entry) => {
+                const dateRange = formatPriorArtDateRange(entry);
+                const parent = getPriorArtParent(entry);
+                const relatedEntries = [
+                  ...(parent && !isDomainEntry(parent) && !hiddenWorkEntryIds.has(parent.id) ? [parent] : []),
+                  ...getPriorArtRelatedEntries(entry).filter(
+                    (related) => !isDomainEntry(related) && !hiddenWorkEntryIds.has(related.id),
+                  ),
+                ].filter(
+                  (related, index, array) =>
+                    array.findIndex((candidate) => candidate.id === related.id) === index,
+                );
+
+                return (
+                  <tr
+                    id={entry.slug}
+                    class="border-t border-border/70 align-top hover:bg-bg/40"
+                    data-prior-art-entry
+                    data-kind={entry.kind}
+                    data-status={entry.status}
+                    data-searchable={getPriorArtSearchText(entry)}
+                  >
+                    <td class="px-5 py-4">
+                      <div class="space-y-3">
+                        <a class="font-semibold text-text hover:text-primary" href={`#${entry.slug}`}>
+                          {entry.title}
+                        </a>
+                        {dateRange && (
+                          <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
+                            {dateRange}
+                          </p>
+                        )}
+                        <p class="text-sm leading-6 text-muted">{entry.publicSummary}</p>
+                        {entry.notesPublic && (
+                          <p class="text-xs leading-6 text-muted">{entry.notesPublic}</p>
+                        )}
+                      </div>
+                    </td>
+                    <td class="px-3 py-4">
+                      {relatedEntries.length > 0 ? (
+                        <div class="flex flex-wrap gap-2">
+                          {relatedEntries.map((relatedEntry) => (
+                            <a
+                              class="inline-flex items-center rounded-full border border-border bg-bg/70 px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                              href={`#${relatedEntry.slug}`}
+                            >
+                              {relatedEntry.title}
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <span class="text-sm text-muted">-</span>
+                      )}
+                    </td>
+                    <td class="px-3 py-4 text-sm text-muted">{getPriorArtVisibilityLabel(entry.visibility)}</td>
+                    <td class="px-5 py-4">
+                      <div class="space-y-3">
+                        {entry.publicLinks.length > 0 && (
+                          <div>
+                            <p class="text-[11px] uppercase tracking-[0.18em] text-muted">Public links</p>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                              {entry.publicLinks.map((link) => (
+                                <a
+                                  class="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-xs font-medium text-text hover:border-primary"
+                                  href={link.url}
+                                  target={link.url.startsWith("http") ? "_blank" : undefined}
+                                  rel={link.url.startsWith("http") ? "noreferrer" : undefined}
+                                >
+                                  {link.label}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="mt-14 space-y-8" aria-labelledby="prior-art-work-heading">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted">Work products</p>
+      <h2 id="prior-art-work-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
+        Systems, products, and reusable work
+      </h2>
+      <p class="mt-4 text-base leading-7 text-muted">
+        This is the main prior-art inventory. It keeps the actual systems, platform work,
+        experiments, and archived product lines together without the domain catalog getting in the way.
       </p>
     </div>
 
@@ -321,9 +447,11 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
                             <a class="font-semibold text-text hover:text-primary" href={`#${parent.slug}`}>
                               {parent.title}
                             </a>
-                            <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
-                              {formatPriorArtDateRange(parent)}
-                            </p>
+                            {formatPriorArtDateRange(parent) && (
+                              <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
+                                {formatPriorArtDateRange(parent)}
+                              </p>
+                            )}
                             <p class="text-sm leading-6 text-muted">{parent.publicSummary}</p>
                             {parent.notesPublic && (
                               <p class="text-xs leading-6 text-muted">{parent.notesPublic}</p>
@@ -389,9 +517,11 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
                                 <a class="font-semibold text-text hover:text-primary" href={`#${entry.slug}`}>
                                   {entry.title}
                                 </a>
-                                <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
-                                  {formatPriorArtDateRange(entry)}
-                                </p>
+                                {formatPriorArtDateRange(entry) && (
+                                  <p class="text-[11px] uppercase tracking-[0.18em] text-muted">
+                                    {formatPriorArtDateRange(entry)}
+                                  </p>
+                                )}
                                 <p class="text-xs leading-6 text-muted">Part of {parent.title}</p>
                                 <p class="text-sm leading-6 text-muted">{entry.publicSummary}</p>
                                 {entry.notesPublic && (
@@ -466,14 +596,13 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
     <div class="max-w-3xl">
       <p class="text-xs uppercase tracking-[0.2em] text-muted">Repository catalog</p>
       <h2 id="prior-art-repository-heading" class="mt-3 font-heading text-3xl font-semibold text-text">
-        GitHub repositories I can access, grouped by owner
+        Supporting repository evidence
       </h2>
       <p class="mt-4 text-base leading-7 text-muted">
-        Repository names are included because they establish chronology and
-        provenance. Forks are excluded. The date line shows the first known commit
-        when available, with GitHub creation or last observed activity as a
-        fallback. The catalog lists public and private repositories at a high
-        level, but it does not show source code, file contents, or local paths.
+        This section is supporting chronology and provenance evidence rather than the main work summary.
+        Repository names are included because they establish authorship and history. Forks are excluded.
+        The catalog lists public and private repositories at a high level, but it does not show source code,
+        file contents, or local paths.
       </p>
     </div>
 
@@ -616,8 +745,8 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
         Chronological view
       </h2>
       <p class="mt-4 text-base leading-7 text-muted">
-        This timeline orders the same public inventory from earliest known activity
-        to latest. Approximate and unpublished dates stay approximate.
+        This timeline orders the work inventory from earliest known activity to latest.
+        Approximate and unpublished dates stay approximate.
       </p>
     </div>
 
@@ -640,9 +769,11 @@ const mutedCardClass = "rounded-3xl border border-border/80 bg-surface/70 p-6 sh
               </h3>
               <p class="mt-3 text-sm leading-7 text-muted">{entry.publicSummary}</p>
             </div>
-            <div class="shrink-0 text-xs uppercase tracking-[0.18em] text-muted">
-              {formatPriorArtDateRange(entry)}
-            </div>
+            {formatPriorArtDateRange(entry) && (
+              <div class="shrink-0 text-xs uppercase tracking-[0.18em] text-muted">
+                {formatPriorArtDateRange(entry)}
+              </div>
+            )}
           </div>
         </li>
       ))}

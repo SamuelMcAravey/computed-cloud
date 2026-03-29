@@ -262,9 +262,6 @@ export const getPriorArtRepositoryVisibilityCounts = (): PriorArtRepositoryVisib
     },
   );
 
-const getRepositoryChronologyDate = (repository: PriorArtRepository): string =>
-  repository.earliest_commit_date ?? repository.created_at;
-
 export const formatPriorArtRepositoryDate = (value: string | null | undefined): string => {
   if (!value) {
     return "unknown";
@@ -348,24 +345,10 @@ export const getPriorArtRepositoryGroups = (): PriorArtRepositoryGroup[] => {
       id: getRepositoryGroupId(owner),
       owner,
       repositories: [...repositories].sort((left, right) => {
-        const leftDate = getRepositoryChronologyDate(left);
-        const rightDate = getRepositoryChronologyDate(right);
-
-        if (leftDate !== rightDate) {
-          return leftDate.localeCompare(rightDate, "en");
-        }
-
         return left.full_name.localeCompare(right.full_name, "en");
       }),
     }))
     .sort((left, right) => {
-      const leftSize = left.repositories.length;
-      const rightSize = right.repositories.length;
-
-      if (leftSize !== rightSize) {
-        return rightSize - leftSize;
-      }
-
       return left.owner.localeCompare(right.owner, "en");
     });
 };
