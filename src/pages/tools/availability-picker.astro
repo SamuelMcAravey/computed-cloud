@@ -1,0 +1,1118 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+---
+
+<BaseLayout
+  title="Availability Picker"
+  description="Select time slots and copy email-ready availability text."
+  data-pagefind-ignore="all"
+>
+  <div data-availability-picker class="space-y-8">
+    <section class="space-y-3">
+      <p class="text-xs uppercase tracking-wide text-muted">Tools</p>
+      <h1 class="font-heading text-4xl font-semibold text-text">Availability Picker</h1>
+      <p class="text-lg text-muted">
+        Select time slots and copy a plain-text availability list for email.
+      </p>
+    </section>
+
+    <section class="rounded-2xl border border-border bg-surface/90 p-5 shadow-sm">
+      <div class="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div class="space-y-5">
+          <div class="flex flex-wrap items-end gap-3">
+            <div class="space-y-2">
+              <label class="text-xs uppercase tracking-wide text-muted" for="availability-start-date">
+                Start date
+              </label>
+              <input
+                id="availability-start-date"
+                class="rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+                type="date"
+              />
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                id="availability-prev"
+                class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+                type="button"
+              >
+                Previous
+              </button>
+              <button
+                id="availability-today"
+                class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+                type="button"
+              >
+                Today
+              </button>
+              <button
+                id="availability-next"
+                class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+                type="button"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+
+          <fieldset class="space-y-2">
+            <legend class="text-xs uppercase tracking-wide text-muted">View length</legend>
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="availability-view-toggle cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+                data-view-days="7"
+                aria-pressed="true"
+              >
+                7 days
+              </button>
+              <button
+                type="button"
+                class="availability-view-toggle cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+                data-view-days="14"
+                aria-pressed="false"
+              >
+                14 days
+              </button>
+            </div>
+          </fieldset>
+
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="space-y-2">
+              <label class="text-xs uppercase tracking-wide text-muted" for="availability-increment">
+                Slot increment
+              </label>
+              <select
+                id="availability-increment"
+                class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+              >
+                <option value="15">15 minutes</option>
+                <option value="30" selected>30 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs uppercase tracking-wide text-muted" for="availability-day-start">
+                Day starts
+              </label>
+              <input
+                id="availability-day-start"
+                class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+                type="time"
+                step="60"
+                value="08:00"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs uppercase tracking-wide text-muted" for="availability-day-end">
+                Day ends
+              </label>
+              <input
+                id="availability-day-end"
+                class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+                type="time"
+                step="60"
+                value="17:00"
+              />
+            </div>
+            <div class="space-y-2 md:col-span-2 xl:col-span-3">
+              <label class="text-xs uppercase tracking-wide text-muted" for="availability-timezone">
+                Timezone label
+              </label>
+              <input
+                id="availability-timezone"
+                class="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text"
+                type="text"
+                value="Mountain Time"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-wide text-muted" for="availability-intro">
+              Intro line
+            </label>
+            <textarea
+              id="availability-intro"
+              class="min-h-[5.5rem] w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm text-text"
+              rows="2"
+            >Here are a few times that work for me.</textarea>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-wide text-muted" for="availability-closing">
+              Closing line
+            </label>
+            <textarea
+              id="availability-closing"
+              class="min-h-[5.5rem] w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm text-text"
+              rows="2"
+            >If none of those work, send me a couple of options and I'll work around them.</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-2xl border border-border bg-surface/90 p-5 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="space-y-1">
+          <h2 class="font-heading text-2xl font-semibold text-text">Availability text</h2>
+          <p class="text-sm text-muted">Copy the generated text into email.</p>
+        </div>
+        <button
+          id="availability-copy"
+          class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+          type="button"
+        >
+          Copy availability
+        </button>
+      </div>
+      <textarea
+        id="availability-output"
+        class="mt-4 min-h-[220px] w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm leading-6 text-text"
+        readonly
+      ></textarea>
+      <p id="availability-copy-status" class="mt-2 text-xs text-muted" aria-live="polite"></p>
+    </section>
+
+    <section class="space-y-4">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div class="space-y-1">
+          <h2 class="font-heading text-2xl font-semibold text-text">Calendar grid</h2>
+          <p class="text-sm text-muted">
+            Click a slot to toggle it. Drag across cells to select or deselect multiple slots.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            id="availability-clear"
+            class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+            type="button"
+          >
+            Clear selected times
+          </button>
+          <button
+            id="availability-reset"
+            class="cc-tool-button rounded-lg border border-border px-3 py-2 text-sm font-medium text-text hover:border-primary"
+            type="button"
+          >
+            Reset settings
+          </button>
+        </div>
+      </div>
+
+      <div id="availability-grid" class="space-y-6"></div>
+
+    </section>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector("[data-availability-picker]");
+      if (!(root instanceof HTMLElement)) return;
+
+      const STORAGE_KEY = "cc-availability-picker-prefs";
+      const MAX_MINUTES = 23 * 60 + 59;
+      const WEEKDAY_NAMES = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const MONTH_NAMES = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const guessTimezoneLabel = () => {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+        const friendly = {
+          "America/Denver": "Mountain Time",
+          "America/Boise": "Mountain Time",
+          "America/Phoenix": "Mountain Time",
+          "America/Los_Angeles": "Pacific Time",
+          "America/Chicago": "Central Time",
+          "America/New_York": "Eastern Time",
+          "America/Anchorage": "Alaska Time",
+          "Pacific/Honolulu": "Hawaii Time",
+          UTC: "UTC",
+          "Etc/UTC": "UTC",
+        };
+        return friendly[zone] || "Mountain Time";
+      };
+
+      const DEFAULTS = {
+        viewDays: 7,
+        incrementMinutes: 30,
+        dayStartMinutes: 8 * 60,
+        dayEndMinutes: 17 * 60,
+        timezoneLabel: guessTimezoneLabel(),
+        introText: "Here are a few times that work for me.",
+        closingText: "If none of those work, send me a couple of options and I'll work around them.",
+      };
+
+      const todayKey = formatDateKey(new Date());
+
+      const startDateInput = root.querySelector("#availability-start-date");
+      const prevButton = root.querySelector("#availability-prev");
+      const nextButton = root.querySelector("#availability-next");
+      const todayButton = root.querySelector("#availability-today");
+      const viewButtons = Array.from(root.querySelectorAll("[data-view-days]"));
+      const incrementInput = root.querySelector("#availability-increment");
+      const dayStartInput = root.querySelector("#availability-day-start");
+      const dayEndInput = root.querySelector("#availability-day-end");
+      const timezoneInput = root.querySelector("#availability-timezone");
+      const introInput = root.querySelector("#availability-intro");
+      const closingInput = root.querySelector("#availability-closing");
+      const grid = root.querySelector("#availability-grid");
+      const output = root.querySelector("#availability-output");
+      const copyButton = root.querySelector("#availability-copy");
+      const clearButton = root.querySelector("#availability-clear");
+      const resetButton = root.querySelector("#availability-reset");
+      const copyStatus = root.querySelector("#availability-copy-status");
+
+      if (
+        !(startDateInput instanceof HTMLInputElement) ||
+        !(prevButton instanceof HTMLButtonElement) ||
+        !(nextButton instanceof HTMLButtonElement) ||
+        !(todayButton instanceof HTMLButtonElement) ||
+        !(incrementInput instanceof HTMLSelectElement) ||
+        !(dayStartInput instanceof HTMLInputElement) ||
+        !(dayEndInput instanceof HTMLInputElement) ||
+        !(timezoneInput instanceof HTMLInputElement) ||
+        !(introInput instanceof HTMLTextAreaElement) ||
+        !(closingInput instanceof HTMLTextAreaElement) ||
+        !(grid instanceof HTMLElement) ||
+        !(output instanceof HTMLTextAreaElement) ||
+        !(copyButton instanceof HTMLButtonElement) ||
+        !(clearButton instanceof HTMLButtonElement) ||
+        !(resetButton instanceof HTMLButtonElement) ||
+        !(copyStatus instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      let prefs = loadPreferences();
+      let startDateKey = todayKey;
+      let selectedSlots = new Set();
+      let slotButtonByKey = new Map();
+      let activeDrag = null;
+      let copyStatusTimer = 0;
+
+      syncControls();
+      renderGrid();
+      updateOutput();
+
+      startDateInput.addEventListener("change", () => {
+        const nextKey = isValidDateKey(startDateInput.value) ? startDateInput.value : todayKey;
+        setStartDateKey(nextKey);
+      });
+
+      prevButton.addEventListener("click", () => {
+        setStartDateKey(addDaysToDateKey(startDateKey, -prefs.viewDays));
+      });
+
+      nextButton.addEventListener("click", () => {
+        setStartDateKey(addDaysToDateKey(startDateKey, prefs.viewDays));
+      });
+
+      todayButton.addEventListener("click", () => {
+        setStartDateKey(todayKey);
+      });
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextValue = Number(button.dataset.viewDays || "7");
+          if (nextValue === prefs.viewDays) return;
+          applyPreferenceUpdate({ viewDays: nextValue }, true);
+        });
+      });
+
+      incrementInput.addEventListener("change", () => {
+        const nextValue = Number(incrementInput.value || "30");
+        applyPreferenceUpdate({ incrementMinutes: nextValue }, true);
+      });
+
+      dayStartInput.addEventListener("change", () => {
+        applyPreferenceUpdate(
+          { dayStartMinutes: parseTimeInput(dayStartInput.value, prefs.dayStartMinutes) },
+          true
+        );
+      });
+
+      dayEndInput.addEventListener("change", () => {
+        applyPreferenceUpdate(
+          { dayEndMinutes: parseTimeInput(dayEndInput.value, prefs.dayEndMinutes) },
+          true
+        );
+      });
+
+      timezoneInput.addEventListener("input", () => {
+        applyPreferenceUpdate({ timezoneLabel: timezoneInput.value }, false);
+      });
+
+      introInput.addEventListener("input", () => {
+        applyPreferenceUpdate({ introText: introInput.value }, false);
+      });
+
+      closingInput.addEventListener("input", () => {
+        applyPreferenceUpdate({ closingText: closingInput.value }, false);
+      });
+
+      grid.addEventListener("pointerdown", (event) => {
+        const target = getSlotButtonFromEvent(event);
+        if (!target || (event.button !== 0 && event.pointerType !== "touch" && event.pointerType !== "pen")) {
+          return;
+        }
+        const key = target.dataset.slotKey;
+        if (!key) return;
+
+        const select = !selectedSlots.has(key);
+        activeDrag = {
+          pointerId: event.pointerId,
+          mode: select ? "select" : "deselect",
+          lastKey: key,
+        };
+
+        if (typeof grid.setPointerCapture === "function") {
+          try {
+            grid.setPointerCapture(event.pointerId);
+          } catch {
+            // Ignore unsupported capture failures.
+          }
+        }
+
+        applySlotState(key, select);
+      });
+
+      grid.addEventListener("pointermove", (event) => {
+        if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
+        const element = document.elementFromPoint(event.clientX, event.clientY);
+        const target = element instanceof Element ? element.closest("[data-slot-key]") : null;
+        if (!(target instanceof HTMLElement)) return;
+        const key = target.dataset.slotKey;
+        if (!key || key === activeDrag.lastKey) return;
+        applySlotState(key, activeDrag.mode === "select");
+        activeDrag.lastKey = key;
+      });
+
+      const finishDrag = (event) => {
+        if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
+        if (typeof grid.releasePointerCapture === "function") {
+          try {
+            grid.releasePointerCapture(event.pointerId);
+          } catch {
+            // Ignore unsupported capture failures.
+          }
+        }
+        activeDrag = null;
+      };
+
+      grid.addEventListener("pointerup", finishDrag);
+      grid.addEventListener("pointercancel", finishDrag);
+
+      grid.addEventListener("click", (event) => {
+        if (event.detail !== 0) return;
+        const target = getSlotButtonFromEvent(event);
+        if (!target) return;
+        const key = target.dataset.slotKey;
+        if (!key) return;
+        toggleSlotState(key);
+      });
+
+      copyButton.addEventListener("click", async () => {
+        const text = output.value;
+        if (!text) return;
+        await copyAvailabilityText(text);
+      });
+
+      clearButton.addEventListener("click", () => {
+        selectedSlots = new Set();
+        syncVisibleSlotButtons();
+        updateOutput();
+        setCopyStatus("");
+      });
+
+      resetButton.addEventListener("click", () => {
+        prefs = { ...DEFAULTS };
+        startDateKey = todayKey;
+        selectedSlots = new Set();
+        savePreferences();
+        syncControls();
+        renderGrid();
+        updateOutput();
+        setCopyStatus("");
+      });
+
+      function getSlotButtonFromEvent(event) {
+        if (!(event.target instanceof Element)) return null;
+        const button = event.target.closest("[data-slot-key]");
+        return button instanceof HTMLElement ? button : null;
+      }
+
+      function applyPreferenceUpdate(partial, rerenderGrid) {
+        prefs = normalizePreferences({ ...prefs, ...partial });
+        savePreferences();
+        syncControls();
+        if (rerenderGrid) {
+          renderGrid();
+        } else {
+          syncVisibleSlotButtons();
+        }
+        updateOutput();
+      }
+
+      function setStartDateKey(nextKey) {
+        startDateKey = isValidDateKey(nextKey) ? nextKey : todayKey;
+        if (startDateInput.value !== startDateKey) {
+          startDateInput.value = startDateKey;
+        }
+        renderGrid();
+        updateOutput();
+      }
+
+      function toggleSlotState(key) {
+        applySlotState(key, !selectedSlots.has(key));
+      }
+
+      function applySlotState(key, selected) {
+        const button = slotButtonByKey.get(key);
+        if (selected) {
+          selectedSlots.add(key);
+        } else {
+          selectedSlots.delete(key);
+        }
+        if (button) {
+          syncSlotButton(button);
+        }
+        updateOutput();
+      }
+
+      function syncSlotButton(button) {
+        const key = button.dataset.slotKey || "";
+        const selected = selectedSlots.has(key);
+        button.dataset.selected = selected ? "true" : "false";
+        button.setAttribute("aria-pressed", selected ? "true" : "false");
+        button.setAttribute("aria-label", buildSlotAriaLabel(key, selected));
+        button.removeAttribute("style");
+
+        const mark = button.querySelector(".availability-slot-mark");
+        if (mark instanceof HTMLElement) {
+          mark.removeAttribute("style");
+        }
+      }
+
+      function syncVisibleSlotButtons() {
+        slotButtonByKey.forEach((button) => syncSlotButton(button));
+      }
+
+      function syncControls() {
+        if (startDateInput.value !== startDateKey) {
+          startDateInput.value = startDateKey;
+        }
+
+        viewButtons.forEach((button) => {
+          const selected = Number(button.dataset.viewDays || "7") === prefs.viewDays;
+          button.setAttribute("aria-pressed", selected ? "true" : "false");
+        });
+
+        const incrementValue = String(prefs.incrementMinutes);
+        if (incrementInput.value !== incrementValue) {
+          incrementInput.value = incrementValue;
+        }
+
+        const dayStartValue = formatTimeInput(prefs.dayStartMinutes);
+        if (dayStartInput.value !== dayStartValue) {
+          dayStartInput.value = dayStartValue;
+        }
+
+        const dayEndValue = formatTimeInput(prefs.dayEndMinutes);
+        if (dayEndInput.value !== dayEndValue) {
+          dayEndInput.value = dayEndValue;
+        }
+
+        if (timezoneInput.value !== prefs.timezoneLabel) {
+          timezoneInput.value = prefs.timezoneLabel;
+        }
+
+        if (introInput.value !== prefs.introText) {
+          introInput.value = prefs.introText;
+        }
+
+        if (closingInput.value !== prefs.closingText) {
+          closingInput.value = prefs.closingText;
+        }
+      }
+
+      function renderGrid() {
+        activeDrag = null;
+        const days = buildVisibleDays(startDateKey, prefs.viewDays);
+        const rowStarts = buildVisibleRowStarts(prefs.dayStartMinutes, prefs.dayEndMinutes, prefs.incrementMinutes);
+        const weeks = chunkDays(days, 7);
+
+        grid.innerHTML = weeks
+          .map((week, weekIndex) => {
+            const templateColumns = `grid-template-columns: var(--availability-time-column, 4.75rem) repeat(${week.length}, minmax(0, 1fr));`;
+            const weekLabel = formatWeekRangeLabel(week[0].key, week[week.length - 1].key);
+
+            return `
+              <section class="space-y-3 rounded-2xl border border-border bg-surface/90 p-2 shadow-sm sm:p-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="space-y-0.5">
+                    <div class="text-xs uppercase tracking-wide text-muted">Week ${weekIndex + 1}</div>
+                    <div class="text-sm text-muted">${weekLabel}</div>
+                  </div>
+                  ${
+                    week.some((day) => day.isToday)
+                      ? '<div class="inline-flex rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text">Today</div>'
+                      : ""
+                  }
+                </div>
+
+                <div class="overflow-hidden rounded-2xl border border-border bg-bg">
+                  <div class="grid bg-surface/95" style="${templateColumns}">
+                    <div class="flex min-h-10 items-end border-b border-r border-border bg-surface/95 px-1 py-2 text-[9px] uppercase tracking-wide text-muted sm:px-2 sm:text-[10px]">
+                      Time
+                    </div>
+                    ${week
+                      .map(
+                        (day) => `
+                          <div class="border-b border-l border-border bg-surface/95 px-1 py-2 text-left sm:px-2">
+                            <div class="text-[10px] font-semibold leading-tight text-text sm:text-[11px]">
+                              <span class="hidden sm:inline">${day.weekday}</span>
+                              <span class="sm:hidden">${day.weekdayShort}</span>
+                            </div>
+                            <div class="text-[9px] text-muted sm:text-[10px]">${day.monthDay}</div>
+                          </div>
+                        `
+                      )
+                      .join("")}
+                  </div>
+
+                  ${rowStarts
+                    .map((minutes) => {
+                      return `
+                        <div class="grid bg-bg/90" style="${templateColumns}">
+                          <div class="flex min-h-10 items-center border-b border-r border-border bg-surface/95 px-1 py-1 sm:px-2">
+                            <div class="text-[10px] font-semibold text-text sm:text-[11px]">${formatTimeClock(minutes)}</div>
+                          </div>
+                          ${week
+                            .map((day) => {
+                              const key = createSlotKey(day.key, minutes);
+                              const selected = selectedSlots.has(key);
+                              const label = buildSlotAriaLabel(key, selected);
+                              return `
+                                <button
+                                  type="button"
+                                  class="availability-slot flex min-h-10 cursor-pointer touch-none select-none items-center justify-center border-b border-l border-border px-1 py-1 text-left text-xs font-medium text-muted transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+                                  data-slot-key="${key}"
+                                  data-today="${day.isToday ? "true" : "false"}"
+                                  data-selected="${selected ? "true" : "false"}"
+                                  aria-pressed="${selected ? "true" : "false"}"
+                                  aria-label="${label}"
+                                  title="${label}"
+                                >
+                                  <span class="availability-slot-fill" aria-hidden="true"></span>
+                                  <span class="availability-slot-mark" aria-hidden="true"></span>
+                                  <span class="sr-only">${label}</span>
+                                </button>
+                              `;
+                            })
+                            .join("")}
+                        </div>
+                      `;
+                    })
+                    .join("")}
+                </div>
+              </section>
+            `;
+          })
+          .join("");
+
+        slotButtonByKey = new Map(
+          Array.from(grid.querySelectorAll("[data-slot-key]")).map((button) => [button.dataset.slotKey || "", button])
+        );
+        syncVisibleSlotButtons();
+      }
+
+      function updateOutput() {
+        const text = buildAvailabilityText();
+        output.value = text;
+      }
+
+      function buildAvailabilityText() {
+        const visibleDays = buildVisibleDays(startDateKey, prefs.viewDays);
+        const rowStarts = buildVisibleRowStarts(prefs.dayStartMinutes, prefs.dayEndMinutes, prefs.incrementMinutes);
+        const introText = prefs.introText.trim();
+        const closingText = prefs.closingText.trim();
+        const timezoneLabel = prefs.timezoneLabel.trim() || DEFAULTS.timezoneLabel;
+        const dayLines = [];
+
+        for (const day of visibleDays) {
+          const ranges = [];
+          let rangeStart = null;
+          let rangeEnd = null;
+
+          for (const minutes of rowStarts) {
+            const key = createSlotKey(day.key, minutes);
+            if (!selectedSlots.has(key)) {
+              if (rangeStart !== null) {
+                ranges.push(formatTimeRange(rangeStart, rangeEnd));
+                rangeStart = null;
+                rangeEnd = null;
+              }
+              continue;
+            }
+
+            const nextEnd = getSlotEndMinutes(minutes);
+            if (rangeStart === null) {
+              rangeStart = minutes;
+              rangeEnd = nextEnd;
+              continue;
+            }
+
+            if (minutes === rangeEnd) {
+              rangeEnd = nextEnd;
+              continue;
+            }
+
+            ranges.push(formatTimeRange(rangeStart, rangeEnd));
+            rangeStart = minutes;
+            rangeEnd = nextEnd;
+          }
+
+          if (rangeStart !== null) {
+            ranges.push(formatTimeRange(rangeStart, rangeEnd));
+          }
+
+          if (ranges.length > 0) {
+            dayLines.push(`${formatDayLabel(day.key)}: ${ranges.join(", ")}`);
+          }
+        }
+
+        if (dayLines.length === 0) {
+          return "Select one or more time slots to generate availability text.";
+        }
+
+        const lines = [];
+        if (introText) {
+          lines.push(introText);
+        }
+        lines.push(`All times are ${timezoneLabel}:`);
+        lines.push("");
+        lines.push(dayLines.join("\n"));
+        if (closingText) {
+          lines.push("");
+          lines.push(closingText);
+        }
+        return lines.join("\n");
+      }
+
+      function buildVisibleDays(startKey, count) {
+        const startDate = parseDateKey(startKey);
+        const days = [];
+        for (let offset = 0; offset < count; offset += 1) {
+          const nextDate = new Date(startDate);
+          nextDate.setDate(nextDate.getDate() + offset);
+          const key = formatDateKey(nextDate);
+          days.push({
+            key,
+            weekday: WEEKDAY_NAMES[nextDate.getDay()],
+            weekdayShort: WEEKDAY_NAMES[nextDate.getDay()].slice(0, 3),
+            monthDay: `${MONTH_NAMES[nextDate.getMonth()]} ${nextDate.getDate()}`,
+            isToday: key === todayKey,
+          });
+        }
+        return days;
+      }
+
+      function chunkDays(days, size) {
+        const chunks = [];
+        for (let index = 0; index < days.length; index += size) {
+          chunks.push(days.slice(index, index + size));
+        }
+        return chunks;
+      }
+
+      function buildVisibleRowStarts(startMinutes, endMinutes, incrementMinutes) {
+        const rows = [];
+        for (let minutes = startMinutes; minutes < endMinutes; minutes += incrementMinutes) {
+          rows.push(minutes);
+        }
+        return rows;
+      }
+
+      function buildSlotAriaLabel(key, selected) {
+        const [dateKey, minuteText] = key.split("|");
+        const minutes = Number(minuteText);
+        const endMinutes = getSlotEndMinutes(minutes);
+        const selectionState = selected ? "selected" : "not selected";
+        return `${formatDayLabel(dateKey)}, ${formatTimeRange(minutes, endMinutes)}, ${selectionState}`;
+      }
+
+      function createSlotKey(dateKey, minutes) {
+        return `${dateKey}|${minutes}`;
+      }
+
+      function getSlotEndMinutes(minutes) {
+        return Math.min(minutes + prefs.incrementMinutes, prefs.dayEndMinutes);
+      }
+
+      function setCopyStatus(message) {
+        copyStatus.textContent = message;
+        if (copyStatusTimer) {
+          window.clearTimeout(copyStatusTimer);
+          copyStatusTimer = 0;
+        }
+        if (!message) return;
+        copyStatusTimer = window.setTimeout(() => {
+          copyStatus.textContent = "";
+          copyStatusTimer = 0;
+        }, 1600);
+      }
+
+      async function copyAvailabilityText(text) {
+        if (!text) return;
+        try {
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            await navigator.clipboard.writeText(text);
+            copyButton.dataset.copied = "true";
+            setCopyStatus("Copied availability text.");
+            window.setTimeout(() => {
+              delete copyButton.dataset.copied;
+            }, 1200);
+            return;
+          }
+        } catch {
+          // Fall through to the manual selection fallback.
+        }
+
+        output.focus();
+        output.select();
+
+        let copied = false;
+        try {
+          copied = document.execCommand("copy");
+        } catch {
+          copied = false;
+        }
+
+        copyButton.dataset.copied = "true";
+        setCopyStatus(
+          copied ? "Copied availability text." : "Clipboard unavailable. Text selected."
+        );
+        window.setTimeout(() => {
+          delete copyButton.dataset.copied;
+        }, 1200);
+      }
+
+      function normalizePreferences(nextPrefs) {
+        const viewDays = nextPrefs.viewDays === 14 ? 14 : 7;
+        const incrementMinutes = [15, 30, 60].includes(nextPrefs.incrementMinutes)
+          ? nextPrefs.incrementMinutes
+          : 30;
+        let dayStartMinutes = clampTime(nextPrefs.dayStartMinutes, 0, MAX_MINUTES);
+        let dayEndMinutes = clampTime(nextPrefs.dayEndMinutes, 0, MAX_MINUTES);
+
+        if (dayEndMinutes <= dayStartMinutes) {
+          dayEndMinutes = Math.min(MAX_MINUTES, dayStartMinutes + incrementMinutes);
+        }
+
+        if (dayEndMinutes <= dayStartMinutes) {
+          dayStartMinutes = Math.max(0, dayEndMinutes - incrementMinutes);
+        }
+
+        if (dayEndMinutes <= dayStartMinutes) {
+          dayEndMinutes = Math.min(MAX_MINUTES, dayStartMinutes + 1);
+        }
+
+        return {
+          viewDays,
+          incrementMinutes,
+          dayStartMinutes,
+          dayEndMinutes,
+          timezoneLabel:
+            typeof nextPrefs.timezoneLabel === "string" ? nextPrefs.timezoneLabel : DEFAULTS.timezoneLabel,
+          introText: typeof nextPrefs.introText === "string" ? nextPrefs.introText : DEFAULTS.introText,
+          closingText:
+            typeof nextPrefs.closingText === "string" ? nextPrefs.closingText : DEFAULTS.closingText,
+        };
+      }
+
+      function loadPreferences() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            return { ...DEFAULTS };
+          }
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") {
+            return { ...DEFAULTS };
+          }
+          return normalizePreferences({ ...DEFAULTS, ...parsed });
+        } catch {
+          return { ...DEFAULTS };
+        }
+      }
+
+      function savePreferences() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+        } catch {
+          // Ignore storage failures. The tool still works without persistence.
+        }
+      }
+
+      function clampTime(value, min, max) {
+        const numeric = Number(value);
+        if (!Number.isFinite(numeric)) return min;
+        return Math.min(max, Math.max(min, Math.trunc(numeric)));
+      }
+
+      function parseTimeInput(value, fallback) {
+        if (typeof value !== "string" || !value.includes(":")) return fallback;
+        const [hoursText, minutesText] = value.split(":");
+        const hours = Number(hoursText);
+        const minutes = Number(minutesText);
+        if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return fallback;
+        const total = hours * 60 + minutes;
+        return clampTime(total, 0, MAX_MINUTES);
+      }
+
+      function formatTimeInput(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+      }
+
+      function formatTimeClock(minutes) {
+        const hours24 = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        const period = hours24 >= 12 ? "PM" : "AM";
+        const hours12 = hours24 % 12 || 12;
+        return `${hours12}:${String(mins).padStart(2, "0")} ${period}`;
+      }
+
+      function formatTimeParts(minutes) {
+        const hours24 = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        const period = hours24 >= 12 ? "PM" : "AM";
+        const hours12 = hours24 % 12 || 12;
+        return {
+          time: `${hours12}:${String(mins).padStart(2, "0")}`,
+          period,
+        };
+      }
+
+      function formatTimeRange(startMinutes, endMinutes) {
+        const start = formatTimeParts(startMinutes);
+        const end = formatTimeParts(endMinutes);
+        if (start.period === end.period) {
+          return `${start.time}-${end.time} ${start.period}`;
+        }
+        return `${start.time} ${start.period}-${end.time} ${end.period}`;
+      }
+
+      function formatDateKey(date) {
+        return [
+          date.getFullYear(),
+          String(date.getMonth() + 1).padStart(2, "0"),
+          String(date.getDate()).padStart(2, "0"),
+        ].join("-");
+      }
+
+      function isValidDateKey(value) {
+        return /^\d{4}-\d{2}-\d{2}$/.test(value);
+      }
+
+      function parseDateKey(value) {
+        if (!isValidDateKey(value)) {
+          return new Date();
+        }
+        const [yearText, monthText, dayText] = value.split("-");
+        const year = Number(yearText);
+        const month = Number(monthText);
+        const day = Number(dayText);
+        const date = new Date(year, month - 1, day);
+        if (Number.isNaN(date.getTime())) {
+          return new Date();
+        }
+        return date;
+      }
+
+      function addDaysToDateKey(value, offset) {
+        const date = parseDateKey(value);
+        date.setDate(date.getDate() + offset);
+        return formatDateKey(date);
+      }
+
+      function formatDayLabel(value) {
+        const date = parseDateKey(value);
+        return `${WEEKDAY_NAMES[date.getDay()]}, ${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+      }
+
+      function formatWeekRangeLabel(startKey, endKey) {
+        const start = parseDateKey(startKey);
+        const end = parseDateKey(endKey);
+        const startLabel = `${MONTH_NAMES[start.getMonth()]} ${start.getDate()}`;
+        const endLabel = `${MONTH_NAMES[end.getMonth()]} ${end.getDate()}`;
+        return start.getMonth() === end.getMonth() ? `${startLabel} - ${end.getDate()}` : `${startLabel} - ${endLabel}`;
+      }
+    })();
+  </script>
+
+  <style is:global>
+    [data-availability-picker] {
+      --availability-time-column: 4.75rem;
+    }
+
+    @media (max-width: 640px) {
+      [data-availability-picker] {
+        --availability-time-column: 3.5rem;
+      }
+    }
+
+    .availability-slot {
+      position: relative;
+      overflow: hidden;
+      background: rgb(var(--cc-bg) / 0.72);
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .availability-slot-fill {
+      position: absolute;
+      inset: 3px;
+      z-index: 0;
+      border-radius: 0.35rem;
+      background: transparent;
+      box-shadow: none;
+      opacity: 0;
+      transition:
+        background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .availability-slot-mark {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      display: inline-flex;
+      z-index: 1;
+      height: 1.35rem;
+      width: 1.35rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      border: 1px solid rgb(var(--cc-border));
+      background: rgb(var(--cc-surface));
+      color: rgb(var(--cc-muted));
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1;
+      opacity: 0;
+      transform: scale(0.92);
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .availability-slot[data-selected="true"] {
+      background: rgb(var(--cc-bg) / 0.72);
+      border-color: rgb(var(--cc-border));
+      color: rgb(var(--cc-text));
+    }
+
+    .availability-slot[data-today="true"][data-selected="true"] {
+      background: rgb(var(--cc-primary) / 0.05);
+    }
+
+    .availability-slot[data-selected="true"] .availability-slot-fill {
+      background: rgb(var(--cc-primary) / 0.22);
+      box-shadow:
+        inset 0 0 0 1px rgb(var(--cc-primary) / 0.45),
+        0 4px 10px rgb(var(--cc-primary) / 0.12);
+      opacity: 1;
+    }
+
+    .availability-slot[data-selected="true"]:hover .availability-slot-fill {
+      background: rgb(var(--cc-primary) / 0.28);
+    }
+
+    .availability-slot[data-selected="true"] .availability-slot-mark {
+      background: rgb(var(--cc-primary));
+      border-color: rgb(var(--cc-primary));
+      color: rgb(var(--cc-bg));
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .availability-slot[data-selected="true"] .availability-slot-mark::before {
+      content: "✓";
+    }
+
+    .availability-slot[data-selected="false"] .availability-slot-mark::before {
+      content: "";
+    }
+
+    .availability-slot[data-selected="false"] {
+      background: rgb(var(--cc-bg) / 0.72);
+    }
+
+    .availability-slot[data-today="true"][data-selected="false"] {
+      background: rgb(var(--cc-primary) / 0.05);
+    }
+
+    .availability-slot[data-selected="false"]:hover {
+      background: rgb(var(--cc-surface));
+    }
+
+    .availability-slot[data-today="true"][data-selected="false"]:hover {
+      background: rgb(var(--cc-primary) / 0.08);
+    }
+
+    .availability-slot:hover .availability-slot-mark,
+    .availability-slot:focus-visible .availability-slot-mark {
+      opacity: 0.7;
+    }
+
+    .availability-slot[data-selected="true"]:hover .availability-slot-mark,
+    .availability-slot[data-selected="true"]:focus-visible .availability-slot-mark {
+      opacity: 1;
+    }
+
+    .availability-slot[data-selected="false"]:hover .availability-slot-mark {
+      border-color: rgb(var(--cc-primary) / 0.55);
+      color: rgb(var(--cc-primary));
+      opacity: 1;
+    }
+
+    .availability-view-toggle[aria-pressed="true"] {
+      border-color: rgb(var(--cc-primary));
+      background: rgb(var(--cc-primary) / 0.1);
+      color: rgb(var(--cc-text));
+      box-shadow: inset 0 0 0 1px rgb(var(--cc-primary) / 0.25);
+    }
+  </style>
+</BaseLayout>

@@ -38,6 +38,7 @@ import YamlJsonTool from "@components/tools/YamlJsonTool.astro";
 import HtmlEntityTool from "@components/tools/HtmlEntityTool.astro";
 import UnixPermissionsTool from "@components/tools/UnixPermissionsTool.astro";
 import LogViewerLinkTool from "@components/tools/LogViewerLinkTool.astro";
+import AvailabilityPickerLinkTool from "@components/tools/AvailabilityPickerLinkTool.astro";
 import CloudInitTool from "@components/tools/CloudInitTool.astro";
 import SortLinesTool from "@components/tools/SortLinesTool.astro";
 import IpifyTool from "@components/tools/IpifyTool.astro";
@@ -299,6 +300,12 @@ const tools = [
     Component: LogViewerLinkTool,
   },
   {
+    id: "availability-picker",
+    title: "Availability picker",
+    description: "Select manual time slots and generate email-ready text.",
+    Component: AvailabilityPickerLinkTool,
+  },
+  {
     id: "cloud-init",
     title: "Cloud-init generator",
     description: "Build cloud-init YAML with users, packages, and commands.",
@@ -356,7 +363,7 @@ const categories = [
   {
     id: "full-page",
     title: "Full-page tools",
-    toolIds: ["log-viewer-page", "cloud-init"],
+    toolIds: ["log-viewer-page", "availability-picker", "cloud-init"],
   },
 ];
 
